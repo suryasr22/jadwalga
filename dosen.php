@@ -113,6 +113,7 @@
 			              <th>Username</th>
 			              <th>NIP</th>
 			              <th>Password</th>
+			              <th>Email</th>
 			            </thead>
 		            		<tbody>
 				              <?php
@@ -134,22 +135,25 @@
 				                    <td>
 				                      $dosen[password]
 				                    </td>
+				                    <td>
+				                      $dosen[email]
+				                    </td>
 				                ";
 
-				                // echo "
-				                //     </td>
-				                //     <td align =\"right\">
-				                //       <a href=\"edit_dokter.php?id=$dosen[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
+				                echo "
+				                    </td>
+				                    <td align =\"right\">
+				                      <a href=\"edit_dosen.php?id=$dosen[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
 
-				                //     	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"act/hapus_dokter.php?id_dokter=$dokter[id_dokter]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-				                //     </td>
-				                //   </tr>
-				                // ";
+				                    	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_dosen.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+				                    </td>
+				                  </tr>
+				                ";
 				              }
 				              ?>
 		           			</tbody>
 		            	</table>
-		            	<a href="add_dokter.php" style="float: right" class="btn btn-round btn-theme02" role="button">Tambah</a>
+		            	<a href="add_dosen.php" style="float: right" class="btn btn-round btn-theme02" role="button">Tambah</a>
 		        	</div>
 		        	</div>
 		        	</div>
