@@ -5,30 +5,30 @@
 
   //Ambil data
   //$userData = GetData($conn, SelectTarget($_SESSION['tgt']));
-  //$dataDosen = $conn->query("SELECT * FROM dosen");
+  $dataDosen = $conn->query("SELECT * FROM dosen");
   //echo SelectTarget($_SESSION['tgt']);
 
   //Fungsi
-  function SelectTarget($usrType){
-    switch ($usrType) {
-      case 1:
-        //Admin
-        return "SELECT * FROM user_klinik WHERE username = '$_SESSION[uid]'";
-        break;
-      case 2:
-        //Dokter
-        return "SELECT * FROM dokter WHERE username = '$_SESSION[uid]'";
-        break;
-      case 3:
-        //Perawat
-        return "SELECT * FROM perawat WHERE username = '$_SESSION[uid]'";
-        break;
-    }
-  }
+  // function SelectTarget($usrType){
+  //   switch ($usrType) {
+  //     case 1:
+  //       //Admin
+  //       return "SELECT * FROM user_klinik WHERE username = '$_SESSION[uid]'";
+  //       break;
+  //     case 2:
+  //       //Dokter
+  //       return "SELECT * FROM dokter WHERE username = '$_SESSION[uid]'";
+  //       break;
+  //     case 3:
+  //       //Perawat
+  //       return "SELECT * FROM perawat WHERE username = '$_SESSION[uid]'";
+  //       break;
+  //   }
+  // }
 
   function GetData($conn, $sql){
-    $result = $conn -> query($sql);
-    //echo $result -> num_rows;
+    $result = $conn->query($sql);
+    echo $result -> num_rows;
     if($result -> num_rows > 0){
       return $result -> fetch_assoc();
     } else {
@@ -108,11 +108,11 @@
 
 		        		<table class="table table-striped table-advance table-hover table-condensed">
 		            	<thead>
-			              <th>No</th>
+			              <th>id</th>
 			              <th>Nama Dosen</th>
-			              <th>Makul</th>
-			              <th>Jam</th>
-			              <th>Hari</th>
+			              <th>Username</th>
+			              <th>NIP</th>
+			              <th>Password</th>
 			            </thead>
 		            		<tbody>
 				              <?php
@@ -120,46 +120,31 @@
 				                echo "
 				                  <tr>
 				                    <td>
+				                      $dosen[id]
+				                    </td>
+				                    <td>
 				                      $dosen[nama]
 				                    </td>
 				                    <td>
-				                      $dosen[makul]
+				                      $dosen[username]
 				                    </td>
 				                    <td>
-				                      $dosen[alamat]
+				                      $dosen[nip]
 				                    </td>
 				                    <td>
-				                      $dosen[tanggal_lahir]
+				                      $dosen[password]
 				                    </td>
-				                    <td align=\"center\">
-				                      $dokter[jenis_kelamin]
-				                    </td>
-				                    <td>
-				                      $dokter[no_telp]
-				                    </td>
-				                    <td>
-				                      $dokter[email]
-				                    </td>
-				                    <td align =\"center\">
 				                ";
 
-				                if($dokter['status'] === '1'){
-				                  //echo "Aktif";
-				                  echo "<span class=\"label label-success\">aktif</span>";
-				                } else {
-				                  echo "<span class=\"label label-danger\">non-aktif</span>";
+				                // echo "
+				                //     </td>
+				                //     <td align =\"right\">
+				                //       <a href=\"edit_dokter.php?id=$dosen[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
 
-				                }
-
-				                echo "
-				                    </td>
-				                    <td align =\"right\">
-				                      <a href=\"edit_dokter.php?id_dokter=$dokter[id_dokter]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
-
-				                    	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"act/hapus_dokter.php?id_dokter=$dokter[id_dokter]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-				                    </td>
-				                  </tr>
-				                ";
+				                //     	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"act/hapus_dokter.php?id_dokter=$dokter[id_dokter]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+				                //     </td>
+				                //   </tr>
+				                // ";
 				              }
 				              ?>
 		           			</tbody>
@@ -199,35 +184,4 @@
 	    </div>
 	  </div>
 	</div>
-
-
-
-
-
- <!-- Offline JQuery -->
-  <script src="../assets/js/jquery-3.2.1.min.js"></script>
-
-  <!-- Our Javascript -->
-  <script src="../assets/js/ours/jam.js"></script>
-
-  <!-- js placed at the end of the document so the pages load faster -->
-  <script src="../assets/js/jquery.js"></script>
-  <script src="../assets/js/bootstrap.min.js"></script>
-  <script src="../assets/js/jquery-ui-1.9.2.custom.min.js"></script>
-  <script src="../assets/js/jquery.ui.touch-punch.min.js"></script>
-  <script class="include" type="text/javascript" src="../assets/js/jquery.dcjqaccordion.2.7.js"></script>
-  <script src="../assets/js/jquery.scrollTo.min.js"></script>
-  <script src="../assets/js/jquery.nicescroll.js" type="text/javascript"></script>
-  <!--common script for all pages-->
-  <script src="../assets/js/common-scripts.js"></script>
-  <!--script for this page-->
-
-  <script>
-      //custom select box
-
-      $(function(){
-          $('select.styled').customSelect();
-      });
-
-  </script>
 </body>

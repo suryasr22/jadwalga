@@ -1,25 +1,31 @@
 <?php
-include "koneksi.php";
+	include "koneksi.php";
 
-$username = $_POST['username'];
-$password = md5($_POST['password']);
+	$username = $_POST['username'];
+	$password = md5($_POST['password']);
 
-	$query = mysql_query("select * from dosen where username='$username' and password='$password'");
-	echo "select * from dosen where username='$username' and password='$password'";
-	$count = mysql_num_rows($query);
-	$row = mysql_fetch_array($query);
+	$data = GetData($conn, "SELECT * FROM dosen WHERE username='$username' AND password='$password'");
 
-	if($count == 1)
-		{
+	if($data){
+		if(!isset($_SESSION)){
 			session_start();
-			if(!isset($_SESSION[uid]))
-				$_SESSION[uid] = $row['id'];
-			header ("location:dosen.php");
+			$_SESSION["uid"] = $data["id"];
 		}
-		else
-		{
-			//echo "<script> alert('Usersname atau Password Salah');
-			//location='login.php';
-			//</script>";
+		header ("location:dosen.php");
+	} else {
+		echo "<script> alert('Username atau Password Salah');
+		location='signin.php';
+		</script>";
+		//echo "SELECT username, password, jenis_user FROM user_klinik WHERE username = '$uid' AND password = '$pw'";
+	}
+
+	function GetData($conn, $sql){
+		$result = $conn -> query($sql);
+		echo $result -> num_rows;
+		if($result -> num_rows > 0){
+			return $result -> fetch_assoc();
+		} else {
+			return false;
 		}
+	}
 ?>
