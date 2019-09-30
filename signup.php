@@ -3,47 +3,51 @@
   <head>
     <title>Sign Up</title>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="signin.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <div class="container">
-      <br>
-      <div class="col-md-4 card mx-auto">    
-        <form class="form-group w-35 p-3 mx-auto rounded-top" method="POST" action="  proses_signup.php">
+    <div class="signup container col-md-7">
+      <div class="mx-auto">
+        <form class="col-md-11 form-group w-35 p-3 mx-auto rounded-top" method="POST" action="  proses_signup.php">
           <!--display validation errors here-->
-          <div class="modal-header ">
+          <div class="modal-header">
             <h2 class="mx-auto">Sign Up</h2>
           </div>
-          <div class="modal-body container rounded-bottom">
-            <div class="form-group" data-dismiss="alert" >
-              <label>Username</label>
-              <input type="text" class="form-control" placeholder="Username" name="username">
-            </div>
-            <div class="form-group" data-dismiss="alert" >
+          <div class="row-auto form-row modal-body container rounded-bottom">
+            <div class="col-md-6 form-group" data-dismiss="alert" >
               <label>Nama</label>
               <input type="text" class="form-control" placeholder="Nama" name="nama">
             </div>
-            <div class="form-group">
-              <label>NIP</label>
-              <input type="text" class="form-control" placeholder="NIP" name="nip">
+            <div class="col-md-6 form-group" data-dismiss="alert" >
+              <label>Username</label>
+              <input type="text" class="form-control" placeholder="Username" name="username">
             </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="text" class="form-control" placeholder="email@example.com" name="email">
+            <div class="row-auto form-row">
+              <div class="col-md-6 form-group">
+                <label>NIP</label>
+                <input type="text" class="form-control" placeholder="NIP" name="nip">
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" placeholder="email@example.com" name="email">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Password</label>
-              <input type="password" class="form-control" placeholder="Password" name="password_1">
+            <div class="row-auto form-row">
+              <div class="col-md-6 form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Password" name="password_1">
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Confirm Password</label>
+                <input type="password" class="form-control" placeholder="Ulangi Password" name="password_2">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Confirm Password</label>
-              <input type="password" class="form-control" placeholder="Ulangi Password" name="password_2">
-            </div>
-            <div class="">
-            <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
+            <p>
+               <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
               <br><br>
               sudah punya punya akun? <a href="signin.php">Sign in</a>
-            </div>
+            </p>
+           
           </div>
         </form>
       </div>

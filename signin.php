@@ -2,15 +2,16 @@
 <html>
   <head>
     <title>Sign In</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="signin.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <br><br><br><br><br>
-    <div class="container">
-      <div class="col-md-4 card mx-auto">        
+    <div class="sign container col-md-7">
+      <div class="loginbox col-md-6 mx-auto">        
         <form class="form-group" method="POST" action="proses_signin.php">
-          <div class="modal-header ">
+          <div class="row modal-header ">
             <h2 class="mx-auto">Sign In</h2>
           </div>
           <div class="modal-body container rounded-bottom">

@@ -55,7 +55,7 @@
 		mysqli_query($db, $sql);
 		$_SESSION['username'] = $username;
 		$_SESSION['success'] = "berhasil signin";
-		header('location: signin.php?status=success'); //redirect ke homepage
+		header('location: index.php?status=success'); //redirect ke homepage
 	} else {
 		//print error
 		$errorLen = sizeof($errors);
