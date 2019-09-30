@@ -5,9 +5,6 @@ $username="root";
 $password="";
 $db="jadwal_ga";
 
-$conn = mysqli_connect($host,$username,$password,$db);
-if (mysqli_connect_errno())
-	{
-		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+$conn = mysql_connect($host,$username,$password) or die ("Koneksi GAGAL");
+		mysql_select_db($db) or die ("database tidak bisa dipilih");
 ?>

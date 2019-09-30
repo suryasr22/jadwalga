@@ -11,13 +11,15 @@ $password = md5($_POST['password']);
 
 	if($count == 1)
 		{
+			session_start();
+			if(!isset($_SESSION[uid]))
+				$_SESSION[uid] = $row['id'];
 			header ("location:dosen.php");
 		}
 		else
 		{
-
 			//echo "<script> alert('Usersname atau Password Salah');
-			//location='index.php';
+			//location='login.php';
 			//</script>";
 		}
 ?>

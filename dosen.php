@@ -4,8 +4,8 @@
   include "session_check.php";
 
   //Ambil data
-  $userData = GetData($conn, SelectTarget($_SESSION['tgt']));
-  $dataDosen = $conn->query("SELECT * FROM dosen");
+  //$userData = GetData($conn, SelectTarget($_SESSION['tgt']));
+  //$dataDosen = $conn->query("SELECT * FROM dosen");
   //echo SelectTarget($_SESSION['tgt']);
 
   //Fungsi
