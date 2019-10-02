@@ -5,7 +5,7 @@
 
   //Ambil data
   //$userData = GetData($conn, SelectTarget($_SESSION['tgt']));
-  $dataDosen = $conn->query("SELECT * FROM dosen");
+  $dataMakul = $conn->query("SELECT * FROM matakuliah");
   //echo SelectTarget($_SESSION['tgt']);
 
   //Fungsi
@@ -42,6 +42,9 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,7 +52,7 @@
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>Dosen</title>
+    <title>Dashboard Dosen</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
@@ -87,105 +90,110 @@
 </head>
 <body>
 	<div class="container">
-		<div class="table-responsive-sm">
-		<table class="w-auto table table-dark  table-hover table-sm table-bordered">
-			<section id="container">
-		   		<section id="main-content">
-		   			<section class="wrapper">
-			   			<h2><center>Daftar Jadwal</center></h2>
-			          	<hr>
-			        	<div class="row mt">
-			        	<div class="col-lg-12">
-			            <div class="table-responsive">
+	  <ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#makul">Mata Kuliah</a></li>
+		<li><a data-toggle="tab" href="#editakun">Edit Akun</a></li>
+	  </ul>
 
-			            <form role="search">
-			              <div class="form-group">
-			                <div id="tabeldata_filter" class="dataTables_filter">
-			                  <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="tabeldata" id="search"></label>
-			                </div>
-			              </div>
-			            </form>
+	  <div class="tab-content">
+		<div id="makul" class="table-responsive-sm tab-pane fade in active">
+		  <table class="w-auto table table-dark  table-hover table-sm table-bordered">
+			<section id="container">
+		   	  <section id="main-content">
+		   		<section class="wrapper">
+		          <div class="row mt">
+	        	  <div class="col-lg-12">
+	            	<div class="table-responsive">
+		              <div class="row-auto">
+				      <div class="col-md-6">
+				        <form role="search">
+					      <div class="form-group">
+					      <div id="tabeldata_filter" class="dataTables_filter">
+					        <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="tabeldata" id="search"></label>
+					      </div>
+					      </div>
+					    </form>
+					  </div>
+					<div class="col-md-6">
+			          <a href="tambah_dosen.php" style="float: right" class="btn btn-round btn-theme02" role="button">Tambah</a>
+			        </div>
+			        <div>
+			        	<!-- Button trigger modal -->
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="inputmakul">
+						  Input Makul
+						</button>
+
+						<!-- Modal -->
+						<div class="modal fade" id="inputmakul" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+						  <div class="modal-dialog modal-dialog-scrollable" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						        ...
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						        <button type="button" class="btn btn-primary">Save changes</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+			        </div>
+	            	</div>
+			            </div>
+			        	</div>
+			    		</div>
 
 		        		<table class="table table-striped table-advance table-hover table-condensed">
-		            	<thead>
-			              <th>id</th>
-			              <th>Nama Dosen</th>
-			              <th>Username</th>
-			              <th>NIP</th>
-			              <th>Password</th>
-			              <th>Email</th>
-			            </thead>
+			            	<thead>
+				              <th>Mata Kuliah</th>
+				              <th>SKS</th>
+				            </thead>
 		            		<tbody>
 				              <?php
-				              while($dosen = $dataDosen->fetch_assoc()){
+				              while($makul = $dataMakul->fetch_assoc()){
 				                echo "
 				                  <tr>
 				                    <td>
-				                      $dosen[id]
+				                      $matakuliah[sks]
 				                    </td>
 				                    <td>
-				                      $dosen[nama]
+				                      $matakuliah[nama]
 				                    </td>
-				                    <td>
-				                      $dosen[username]
-				                    </td>
-				                    <td>
-				                      $dosen[nip]
-				                    </td>
-				                    <td>
-				                      $dosen[password]
-				                    </td>
-				                    <td>
-				                      $dosen[email]
-				                    </td>
-				                ";
+				                   ";
 
 				                echo "
 				                    </td>
 				                    <td align =\"right\">
-				                      <a href=\"edit_dosen.php?id=$dosen[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
+				                      <a href=\"edit_makul.php?id=$matakuliah[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
 
-				                    	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_dosen.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-				                    </td>
-				                  </tr>
-				                ";
-				              }
-				              ?>
-		           			</tbody>
+				                    	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+					                    </td>
+					                  </tr>
+					                ";
+					              }
+					              ?>
+		           				</tbody>
 		            	</table>
-		            	<a href="add_dosen.php" style="float: right" class="btn btn-round btn-theme02" role="button">Tambah</a>
-		        	</div>
-		        	</div>
-		        	</div>
-			     	</section>
-   		 		</section>
-   			</section>
-   		</table>
-		</div>
-	</div>
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="inputmakul">
-	  Input Makul
-	</button>
+		            </section>
+	 				</section>
+					</section>
+				</table>
+		    </div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="inputmakul" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-scrollable" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        ...
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
+		 	<div id="editakun" class="tab-pane fade">
+		      <h3>Menu 1</h3>
+		      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    		</div>   
+		</div>	     
 	</div>
+	
+	<!-- JavaScript Libraries -->
+	s
+
 </body>

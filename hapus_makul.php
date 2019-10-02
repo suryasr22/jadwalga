@@ -4,17 +4,17 @@
 
 	//SQL command
 	//ambil max value id dari tabel dokter ama user_klinik
-	$sql1 = "DELETE FROM dosen WHERE dosen.id = '$_GET[id_dosen]'";
+	$sql1 = "DELETE FROM matakuliah WHERE matakuliah.id = '$_GET[id_makul]'";
 	//echo $sql1;
 
 	//Masukkan data
 	if($conn->query($sql1) === TRUE){
 		echo "<script> alert('Data berhasil dihapus');
-		location='dosen.php';
+		location='admin.php';
 		</script>";
 	} else {
 		echo "<script> alert('Data gagal dihapus');
-		location='dosen.php';
+		location='admin.php';
 		</script>";
 	}
 
