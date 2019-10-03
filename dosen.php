@@ -88,112 +88,77 @@
       });
     </script>
 </head>
-<body>
-	<div class="container">
-	  <ul class="nav nav-tabs">
-		<li class="active"><a data-toggle="tab" href="#makul">Mata Kuliah</a></li>
-		<li><a data-toggle="tab" href="#editakun">Edit Akun</a></li>
-	  </ul>
+<body class="vh-100 w-75 mx-auto shadow p-3 mb-5 bg-white rounded">
+	<div class="container  col-7 w-50">
+		<ul class="nav nav-tabs ">
+			<li class="active"><a data-toggle="tab" href="#makul">Mata Kuliah</a></li>
+			<li><a data-toggle="tab" href="#editakun">Edit Akun</a></li>
+		</ul>
 
-	  <div class="tab-content">
-		<div id="makul" class="table-responsive-sm tab-pane fade in active">
-		  <table class="w-auto table table-dark  table-hover table-sm table-bordered">
-			<section id="container">
-		   	  <section id="main-content">
+		<div class="tab-content align-middle">
+			<div id="makul" class="table-responsive-sm tab-pane fade in active">
+		  	<table class="w-auto table table-dark  table-hover table-sm table-bordered">
+				<section id="container">
+		   	  	<section id="main-content">
 		   		<section class="wrapper">
-		          <div class="row mt">
-	        	  <div class="col-lg-12">
-	            	<div class="table-responsive">
-		              <div class="row-auto">
-				      <div class="col-md-6">
-				        <form role="search">
-					      <div class="form-group">
-					      <div id="tabeldata_filter" class="dataTables_filter">
-					        <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="tabeldata" id="search"></label>
-					      </div>
-					      </div>
-					    </form>
-					  </div>
-					<div class="col-md-6">
-			          <a href="tambah_dosen.php" style="float: right" class="btn btn-round btn-theme02" role="button">Tambah</a>
-			        </div>
-			        <div>
-			        	<!-- Button trigger modal -->
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="inputmakul">
-						  Input Makul
-						</button>
+		        	<div class="row mt">
+	        			<div class="col-lg-12">
+	            		<div class="table-responsive">
+		              		<div class="row-auto">
+		              			<br>
+				        		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#inputmakul">Input Makul</button>
 
-						<!-- Modal -->
-						<div class="modal fade" id="inputmakul" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-						  <div class="modal-dialog modal-dialog-scrollable" role="document">
-						    <div class="modal-content">
-						      <div class="modal-header">
-						        <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						          <span aria-hidden="true">&times;</span>
-						        </button>
-						      </div>
-						      <div class="modal-body">
-						        ...
-						      </div>
-						      <div class="modal-footer">
-						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						        <button type="button" class="btn btn-primary">Save changes</button>
-						      </div>
+								<!-- Modal -->
+								<?php include ('modal_tambahmakul.php'); ?>
+
+									
 						    </div>
-						  </div>
+				        </div>
 						</div>
-			        </div>
-	            	</div>
-			            </div>
-			        	</div>
-			    		</div>
+					</div>
 
-		        		<table class="table table-striped table-advance table-hover table-condensed">
-			            	<thead>
-				              <th>Mata Kuliah</th>
-				              <th>SKS</th>
-				            </thead>
-		            		<tbody>
-				              <?php
-				              while($makul = $dataMakul->fetch_assoc()){
-				                echo "
-				                  <tr>
-				                    <td>
-				                      $matakuliah[sks]
+					<table class="table table-striped table-advance table-hover table-condensed">
+		            	<thead>
+			              <th>Mata Kuliah</th>
+			              <th>SKS</th>
+			            </thead>
+	            		<tbody>
+			              <?php
+			              while($makul = $dataMakul->fetch_assoc()){
+			                echo "
+			                  <tr>
+			                    <td>
+			                      $matakuliah[sks]
+			                    </td>
+			                    <td>
+			                      $matakuliah[nama]
+			                    </td>
+			                   ";
+
+			                echo "
+			                    </td>
+			                    <td align =\"right\">
+			                      <a href=\"edit_makul.php?id=$matakuliah[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
+
+			                    	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
 				                    </td>
-				                    <td>
-				                      $matakuliah[nama]
-				                    </td>
-				                   ";
+				                  </tr>
+				                ";
+				              }
+				              ?>
+	           			</tbody>
+            		</table>
+            	</section>
+				</section>
+				</section>
+			</table>
+	  		</div>   
+    	</div>
 
-				                echo "
-				                    </td>
-				                    <td align =\"right\">
-				                      <a href=\"edit_makul.php?id=$matakuliah[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
-
-				                    	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-					                    </td>
-					                  </tr>
-					                ";
-					              }
-					              ?>
-		           				</tbody>
-		            	</table>
-		            </section>
-	 				</section>
-					</section>
-				</table>
-		    </div>
-
-		 	<div id="editakun" class="tab-pane fade">
-		      <h3>Menu 1</h3>
-		      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    		</div>   
-		</div>	     
+	    <!--Tabs-->
+		<div id="editakun" class="tab-pane fade">
+		<h3>Menu 1</h3>
+		  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+		</div>   
 	</div>
-	
-	<!-- JavaScript Libraries -->
-	s
-
 </body>
