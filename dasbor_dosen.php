@@ -47,8 +47,8 @@
 
       $('#btneditmakul').click(function() {
         $.get($(this).attr('href'), function(msg){
-          $("#edit-dosen-content").html(msg);
-          $('#myModal').modal('show');
+          $("#edit_makul-konten").html(msg);
+          $('#editmakul').modal('show');
         });
         return false;
       });
@@ -64,7 +64,26 @@
 
         <!--konten-->
     		<div class="tab-content align-middle">
-    			<?php include('modal_edit-makul.php'); ?>
+          <div class="modal fade" id="editmakul" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="judul">Tambah Mata Kuliah</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body" id="edit_makul-konten">
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <table class="table table-striped table-advance table-hover table-condensed">
             <thead>
@@ -86,7 +105,7 @@
 
                 echo "
                     <td align =\"right\">
-                      <a href=\"modal_edit-makul.php?id=$makul[id]\" id=\"btneditmakul\" class=\"btn btn-primary btn-xs\" role=\"button\" data-toggle=\"#modal\" data-target=\"#editmakul\"><i class=\"fa fa-pencil\"></i></a>
+                      <a href=\"ajax/edit_makul.php?id=$makul[id]\" id=\"btneditmakul\" class=\"btn btn-primary btn-xs\" role=\"button\" data-toggle=\"#modal\" data-target=\"#editmakul\"><i class=\"fa fa-pencil\"></i></a>
                       <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"/process/hapus_makul.php?id_makul=$makul[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
                     </td>
                   </tr>
