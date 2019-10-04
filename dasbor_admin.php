@@ -5,6 +5,7 @@
 
   //Ambil data
   $dataDosen = $conn->query("SELECT * FROM dosen");
+  $dataMakul = $conn->query("SELECT * FROM matakuliah");
 
   function GetData($conn, $sql){
     $result = $conn->query($sql);
@@ -20,6 +21,7 @@
 
 <!DOCTYPE html>
 <head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -61,6 +63,11 @@
 			<div id="dosen" class="tab-pane fade in active">
 				<?php include('tab_dosen.php');?>
 			</div>
+
+			<!--MODAL DOSEN-->
+			<?php
+				include('modal_edit_dosen.php');
+			?>
 
 			<!--TAB MAKUL-->
 			<div id="makul" class="tab-pane fade">

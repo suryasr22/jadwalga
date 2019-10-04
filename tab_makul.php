@@ -2,33 +2,37 @@
   <table class="table table-striped table-advance table-hover table-condensed">
     <thead>
       <th>id</th>
-      <th>Nama Dosen</th>
-      <th>NIP</th>
+      <th>Nama Mata Kuliah</th>
+      <th>Semester</th>
+      <th>Jumlah SKS</th>
     </thead>
     <tbody>
       <?php
-        while($dosen = $dataDosen->fetch_assoc()){
+        while($makul = $dataMakul->fetch_assoc()){
           echo "
             <tr>
               <td>
-                $dosen[id]
+                $makul[id]
               </td>
               <td>
-                $dosen[nama]
+                $makul[nama]
               </td>
               <td>
-                $dosen[nip]
+                $makul[semester]
+              </td>
+              <td>
+                $makul[sks]
               </td>
           ";
 
-          echo "
-              <td align =\"right\">
-              <a href=\"edit_dosen.php?id=$dosen[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
+          // echo "
+          //     <td align =\"right\">
+          //     <a href=\"edit_dosen.php?id=$makul[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
 
-              <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_dosen.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-              </td>
-            </tr>
-          ";
+          //     <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_dosen.php?id=$makul[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+          //     </td>
+          //   </tr>
+          // ";
         }
       ?>
     </tbody>
