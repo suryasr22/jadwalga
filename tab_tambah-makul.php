@@ -29,17 +29,17 @@
 				        echo "
 				          <tr>
 				            <td>
-				              $makul[sks]
+				              $makul[nama]
 				            </td>
 				            <td>
-				              $makul[nama]
+				              $makul[sks]
 				            </td>
 				           ";
 
 				        echo "
 				            <td align =\"right\">
-				              <a href=\"/process/edit_makul.php?id=$makul[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
-				              <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"/process/delete_makul.php?id_makul=$makul[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+				              <a href=\"/process/ubah_makul.php?id=$makul[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
+				              <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"/process/hapus_makul.php?id_makul=$makul[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
 				            </td>
 				          </tr>
 				           ";

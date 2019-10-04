@@ -1,7 +1,7 @@
 <?php
   //Library
   include "/process/koneksi.php";
-  //include "/process/session_check.php";
+  include "/process/session_check.php";
 
   //Ambil data
   $dataMakul = $conn->query("SELECT * FROM matakuliah");
@@ -25,6 +25,7 @@
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link href="css/font-awesome/css/font-awesome.css" rel="stylesheet" />
 
   	<!-- my script -->
     <script type="text/javascript">
@@ -51,13 +52,12 @@
 
         <!--konten-->
     		<div class="tab-content align-middle">
-    			<?php include('tab-tambah-makul.php'); ?>
+    			<?php include('tab_tambah-makul.php'); ?>
         </div>
 
         <!--Tabs-->
     		<div id="editakun" class="tab-pane fade">
-      		<h3>Menu 1</h3>
-      		  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          <?php include('tab_edit-akun.php'); ?>
     		</div>   
   	</div>
 </body>

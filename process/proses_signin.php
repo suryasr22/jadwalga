@@ -1,5 +1,5 @@
 <?php
-	include "koneksi.php";
+	include "/process/koneksi.php";
 
 	$username = $_POST['username'];
 	$password = md5($_POST['password']);
@@ -12,7 +12,7 @@
 			session_start();
 			$_SESSION["uid"] = $data["id"];
 		}
-		header ("location:dosen.php");
+		header ("location:dasbor-dosen.php");
 		//header ("location:" . $tgt);
 	} else {
 		echo "<script> alert('Username atau Password Salah');
