@@ -1,13 +1,13 @@
 <div class="sign container col-md-7">
   <div class="loginbox">        
-    <form class="form-group" method="POST" action="proses_signin.php">
+    <form class="form-group" method="POST" action="process/proses_signin.php">
         <div class="row modal-header ">
           <h2 class="mx-auto">Sign In</h2>
         </div>
         <div class="modal-body container rounded-bottom">
           <div class="form-group">
             <label>Username</label>
-            <input type="text" class="form-control" placeholder="Username" name="username">
+            <input type="text" class="form-control " placeholder="Username" name="username">
           </div>
           <div class="form-group">
             <label>Password</label>
