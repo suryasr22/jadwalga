@@ -4,6 +4,7 @@
       <th>id</th>
       <th>Nama Dosen</th>
       <th>NIP</th>
+      <th></th>
     </thead>
 		<tbody>
           <?php
@@ -22,14 +23,10 @@
             ";
 
             echo "
-                </td>
                 <td align =\"right\">
-                  <a href=\"edit_dosen.php?id=$dosen[id]\" class=\"btn btn-primary btn-xs\" role=\"button\"><i class=\"fa fa-pencil\" data-toggle=\"modal\" data-target=\"#myModal\"></i></a>
-                  <button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\">
-				  	<i class=\"fa fa-pencil\" data-toggle=\"modal\" data-target=\"#myModal\"></i>
-				  </button>
+                  <a href=\"ajax/edit_dosen.php?id=$dosen[id]\" id=\"btn-edit-dosen\" class=\"btn btn-primary btn-sm\" role=\"button\"><i class=\"fa fa-pencil\" data-toggle=\"modal\" data-target=\"#myModal\"></i></a>
 
-                	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_dosen.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-xs\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+                	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_dosen.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
                 </td>
               </tr>
             ";
