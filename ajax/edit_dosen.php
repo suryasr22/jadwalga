@@ -15,38 +15,30 @@
 		<form class="form-horizontal style-form" method="post" action ="act/edit_dosen.php?id=$dosen[id]">
 	        <!--id-->
 	        <div class="form-group">
-	          <label class="col-sm-2 col-sm-2 control-label">id</label>
-	          <div class="col-sm-10">
-	            <input type="text" class="form-control" name="id_dosen" id="id_dosen" value=" ' . $dosen['id'] . '" autocomplete="off" required>
-	          </div>
+	          	<label for="id_dosen">id</label>
+            	<input type="text" class="form-control" name="id_dosen" id="id_dosen" value=" ' . $dosen['id'] . '" autocomplete="off" required>
 	        </div>
 
 	        <!--nama_dosen-->
 	        <div class="form-group">
-	          <label class="col-sm-2 col-sm-2 control-label">Nama Dosen</label>
-	          <div class="col-sm-10">
-	            <input type="text" class="form-control" name="nama_dosen" id="nama_dosen" value="' . $dosen['nama'] . '" autocomplete="off" required>
-	          </div>
+          		<label for="nama_dosen">Nama Dosen</label>
+            	<input type="text" class="form-control" name="nama_dosen" id="nama_dosen" value="' . $dosen['nama'] . '" autocomplete="off" required>
 	        </div>
 
 	        <!--nip-->
 	        <div class="form-group">
-	          <label class="col-sm-2 col-sm-2 control-label">NIP</label>
-	          <div class="col-sm-10">
+          		<label for="nip">NIP</label>
 	            <input type="text" class="form-control" name="nip" id="nip" value="' . $dosen['nip'] . '" autocomplete="off" required>
-	          </div>
 	        </div>
 
 	        <!--email-->
 	        <div class="form-group">
-	          <label class="col-sm-2 col-sm-2 control-label">Email</label>
-	          <div class="col-sm-10">
-	            <input type="email" class="form-control" name="email" id="email" value="' . $dosen['email'] . '" autocomplete="off" required>
-	          </div>
+      			<label for="email">Email</label>
+            	<input type="email" class="form-control" name="email" id="email" value="' . $dosen['email'] . '" autocomplete="off" required>
 	        </div>
 
 	        <center>
-	          <button class="btn btn-" type="submit" name="submit" id="submit">Submit</button>
+	          <button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>
 	        </center>
 	        <br>
 	    </form>

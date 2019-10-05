@@ -17,12 +17,6 @@
       <div id="edit-dosen-content" class="modal-body">
         
       </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Back</button>
-      </div>
-
     </div>
   </div>
 </div>

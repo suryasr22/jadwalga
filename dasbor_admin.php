@@ -62,14 +62,6 @@
 </head>
 <body>
 	<div class="container">
-    <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="top: 12px;">
-      <!-- Then put toasts within -->
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
-        <div class="toast-body">
-          Proses Berhasil.
-        </div>
-      </div>
-    </div>
 		<h2><center>Dasbor Admin</center></h2>
   		<hr>
 		<ul class="nav nav-tabs">
