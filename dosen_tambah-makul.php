@@ -29,7 +29,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Dashboard Dosen</title>
+  <title>Dahsboard Dosen</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -40,6 +40,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 
 </head>
 
@@ -64,16 +65,13 @@
       </div>
     </div>
   </nav>
+  <br><br>
 
   <!-- Page Content -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <hr>
-        <h1 class="mt-5 text-center">Jadwal</h1>
-              
-        <table class="table w-auto mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-lg-12">
+  <div class="container p-4 col-6">
+    <table class="table w-auto mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-lg-12">
           <thead>
+            <th></th>
             <th>Nama Mata Kuliah</th>
             <th>Semester</th>
             <th>Sks</th>
@@ -84,6 +82,8 @@
               echo "
                 <tr>
                   <td>
+                  </td>
+                  <td>
                     $makul[nama]
                   </td>
                   <td>
@@ -93,20 +93,11 @@
                     $makul[sks]
                   </td>
               ";
-
-              echo "
-                  <td align =\"right\">
-                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-                  </td>
-                </tr>
-              ";
             }
             ?>
           </tbody>
-        </table>
-        <a href="dosen_tambah-makul.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Makul</a>
-      </div>
-    </div>
+    </table>     
+      <button type="submit" class="btn btn-primary">Submit</button>
   </div>
 
   <!-- Bootstrap core JavaScript -->

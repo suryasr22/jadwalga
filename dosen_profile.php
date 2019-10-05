@@ -29,7 +29,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Dashboard Dosen</title>
+  <title>Dahsboard Dosen</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -41,6 +41,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+
 </head>
 
 <body class="w-75 p-4 mx-auto shadow-lg bg-white">
@@ -48,9 +49,9 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
     <div class="container">
-      <a class="navbar-brand" href="#">Dashboard Dosen</a>
+      <a class="navbar-brand" href="dasbor_dosen.php">Dashboard Dosen</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
@@ -64,55 +65,44 @@
       </div>
     </div>
   </nav>
+  <br><br>
 
   <!-- Page Content -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <hr>
-        <h1 class="mt-5 text-center">Jadwal</h1>
-              
-        <table class="table w-auto mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-lg-12">
-          <thead>
-            <th>Nama Mata Kuliah</th>
-            <th>Semester</th>
-            <th>Sks</th>
-          </thead>
-          <tbody>
-            <?php
-            while($makul = $dataMakul->fetch_assoc()){
-              echo "
-                <tr>
-                  <td>
-                    $makul[nama]
-                  </td>
-                  <td>
-                    $makul[semester]
-                  </td>
-                  <td>
-                    $makul[sks]
-                  </td>
-              ";
-
-              echo "
-                  <td align =\"right\">
-                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-                  </td>
-                </tr>
-              ";
-            }
-            ?>
-          </tbody>
-        </table>
-        <a href="dosen_tambah-makul.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Makul</a>
-      </div>
+  <form>
+    <div class="form-group">
+      <label>Nama</label>
+      <input type="text" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan nama">
     </div>
-  </div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" class="form-control" id="username" aria-describedby="masukkan nama" placeholder="masukkan username">
+    </div>
+    <div class="form-group">
+      <label>Old Password</label>
+      <input type="password" class="form-control" id="oldpw" aria-describedby="masukkan nama" placeholder="masukkan password lama">
+    </div>
+    <div class="form-group">
+      <label>New Password</label>
+      <input type="password" class="form-control" id="newpw" aria-describedby="masukkan nama" placeholder="masukkan password baru">
+    </div>
+    <div class="form-group">
+      <label>Confirm New Password</label>
+      <input type="password" class="form-control" id="confirmnewpw" aria-describedby="masukkan nama" placeholder="konfirmasi password baru">
+    </div>
+    <div class="form-group">
+      <label>Nip</label>
+      <input type="text" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan nip">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan email">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.slim.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>
