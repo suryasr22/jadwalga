@@ -1,21 +1,24 @@
 <?php
   //Library
-  include "process/koneksi.php";
-  include "process/session_check.php";
-  include "functions.php";
+  include "/process/koneksi.php";
+  include "/process/session_check.php";
 
   //Ambil data
   $dataMakul = $conn->query("SELECT * FROM matakuliah");
-  $dataHari = $conn->query("SELECT * FROM hari");
   $dataJam = $conn->query("SELECT * FROM jam");
-  $hari = $dataHari->fetch_assoc();
+  $dataHari = $conn->query("SELECT * FROM hari");
   $jam = $dataJam->fetch_assoc();
+  $hari = $dataHari->fetch_assoc();
 
-  $id = $_SESSION['uid'];
-  $id_dosen = GetData($conn, "SELECT dosen.id FROM dosen, user_dosen, users WHERE users.id = $id AND dosen.id = user_dosen.id_dosen AND users.id = user_dosen.id_user")['id'];
-  
-  $dataMakulDosen = $conn->query("SELECT * FROM dosen, matakuliah, dosen_makul WHERE dosen.id = $id_dosen AND dosen.id = dosen_makul.id_dosen AND matakuliah.id = dosen_makul.id_makul");
-
+  function GetData($conn, $sql){
+    $result = $conn->query($sql);
+    echo $result -> num_rows;
+    if($result -> num_rows > 0){
+      return $result -> fetch_assoc();
+    } else {
+      return false;
+    }
+  }
 
 ?>
 
@@ -30,7 +33,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Dashboard Dosen</title>
+  <title>Dahsboard Dosen</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -41,6 +44,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 
 </head>
 
@@ -70,20 +74,18 @@
   </nav>
 
   <!-- Page Content -->
-  <div class="container col-9">
-    <div class="row">
-      <div class="col-lg-12">
-        <br>
-        <h2 class="mt-5 text-center">Jadwal Mengajar Anda</h2>
-        <hr><br>  
-        <table class="table mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-12">
-          <thead class="text-center">
-            <th>No</th>
+  <form class="form-group" method="POST" action="#">
+    <div class="container p-4 col-9">
+      <h2 class="mt-5 text-center">Tambah Jadwal</h2>
+    <hr><br>
+    <table class="table mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-lg-12">
+          <thead>
+            <th>Pilih</th>
             <th>Nama Mata Kuliah</th>
             <th>Semester</th>
+            <th>Sks</th>
             <th>Jam</th>
             <th>Hari</th>
-            <th>Hapus</th>
           </thead>
           <tbody>
             <?php
@@ -91,7 +93,6 @@
               echo "
                 <tr>
                   <td>
-
                   </td>
                   <td>
                     $makul[nama]
@@ -100,27 +101,26 @@
                     $makul[semester]
                   </td>
                   <td>
-                    $jam[waktu]
-                  </td>
-                  <td>
-                    $hari[hari]
+                    $makul[sks]
                   </td>
               ";
-
               echo "
-                  <td align =\"center\">
-                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+                  <td align =\"right\">
+                    <a class=\"btn btn-primary btn-sm dropdown-toggle\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" role=\"button\">Pilih jam</a>
+                  </td>
+                  <td align =\"right\">
+                    <a class=\"btn btn-primary btn-sm dropdown-toggle\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" role=\"button\">Pilih Hari</a>
                   </td>
                 </tr>
               ";
             }
             ?>
           </tbody>
-        </table>
-        <a href="dosen_tambah-jadwal.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Jadwal</a>
-      </div>
-    </div>
+    </table>  
+    <button type="submit" class="btn btn-primary">Tambah</button>   
   </div>
+</form>
+  
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.slim.min.js"></script>

@@ -4,7 +4,7 @@
   include "/process/session_check.php";
 
   //Ambil data
-  $dataMakul = $conn->query("SELECT * FROM matakuliah");
+  $dataDosen = $conn->query("SELECT * FROM dosen");
 
   function GetData($conn, $sql){
     $result = $conn->query($sql);
@@ -29,9 +29,10 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Dahsboard Dosen</title>
+  <title>Dahsboard Admin</title>
 
   <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -44,60 +45,78 @@
 
 </head>
 
-<body class="w-75 p-4 mx-auto shadow-lg bg-white">
+<body class="w-75 mx-auto shadow-lg bg-white rounded">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Dashboard Dosen</a>
+      <a class="navbar-brand text-white">Dashboard Admin</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="dasbor_dosen.php">Jadwal</a>
+            <a class="nav-link" href="dasbor_admin.php">Jadwal</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="dosen_profile.php">Profile</a>
+            <a class="nav-link" href="admin_data-makul.php">Mata Kuliah</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="admin_data-ruangan.php">Ruangan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="admin_data-dosen.php">Dosen</a>
+          </li>
+          <li class="nav-item">
+            <a onclick ="return confirm('Yakin Ingin Keluar?')" href="process/proses_signout.php" class="btn nav-link" role="button">Sign Out</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <br><br>
 
   <!-- Page Content -->
-  <div class="container p-4 col-6">
-    <table class="table w-auto mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-lg-12">
+  <div class="container p-4 col-10">
+    <br>
+    <h2 class="mt-5 text-center">Daftar Dosen</h2>
+    <hr><br>
+    <table class="table mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-12">
           <thead>
-            <th></th>
-            <th>Nama Mata Kuliah</th>
-            <th>Semester</th>
-            <th>Sks</th>
+            <th>Pilih</th>
+            <th>Nama Dosen</th>
+            <th>NIP</th>
+            <th>Email</th>
           </thead>
           <tbody>
             <?php
-            while($makul = $dataMakul->fetch_assoc()){
+            //kayak mana ni om
+            while($dosen = $dataDosen->fetch_assoc()){
               echo "
                 <tr>
                   <td>
                   </td>
                   <td>
-                    $makul[nama]
+                    $dosen[nama]
                   </td>
                   <td>
-                    $makul[semester]
+                    $dosen[nip]
                   </td>
                   <td>
-                    $makul[sks]
+                    $dosen[email]
                   </td>
+              ";
+              echo "
+                  <td align =\"right\">
+                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"process/delete_dosen.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+                  </td>
+                </tr>
               ";
             }
             ?>
           </tbody>
-    </table>     
-      <button type="submit" class="btn btn-primary">Submit</button>
+    </table>
+    <a href="admin_tambah-dosen.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Dosen</a>
   </div>
 
   <!-- Bootstrap core JavaScript -->

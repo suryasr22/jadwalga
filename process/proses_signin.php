@@ -1,50 +1,33 @@
 <?php
-	include "koneksi.php";
+	//Libraries
 
+	//Koneksi
+	include("koneksi.php");
+
+	//Fungsi2
+	include("../functions.php");
+
+
+	//Parameter form
 	$username = $_POST['username'];
 	$password = md5($_POST['password']);
 
+	//Ambil data
 	$data = GetData($conn, "SELECT * FROM users WHERE username='$username' AND password='$password'");
 	$tgt = SelectTarget($data['role']);
+	$uid = $data['id'];
 
 	if($data){
 		if(!isset($_SESSION)){
 			session_start();
-			$_SESSION["uid"] = $data["id"];
+			$_SESSION['uid'] = $uid;
+			$_SESSION['tgt'] = $data['jenis_user'];
 		}
-		header ("location:../dasbor_dosen.php");
-		//header ("location:" . $tgt);
+		//header ("location:../dasbor_dosen.php");
+		header ("location:../" . $tgt);
 	} else {
 		echo "<script> alert('Username atau Password Salah');
-		location='signin.php';
+		location='../signin.php';
 		</script>";
-		//echo "SELECT username, password, jenis_user FROM user_klinik WHERE username = '$uid' AND password = '$pw'";
-	}
-
-	function GetData($conn, $sql){
-		$result = $conn -> query($sql);
-		echo $result -> num_rows;
-		if($result -> num_rows > 0){
-			return $result -> fetch_assoc();
-		} else {
-			return false;
-		}
-	}
-
-	function SelectTarget($usrType){
-		switch ($usrType) {
-			case 0:
-				//Superfuk Admin Flash Ultimate Omega Burst Stream
-				//return "../admin/dashboard.php";
-				break;
-			case 1:
-				//Admin
-				//return "../dokter/dashboard.php";
-				break;
-			case 2:
-				//Dosen
-				//return "../perawat/dashboard.php";
-				break;
-		}
 	}
 ?>

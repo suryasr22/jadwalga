@@ -4,11 +4,7 @@
   include "/process/session_check.php";
 
   //Ambil data
-  $dataMakul = $conn->query("SELECT * FROM matakuliah");
   $dataDosen = $conn->query("SELECT * FROM dosen");
-  $dataRuangan = $conn->query("SELECT * FROM ruangan");
-  $dosen = $dataDosen->fetch_assoc();
-  $ruangan = $dataRuangan->fetch_assoc();
 
   function GetData($conn, $sql){
     $result = $conn->query($sql);
@@ -33,7 +29,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Dahsboard Admin</title>
+  <title>Dahsboard SUPER Admin</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -54,27 +50,30 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand text-white">Dashboard Admin</a>
+      <a class="navbar-brand text-white">Dashboard SUPER Admin</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="dasbor_admin.php">Jadwal
+          <li class="nav-item">
+            <a class="nav-link" href="dasbor_super-admin.php">Jadwal
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="admin_data-makul.php">Mata Kuliah</a>
+            <a class="nav-link" href="sadmin_data-makul.php">Mata Kuliah</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="admin_data-ruangan.php">Ruangan</a>
+            <a class="nav-link" href="sadmin_data-ruangan.php">Ruangan</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="admin_data-dosen.php">Dosen</a>
+            <a class="nav-link" href="sadmin_data-admin.php">Admin</a>
           </li>
           <li class="nav-item">
-            <a onclick ="return confirm('Yakin Ingin Keluar?')" href="process/proses_signout.php" class="btn nav-link" role="button">Sign Out</a>
+            <a class="nav-link active" href="sadmin_data-dosen.php">Dosen</a>
+          </li>
+          <li class="nav-item">
+            <a onclick ="return confirm('Yakin Ingin Keluar?')" href="proses_signout.php" class="btn nav-link" role="button">Sign Out</a>
           </li>
         </ul>
       </div>
@@ -84,22 +83,19 @@
   <!-- Page Content -->
   <div class="container p-4 col-10">
     <br>
-    <h2 class="mt-5 text-center">Daftar Jadwal</h2>
+    <h2 class="mt-5 text-center">Daftar Dosen</h2>
     <hr><br>
     <table class="table mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-12">
           <thead>
             <th>Pilih</th>
-            <th>Dosen Pengampu</th>
-            <th>Nama Mata Kuliah</th>
-            <th>Semester</th>
-            <th>Sks</th>
-            <th>Ruangan</th>
-            <th>Edit</th>
+            <th>Nama Dosen</th>
+            <th>NIP</th>
+            <th>Email</th>
           </thead>
           <tbody>
             <?php
             //kayak mana ni om
-            while($makul = $dataMakul->fetch_assoc()){
+            while($dosen = $dataDosen->fetch_assoc()){
               echo "
                 <tr>
                   <td>
@@ -108,29 +104,23 @@
                     $dosen[nama]
                   </td>
                   <td>
-                    $makul[nama]
+                    $dosen[nip]
                   </td>
                   <td>
-                    $makul[semester]
-                  </td>
-                  <td>
-                    $makul[sks]
-                  </td>
-                  <td>
-                    $ruangan[ruangan]
+                    $dosen[email]
                   </td>
               ";
               echo "
                   <td align =\"right\">
-                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_dosen.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
                   </td>
                 </tr>
               ";
             }
             ?>
           </tbody>
-    </table>     
-    <a href="admin_tambah-jadwal.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Jadwal</a>
+    </table>
+    <a href="sadmin_tambah-dosen.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Dosen</a>
   </div>
 
   <!-- Bootstrap core JavaScript -->

@@ -4,17 +4,6 @@
   include "/process/session_check.php";
 
   //Ambil data
-  $dataMakul = $conn->query("SELECT * FROM matakuliah");
-
-  function GetData($conn, $sql){
-    $result = $conn->query($sql);
-    echo $result -> num_rows;
-    if($result -> num_rows > 0){
-      return $result -> fetch_assoc();
-    } else {
-      return false;
-    }
-  }
 
 ?>
 
@@ -49,7 +38,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
     <div class="container">
-      <a class="navbar-brand" href="dasbor_dosen.php">Dashboard Dosen</a>
+      <a class="navbar-brand text-white">Dashboard Dosen</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
       </button>
@@ -59,50 +48,56 @@
             <a class="nav-link" href="dasbor_dosen.php">Jadwal</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="dosen_profile.php">Profile</a>
+            <a class="nav-link active" href="dosen_profile.php">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a onclick ="return confirm('Yakin Ingin Keluar?')" href="process/proses_signout.php" class="btn nav-link" role="button">Sign Out</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <br><br>
 
-  <!-- Page Content -->
-  <form>
-    <div class="form-group">
-      <label>Nama</label>
-      <input type="text" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan nama">
-    </div>
-    <div class="form-group">
-      <label>Username</label>
-      <input type="text" class="form-control" id="username" aria-describedby="masukkan nama" placeholder="masukkan username">
-    </div>
-    <div class="form-group">
-      <label>Old Password</label>
-      <input type="password" class="form-control" id="oldpw" aria-describedby="masukkan nama" placeholder="masukkan password lama">
-    </div>
-    <div class="form-group">
-      <label>New Password</label>
-      <input type="password" class="form-control" id="newpw" aria-describedby="masukkan nama" placeholder="masukkan password baru">
-    </div>
-    <div class="form-group">
-      <label>Confirm New Password</label>
-      <input type="password" class="form-control" id="confirmnewpw" aria-describedby="masukkan nama" placeholder="konfirmasi password baru">
-    </div>
-    <div class="form-group">
-      <label>Nip</label>
-      <input type="text" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan nip">
-    </div>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan email">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+    <!-- Page Content -->
+    <form class="col-7 mx-auto" method="POST" action="#">
+      <br>
+        <h2 class="mt-5 text-center">Ubah Profil</h2>
+      <hr>
+      <small id="emailHelp" class="form-text text-muted text-center">Isi data yang ingin di ubah saja</small>
+      <br>
+      <div class="form-group">
+        <label>Nama</label>
+        <input type="text" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan nama">
+      </div>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" id="username" aria-describedby="masukkan nama" placeholder="masukkan username">
+      </div>
+      <div class="form-group">
+        <label>Old Password</label>
+        <input type="password" class="form-control" id="oldpw" aria-describedby="masukkan nama" placeholder="masukkan password lama">
+      </div>
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password" class="form-control" id="newpw" aria-describedby="masukkan nama" placeholder="masukkan password baru">
+      </div>
+      <div class="form-group">
+        <label>Confirm New Password</label>
+        <input type="password" class="form-control" id="confirmnewpw" aria-describedby="masukkan nama" placeholder="konfirmasi password baru">
+      </div>
+      <div class="form-group">
+        <label>Nip</label>
+        <input type="text" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan nip">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="form-control" id="namadosen" aria-describedby="masukkan nama" placeholder="masukkan email">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.slim.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-</body>
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.slim.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

@@ -1,28 +1,3 @@
-<?php
-  //Library
-  include "/process/koneksi.php";
-  include "/process/session_check.php";
-
-  //Ambil data
-  $dataMakul = $conn->query("SELECT * FROM matakuliah");
-  $dataDosen = $conn->query("SELECT * FROM dosen");
-  $dataRuangan = $conn->query("SELECT * FROM ruangan");
-  $dosen = $dataDosen->fetch_assoc();
-  $ruangan = $dataRuangan->fetch_assoc();
-
-  function GetData($conn, $sql){
-    $result = $conn->query($sql);
-    echo $result -> num_rows;
-    if($result -> num_rows > 0){
-      return $result -> fetch_assoc();
-    } else {
-      return false;
-    }
-  }
-
-?>
-
-
 <!DOCTYPE html>
 <html>
 
@@ -60,9 +35,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="dasbor_admin.php">Jadwal
-            </a>
+          <li class="nav-item">
+            <a class="nav-link" href="dasbor_admin.php">Jadwal</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="admin_data-makul.php">Mata Kuliah</a>
@@ -71,7 +45,7 @@
             <a class="nav-link" href="admin_data-ruangan.php">Ruangan</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="admin_data-dosen.php">Dosen</a>
+            <a class="nav-link active" href="admin_data-dosen.php">Dosen</a>
           </li>
           <li class="nav-item">
             <a onclick ="return confirm('Yakin Ingin Keluar?')" href="process/proses_signout.php" class="btn nav-link" role="button">Sign Out</a>
@@ -83,54 +57,34 @@
 
   <!-- Page Content -->
   <div class="container p-4 col-10">
+    <form class="col-7 mx-auto" method="POST" action="#">
     <br>
-    <h2 class="mt-5 text-center">Daftar Jadwal</h2>
-    <hr><br>
-    <table class="table mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-12">
-          <thead>
-            <th>Pilih</th>
-            <th>Dosen Pengampu</th>
-            <th>Nama Mata Kuliah</th>
-            <th>Semester</th>
-            <th>Sks</th>
-            <th>Ruangan</th>
-            <th>Edit</th>
-          </thead>
-          <tbody>
-            <?php
-            //kayak mana ni om
-            while($makul = $dataMakul->fetch_assoc()){
-              echo "
-                <tr>
-                  <td>
-                  </td>
-                  <td>
-                    $dosen[nama]
-                  </td>
-                  <td>
-                    $makul[nama]
-                  </td>
-                  <td>
-                    $makul[semester]
-                  </td>
-                  <td>
-                    $makul[sks]
-                  </td>
-                  <td>
-                    $ruangan[ruangan]
-                  </td>
-              ";
-              echo "
-                  <td align =\"right\">
-                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-                  </td>
-                </tr>
-              ";
-            }
-            ?>
-          </tbody>
-    </table>     
-    <a href="admin_tambah-jadwal.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Jadwal</a>
+      <h2 class="mt-5 text-center">Tambah Dosen</h2>
+    <hr>
+      <small id="emailHelp" class="form-text text-muted text-center">Silahkan isi data Dosen</small>
+    <br>
+      <div class="form-group">
+        <label>Nama Dosen</label>
+        <input type="text" class="form-control" id="namadosen" aria-describedby="masukkan nama dosen" placeholder="masukkan nama dosen">
+      </div>
+      <div class="form-group">
+        <label>NIP</label>
+        <input type="text" class="form-control" id="nipdosen" aria-describedby="masukkan nip dosen" placeholder="masukkan nip dosen">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="text" class="form-control" id="emaildosen" aria-describedby="masukkan email dosen" placeholder="masukkan email dosen">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="password_1" aria-describedby="masukkan password" placeholder="masukkan password">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" class="form-control" id="password_2" aria-describedby="konfirmasi password" placeholder="konfirmasi password">
+      </div>
+      <button type="submit" class="btn btn-primary">Tambah</button>
+    </form>
   </div>
 
   <!-- Bootstrap core JavaScript -->

@@ -4,7 +4,8 @@
   include "/process/session_check.php";
 
   //Ambil data
-  $dataMakul = $conn->query("SELECT * FROM matakuliah");
+  $dataAdmin = $conn->query("SELECT * FROM admin");
+  $admin = $dataAdmin->fetch_assoc();
 
   function GetData($conn, $sql){
     $result = $conn->query($sql);
@@ -29,7 +30,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Dahsboard Dosen</title>
+  <title>Dahsboard SUPER Admin</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -48,27 +49,32 @@
 <body class="w-75 mx-auto shadow-lg bg-white rounded">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Dashboard Dosen</a>
+      <a class="navbar-brand text-white">Dashboard SUPER Admin</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Mata Kuliah
-              <span class="sr-only">(current)</span>
+          <li class="nav-item">
+            <a class="nav-link" href="dasbor_super-admin.php">Jadwal
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Dosen</a>
+            <a class="nav-link" href="sadmin_data-makul.php">Mata Kuliah</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Jadwal</a>
+            <a class="nav-link" href="sadmin_data-ruangan.php">Ruangan</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
+            <a class="nav-link active" href="sadmin_data-admin.php">Admin</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sadmin_data-dosen.php">Dosen</a>
+          </li>
+          <li class="nav-item">
+            <a onclick ="return confirm('Yakin Ingin Keluar?')" href="proses_signout.php" class="btn nav-link" role="button">Sign Out</a>
           </li>
         </ul>
       </div>
@@ -76,48 +82,42 @@
   </nav>
 
   <!-- Page Content -->
-  <div class="container mh-100">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="mt-5 text-center">Edit Mata Kuliah</h1>
-        
-        <table class="table w-auto mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-lg-12">
+  <div class="container p-4 col-10">
+    <br>
+    <h2 class="mt-5 text-center">Daftar Admin</h2>
+    <hr><br>
+    <table class="table mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-12">
           <thead>
-            <th>Nama Mata Kuliah</th>
-            <th>Semester</th>
-            <th>Sks</th>
+            <th>Pilih</th>
+            <th>Nama Admin</th>
+            <th>Email</th>
           </thead>
           <tbody>
             <?php
-            while($makul = $dataMakul->fetch_assoc()){
+            //kayak mana ni om
+            while($admin = $dataAdmin->fetch_assoc()){
               echo "
                 <tr>
                   <td>
-                    $makul[nama]
                   </td>
                   <td>
-                    $makul[semester]
+                    $admin[admin_nama]
                   </td>
                   <td>
-                    $makul[sks]
+                    $admin[admin_email]
                   </td>
               ";
-
               echo "
                   <td align =\"right\">
-                    <a href=\"process/edit_makul.php?id=$makul[id]\" id=\"btn-edit-dosen\" class=\"btn btn-primary btn-sm\" role=\"button\"><i class=\"fa fa-pencil\"></i></a>
-
-                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_makul.php?id_dosen=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+                    <a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"hapus_admin.php?id_dosen=$dosen[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
                   </td>
                 </tr>
               ";
             }
             ?>
           </tbody>
-        </table>
-
-      </div>
-    </div>
+    </table>
+    <a href="sadmin_tambah-admin.php" class="btn btn-primary active" role="button" aria-pressed="true">Tambah Admin</a>
   </div>
 
   <!-- Bootstrap core JavaScript -->

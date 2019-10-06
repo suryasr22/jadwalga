@@ -1,32 +1,28 @@
 <?php
-	//Include file koneksi
-	include "koneksi.php";
+	//Libraries
 
-	//SQL command
-	//ambil max value id dari tabel dokter ama user_klinik
-	$sql1 = "DELETE FROM dosen WHERE dosen.id = '$_GET[id_dosen]'";
-	//echo $sql1;
+	//Koneksi
+	include("koneksi.php");
+
+	//Fungsi2
+	include("../functions.php");
+
+	$id = $_GET['id'];
+
+	//dokter
+	$sql = "DELETE dosen, user_dosen, users FROM dosen INNER JOIN user_dosen INNER JOIN users WHERE dosen.id = $id AND user_dosen.id_dosen = dosen.id AND user_dosen.id_user = users.id";
+
+	//echo $sql;
 
 	//Masukkan data
-	if($conn->query($sql1) === TRUE){
+	if($conn->query($sql) === TRUE){
 		echo "<script> alert('Data berhasil dihapus');
-		location='dosen.php';
+		location='../dasbor_super-admin.php';
 		</script>";
 	} else {
 		echo "<script> alert('Data gagal dihapus');
-		location='dosen.php';
+		location='../dasbor_super-admin.php';
 		</script>";
 	}
-
-	//Fungsi
-	function GetData($conn, $sql){
-    $result = $conn -> query($sql1);
-    //echo $result -> num_rows;
-    if($result -> num_rows > 0){
-      return $result -> fetch_assoc();
-    } else {
-      return false;
-    }
-  }
 
 ?>
