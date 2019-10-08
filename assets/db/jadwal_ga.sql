@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2019 at 05:26 PM
--- Server version: 10.1.8-MariaDB
--- PHP Version: 5.6.14
+-- Generation Time: Oct 08, 2019 at 07:00 AM
+-- Server version: 10.1.36-MariaDB
+-- PHP Version: 7.2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -37,7 +39,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `admin_nama`, `admin_email`) VALUES
-(1, 'admin', 'gaadaemail@gmail.com');
+(1, 'admin', 'gaadaemail@gmail.com'),
+(2, 'admin2', 'admin2@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -57,18 +60,9 @@ CREATE TABLE `dosen` (
 --
 
 INSERT INTO `dosen` (`id`, `nama`, `nip`, `email`) VALUES
-(2, 'surya', '123', 'asas@asd.com');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `dosen_hari`
---
-
-CREATE TABLE `dosen_hari` (
-  `id_dosen` int(11) NOT NULL,
-  `id_hari` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(3, 'asep', '1234', 'asep@gmail.com'),
+(9, 'surya', '1234', 'surya@gmail.com'),
+(10, 'jason', '090909', 'jason@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -80,6 +74,27 @@ CREATE TABLE `dosen_jam` (
   `id_dosen` int(11) NOT NULL,
   `id_jam` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dosen_makul`
+--
+
+CREATE TABLE `dosen_makul` (
+  `id_dosen` int(11) NOT NULL,
+  `id_makul` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dosen_makul`
+--
+
+INSERT INTO `dosen_makul` (`id_dosen`, `id_makul`) VALUES
+(3, 1),
+(3, 2),
+(3, 3),
+(9, 4);
 
 -- --------------------------------------------------------
 
@@ -110,10 +125,8 @@ CREATE TABLE `hari` (
 --
 
 CREATE TABLE `jadwal` (
-  `id_dosen` int(5) NOT NULL,
-  `id_hari` int(5) NOT NULL,
-  `id_jam` int(5) NOT NULL,
-  `id_matkul` int(5) NOT NULL
+  `id_jam` int(11) NOT NULL,
+  `id_makul` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -125,48 +138,6 @@ CREATE TABLE `jadwal` (
 CREATE TABLE `jam` (
   `id` int(11) NOT NULL,
   `waktu` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `kelas`
---
-
-CREATE TABLE `kelas` (
-  `id` int(10) NOT NULL,
-  `nama` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `login_dosen`
---
-
-CREATE TABLE `login_dosen` (
-  `ID` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `login_dosen`
---
-
-INSERT INTO `login_dosen` (`ID`, `username`, `password`) VALUES
-(1, 'admin', 'admin');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `makul_dosen`
---
-
-CREATE TABLE `makul_dosen` (
-  `id_makul` int(11) NOT NULL,
-  `id_dosen` int(11) NOT NULL,
-  `id_kelas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -210,9 +181,16 @@ INSERT INTO `matakuliah` (`id`, `nama`, `semester`, `sks`) VALUES
 --
 
 CREATE TABLE `ruangan` (
-  `id` varchar(10) NOT NULL,
+  `id` int(11) NOT NULL,
   `nama` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ruangan`
+--
+
+INSERT INTO `ruangan` (`id`, `nama`) VALUES
+(1, 'C1TI');
 
 -- --------------------------------------------------------
 
@@ -243,7 +221,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0);
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0),
+(2, 'asep', 'dc855efb0dc7476760afaa1b281665f1', 2),
+(3, 'admin2', 'c84258e9c39059a89ab77d846ddab909', 1),
+(9, 'surya', 'aff8fbcbf1363cd7edc85a1e11391173', 2),
+(10, 'jason', '2b877b4b825b48a9a0950dd5bd1f264d', 2);
 
 -- --------------------------------------------------------
 
@@ -261,7 +243,8 @@ CREATE TABLE `user_admin` (
 --
 
 INSERT INTO `user_admin` (`id_user`, `id_admin`) VALUES
-(1, 1);
+(1, 1),
+(2, 3);
 
 -- --------------------------------------------------------
 
@@ -273,6 +256,16 @@ CREATE TABLE `user_dosen` (
   `id_user` int(11) NOT NULL,
   `id_dosen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_dosen`
+--
+
+INSERT INTO `user_dosen` (`id_user`, `id_dosen`) VALUES
+(2, 3),
+(6, 6),
+(9, 9),
+(10, 10);
 
 --
 -- Indexes for dumped tables
@@ -291,16 +284,16 @@ ALTER TABLE `dosen`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `dosen_hari`
---
-ALTER TABLE `dosen_hari`
-  ADD PRIMARY KEY (`id_dosen`,`id_hari`);
-
---
 -- Indexes for table `dosen_jam`
 --
 ALTER TABLE `dosen_jam`
   ADD PRIMARY KEY (`id_dosen`,`id_jam`);
+
+--
+-- Indexes for table `dosen_makul`
+--
+ALTER TABLE `dosen_makul`
+  ADD PRIMARY KEY (`id_dosen`,`id_makul`);
 
 --
 -- Indexes for table `dosen_ruang`
@@ -318,31 +311,14 @@ ALTER TABLE `hari`
 -- Indexes for table `jadwal`
 --
 ALTER TABLE `jadwal`
-  ADD PRIMARY KEY (`id_dosen`,`id_hari`,`id_jam`,`id_matkul`);
+  ADD UNIQUE KEY `id_jam` (`id_jam`),
+  ADD UNIQUE KEY `id_makul` (`id_makul`);
 
 --
 -- Indexes for table `jam`
 --
 ALTER TABLE `jam`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `kelas`
---
-ALTER TABLE `kelas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `login_dosen`
---
-ALTER TABLE `login_dosen`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `makul_dosen`
---
-ALTER TABLE `makul_dosen`
-  ADD PRIMARY KEY (`id_makul`,`id_dosen`,`id_kelas`);
 
 --
 -- Indexes for table `makul_ruang`
@@ -354,6 +330,12 @@ ALTER TABLE `makul_ruang`
 -- Indexes for table `matakuliah`
 --
 ALTER TABLE `matakuliah`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ruangan`
+--
+ALTER TABLE `ruangan`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -390,42 +372,45 @@ ALTER TABLE `user_dosen`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `dosen`
 --
 ALTER TABLE `dosen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT for table `hari`
 --
 ALTER TABLE `hari`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `jam`
 --
 ALTER TABLE `jam`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `kelas`
---
-ALTER TABLE `kelas`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `login_dosen`
---
-ALTER TABLE `login_dosen`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `matakuliah`
 --
 ALTER TABLE `matakuliah`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `ruangan`
+--
+ALTER TABLE `ruangan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
