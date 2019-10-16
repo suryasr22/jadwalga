@@ -8,23 +8,21 @@
 	include("../functions.php");
 
 	$id = $_GET['id'];
-	$nama = $_POST['nama'];
-	$semester = $_POST['semester'];
-	$sks = $_POST['sks'];
+	$newpw = md5($_POST['newpw']);
 
 	//SQL Command
-	$sql = "UPDATE matakuliah SET nama = '$nama', semester = '$semester', sks = '$sks' WHERE id = '$id'";
+	$id_user = GetData($conn, "SELECT users.id FROM users, user_admin WHERE users.id = user_admin.id_user AND user_admin.id_admin = $id")['id'];
+	$sql = "UPDATE users SET password = '$newpw' WHERE id = '$id_user'";
 	//echo $sql;
 
 	//Masukkan data
 	if($conn->query($sql) === TRUE){
 		echo "<script> alert('Data berhasil diupdate');
-		location='../makul.php';
+		location='../profile.php';
 		</script>";
 	} else {
 		echo "<script> alert('Data gagal diupdate');
-		location='../makul.php';
+		location='../profile.php';
 		</script>";
 	}
-
 ?>
