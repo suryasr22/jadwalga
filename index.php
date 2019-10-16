@@ -1,62 +1,220 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<?php
+  //Library
+  include "/process/koneksi.php";
+  include "/process/session_check.php";
 
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  //Ambil data
+  $dataMakul = $conn->query("SELECT * FROM matakuliah");
+  $dataJam = $conn->query("SELECT * FROM jam");
+  $dataHari = $conn->query("SELECT * FROM hari");
+  $jam = $dataJam->fetch_assoc();
+  $hari = $dataHari->fetch_assoc();
 
-		<title>Login</title>
-	</head>
+  function GetData($conn, $sql){
+    $result = $conn->query($sql);
+    echo $result -> num_rows;
+    if($result -> num_rows > 0){
+      return $result -> fetch_assoc();
+    } else {
+      return false;
+    }
+  }
 
-	<body>
-		<!--KONTEN-->
-		<div class="container col-md-7">  
-			<form class="form-group" method="POST" action="process/signin.php">
-				<h2>Sign In</h2><hr>
-				<div class="form-group">
-					<label>Username</label>
-					<input type="text" class="form-control " placeholder="Username" name="username">
-				</div>
-				<div class="form-group">
-					<label>Password</label>
-					<input type="password" class="form-control" placeholder="Password" name="password">
-				</div>
-				<div class="">
-					<button type="submit" class="btn btn-primary">Sign in</button>
-					<br><br>
-					Belum punya punya akun? <a href="signup.php">Sign Up</a>
-				</div>
-			</form>
-			<?php
-			if(isset($_GET['status'])){
-				$status = $_GET['status'];
+?>
 
-				if($status === 'success'){
-					echo "
-					<div class=\"alert alert-success\">
-					<strong>Pendaftaran berhasil~!</strong>
-					</div>
-					";
-				} else {
-					echo "
-					<div class=\"alert alert-danger\">
-					<strong>Pendaftaran gagal~!</strong>
-					</div>
-					";
-				}
-			}
-			?>
-		</div>
-		<!--HABIS KONTEN-->
+<!DOCTYPE html>
+<html>
 
+<head>
 
-		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	</body>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Landing Page Jadwal </title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/a7f7402beb.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="w-75 p-4 mx-auto shadow-lg bg-white">
+
+<!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand text-white">Jadwal</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a href="signin.php" class="btn nav-link" role="button"><i class="fa fa-sign-out-alt"></i>Sign In</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+    <form class="form-group" method="POST" action="#">
+      <div class="container p-4 col-10">
+        <h2 class="mt-5 text-center">Jadwal</h2>
+      <hr><br>
+      <table class="table mx-auto table-dark table-striped table-bordered table-advance table-hover table-responsive-sm col-lg-12">
+            <thead>
+              <tr scope="row">
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col" colspan="5" class="text-center">hari</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <tr>
+                <th>No</th>
+                <th>Jam</th>
+                <th>Senin</th>
+                <th>Selasa</th>
+                <th>Rabu</th>
+                <th>Kamis</th>
+                <th>Jum'at</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <td>08:00 - 08:45</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>2</th>
+                <td>08:45 - 09:30</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>3</th>
+                <td>09:30 - 10:15</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>4</th>
+                <td>10:15 - 11:00</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>5</th>
+                <td>11:00 - 11:45</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>6</th>
+                <td>11:45 - 12:30</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>7</th>
+                <td>13:00 - 13:45</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>8</th>
+                <td>13:45 - 14:30</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>9</th>
+                <td>14:30 - 15:15</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>10</th>
+                <td>15:15 - 16:00</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>11</th>
+                <td>16:00 - 16:45</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>12</th>
+                <td>16:45 - 17:30</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+              <tr>
+                <th>13</th>
+                <td>17:30 - 18:15</td>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+                <th><input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"></th>
+              </tr>
+            </tbody>
+      </table>  
+      </div>
+    </form>
+  
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.slim.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
 </html>
