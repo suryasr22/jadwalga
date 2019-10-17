@@ -32,31 +32,34 @@
 	<!-- Font Awesome CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  	<link rel="stylesheet" type="text/css" href="css/style.css">
+	
 	<?php print_title($tgt); ?>
 </head>
 
-<body>
+<body class="w-75 p-4 mx-auto shadow-lg">
 	<!--KONTEN-->
 	<!-- Navigation -->
 	<?php build_navbar('dosen', 'makul'); ?>
 
 	<!-- Page Content -->
-	<div class="container mh-100">
+	<div class="container mh-100 col-9">
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
-				<h1 class="mt-5 text-center">Mata Kuliah</h1><hr><br>
-				<h6>Mata kuliah yang diampu:</h6>
+				<h1 class="mt-5 text-center">Jadwal Anda</h1><hr><br>
+				<div class="border border-secondary rounded-lg col-12 mx-auto bg-light">
+					<br>
+					<h6>Mata kuliah yang diampu:</h6>
 
-				<table class="w-auto table table-dark  table-hover table-sm table-bordered">
-					<table class="table table-striped table-advance table-hover table-condensed">
-					<thead>
-						<th>No.</th>
-					    <th>Nama Mata Kuliah</th>
-					    <th>Semester</th>
-					    <th>SKS</th>
-					    <th></th>
-				    </thead>
+					<table class="mx-auto table table-hover table-sm table-bordered table-striped table-advance table-condensed">
+						<thead>
+							<th>No.</th>
+						    <th>Nama Mata Kuliah</th>
+						    <th>Semester</th>
+						    <th>SKS</th>
+						    <th></th>
+					    </thead>
 						<tbody>
 				          <?php
 				          $count = 1;
@@ -85,19 +88,22 @@
 				          ?>
 						</tbody>
 					</table>
-				</table>
-				<hr>
-				<a href="tambah_makul_dosen.php" class="btn btn-primary">Tambah Mata Kuliah</a>
+					<hr>
+					<a href="tambah_makul_dosen.php" class="btn btn-primary">Tambah Mata Kuliah</a>
+					<br><br>
+				</div>
+				
 
-				<hr><br>
-				<h6>Ruang kuliah:</h6>
-				<table class="w-auto table table-dark  table-hover table-sm table-bordered col-7">
-					<table class="table table-striped table-advance table-hover table-condensed">
-					<thead>
-						<th>No.</th>
-				    	<th>Nama Ruang Kuliah</th>
-				    	<th></th>
-				    </thead>
+				<br>
+				<div class="border border-secondary rounded-lg col-12 mx-auto bg-light">
+					<br>
+					<h6>Ruang kuliah:</h6>
+					<table class="mx-auto table table-hover table-sm table-bordered table-striped table-advance table-condensed">
+						<thead>
+							<th>No.</th>
+					    	<th>Nama Ruang Kuliah</th>
+					    	<th></th>
+					    </thead>
 						<tbody>
 				        	<?php
 				        		$count = 1;
@@ -120,17 +126,21 @@
 				        	?>
 						</tbody>
 					</table>
-				</table>
-				<hr>
-				<a href="tambah_ruang_dosen.php" class="btn btn-primary">Tambah Ruangan</a>
+					<hr>
+					<a href="tambah_ruang_dosen.php" class="btn btn-primary">Tambah Ruangan</a>
+					<br><br>
+				</div>	
+				<br>
+				<div class="border border-secondary rounded-lg col-12 mx-auto bg-light table-hover table-sm table-bordered table-striped table-advance table-condensed">
+					<br>
+					<h6>Jam ajar:</h6>
 
-				<hr><br>
-				<h6>Jam ajar:</h6>
-
-				<form method="post" action="process/dosen_jam.php?id=<?php echo $id_dosen; ?>">
-					<?php build_konten_jadwal($conn, $id_dosen);?>
-					<button class="btn btn-primary" type="submit" name="submit" id="submit">Ubah Jam Ajar</button>
-				</form>
+					<form method="post" action="process/dosen_jam.php?id=<?php echo $id_dosen; ?>">
+						<?php build_konten_jadwal($conn, $id_dosen);?>
+						<button class="btn btn-primary" type="submit" name="submit" id="submit">Ubah Jam Ajar</button>
+						<br><br>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>

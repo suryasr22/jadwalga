@@ -36,10 +36,12 @@
 	<!-- Font Awesome CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
 	<?php print_title($tgt); ?>
 </head>
 
-<body>
+<body class="w-75 p-4 mx-auto shadow-lg bg-white">
 	<!--KONTEN-->
 	<!-- Navigation -->
 	<?php
@@ -52,12 +54,12 @@
 	?>
 
 	<!-- Page Content -->
-	<div class="mx-auto col-7">		
+	<div class="container mh-100 col-9 ">		
 		<br>
-		<h2 class="mt-5 text-center">Ubah Profil</h2>
-		<hr>
+		<h1 class="mt-5 text-center">Ubah Profil</h1>
+		<hr><br>
 		<div class="row">
-			<div class="col-6 card">
+			<div class="col-6 card bg-light">
 				<form method="post" action="
 				<?php
 					if($tgt === '2')
@@ -99,7 +101,7 @@
 				</form>
 				<br>
 			</div>
-			<div class="col-6 card">
+			<div class="col-6 card bg-light">
 				<form method="post" action="
 				<?php
 					if($tgt === '2')

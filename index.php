@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<!-- Required meta tags -->
@@ -8,28 +8,35 @@
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-		<title>Login</title>
+		<title>Sign In</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 
 	<body>
 		<!--KONTEN-->
-		<div class="container col-md-7">  
-			<form class="form-group" method="POST" action="process/signin.php">
-				<h2>Sign In</h2><hr>
-				<div class="form-group">
-					<label>Username</label>
-					<input type="text" class="form-control " placeholder="Username" name="username">
-				</div>
-				<div class="form-group">
-					<label>Password</label>
-					<input type="password" class="form-control" placeholder="Password" name="password">
-				</div>
-				<div class="">
-					<button type="submit" class="btn btn-primary">Sign in</button>
-					<br><br>
-					Belum punya punya akun? <a href="signup.php">Sign Up</a>
-				</div>
-			</form>
+    <div class="signin container col-3 rounded shadow-lg">
+      <div class="col-12 mx-auto">    
+        <form class="form-group" method="POST" action="process/signin.php">
+          <div class="row modal-header ">
+            <h2 class="mx-auto">Sign In</h2>
+          </div>
+          <div class="modal-body container rounded-bottom">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" class="form-control" placeholder="Username" name="username">
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control" placeholder="Password" name="password">
+            </div>
+            <div class="">
+            <button type="submit" class="btn btn-primary">Sign in</button>
+              <hr><br>
+              Belum punya akun? <a href="signup.php">Sign Up</a>
+            </div>
+          </div>
+        </form>
+      </div>
 			<?php
 			if(isset($_GET['status'])){
 				$status = $_GET['status'];

@@ -34,52 +34,52 @@
 	<!-- Font Awesome CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<?php print_title($tgt); ?>
 </head>
 
-<body>
+<body class="w-75 p-4 mx-auto shadow-lg">
 	<!--KONTEN-->
 	<!-- Navigation -->
 	<?php build_navbar('dosen', 'makul'); ?>
 
 	<!-- Page Content -->
-	<div class="container mh-100">
+	<div class="container mh-100 col-9">
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
 				<h1 class="mt-5 text-center">Tambah Mata Kuliah</h1><hr>
+				<br>
 				<form class="form-horizontal style-form" method="post" action ="process/tambah_makul_dosen.php?id=<?php echo $id_dosen;?>">
-					<table class="w-auto table table-dark  table-hover table-sm table-bordered">
-						<table class="table table-striped table-advance table-hover table-condensed">
+					<table class="mx-auto table table-hover table-sm table-bordered table-striped table-advance table-condensed">
 						<thead>
 					      <th>Nama Mata Kuliah</th>
 					      <th>Semester</th>
 					      <th>SKS</th>
 					      <th></th>
 					    </thead>
-							<tbody>
-					          <?php
-					          while($makulDosen = $dataMakulDosen->fetch_assoc()){
-					            echo "
-				              	<tr>
-					                <td>
-					                	$makulDosen[nama]
-					                </td>
-					                <td>
-					                	$makulDosen[semester]
-					                </td>
-					                <td>
-					                	$makulDosen[sks]
-					                </td>
-					                <td>
-					                	<input type=\"checkbox\" name=\"cb_" . $makulDosen['id'] . "\">
-					                </td>
-					            </tr>
-					            ";
-					          }
-					          ?>
-							</tbody>
-						</table>
+						<tbody>
+				          <?php
+				          while($makulDosen = $dataMakulDosen->fetch_assoc()){
+				            echo "
+			              	<tr>
+				                <td>
+				                	$makulDosen[nama]
+				                </td>
+				                <td>
+				                	$makulDosen[semester]
+				                </td>
+				                <td>
+				                	$makulDosen[sks]
+				                </td>
+				                <td>
+				                	<input type=\"checkbox\" name=\"cb_" . $makulDosen['id'] . "\">
+				                </td>
+				            </tr>
+				            ";
+				          }
+				          ?>
+						</tbody>
 					</table>
 					<center>
 			          <button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>
