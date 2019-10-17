@@ -21,14 +21,14 @@
 
     	 	if($conn->query($sql) === FALSE){
     	 		echo "<script> alert('Data gagal diinputkan');
-				location='../dosen.php';
+				location='../dasbor_dosen.php';
 				</script>";
 			}
 	    }
 	}
 
 	echo "<script> alert('Data berhasil diinputkan');
-	location='../dosen.php';
+	location='../dasbor_dosen.php';
 	</script>";
 
 	// foreach ($array_id_makul as $key => $value) {

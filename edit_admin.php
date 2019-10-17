@@ -10,15 +10,9 @@
 	//Session checker
 	include("session_check.php");
 
-	$id = $_SESSION['uid'];
-	$id_dosen = GetData($conn, "SELECT dosen.id FROM dosen, user_dosen, users WHERE users.id = $id AND dosen.id = user_dosen.id_dosen AND users.id = user_dosen.id_user")['id'];
-	
-	$dataMakulDosen = $conn->query("SELECT DISTINCT matakuliah.id, matakuliah.nama, matakuliah.semester, matakuliah.sks FROM dosen_makul, matakuliah WHERE matakuliah.id NOT IN (SELECT id_makul FROM dosen_makul)");
-
-	if($dataMakulDosen->num_rows == 0){
-		$dataMakulDosen = $conn->query("SELECT * FROM matakuliah");
-	}
-
+	$id = $_GET['id'];
+	$dataAdmin = $conn->query("SELECT * FROM admin WHERE id = '$id'");
+	$admin = $dataAdmin->fetch_assoc();
 	$tgt = $_SESSION['tgt'];
 ?>
 <!DOCTYPE html>
@@ -40,51 +34,38 @@
 <body>
 	<!--KONTEN-->
 	<!-- Navigation -->
-	<?php build_navbar('dosen', 'makul'); ?>
+	<?php
+		if($tgt === '0')
+			build_navbar('super_admin', 'admin');
+		else
+			build_navbar('admin', 'admin');
+	?>
 
 	<!-- Page Content -->
 	<div class="container mh-100">
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
-				<h1 class="mt-5 text-center">Tambah Mata Kuliah</h1><hr>
-				<form class="form-horizontal style-form" method="post" action ="process/tambah_makul_dosen.php?id=<?php echo $id_dosen;?>">
-					<table class="w-auto table table-dark  table-hover table-sm table-bordered">
-						<table class="table table-striped table-advance table-hover table-condensed">
-						<thead>
-					      <th>Nama Mata Kuliah</th>
-					      <th>Semester</th>
-					      <th>SKS</th>
-					      <th></th>
-					    </thead>
-							<tbody>
-					          <?php
-					          while($makulDosen = $dataMakulDosen->fetch_assoc()){
-					            echo "
-				              	<tr>
-					                <td>
-					                	$makulDosen[nama]
-					                </td>
-					                <td>
-					                	$makulDosen[semester]
-					                </td>
-					                <td>
-					                	$makulDosen[sks]
-					                </td>
-					                <td>
-					                	<input type=\"checkbox\" name=\"cb_" . $makulDosen['id'] . "\">
-					                </td>
-					            </tr>
-					            ";
-					          }
-					          ?>
-							</tbody>
-						</table>
-					</table>
-					<center>
+				<h1 class="mt-5 text-center">Edit Admin</h1><hr>
+
+				<form class="form-horizontal style-form" method="post" action ="process/edit_admin.php?id=<?php echo $id;?>">
+			        <!--nama_dosen-->
+			        <div class="form-group">
+		          		<label for="nama_dosen">Nama Admin</label>
+		            	<input type="text" class="form-control" name="nama" value="<?php echo $admin['nama'];?>" autocomplete="off" required>
+			        </div>
+
+			        <!--email-->
+			        <div class="form-group">
+		      			<label for="email">Email</label>
+		            	<input type="email" class="form-control" name="email" value="<?php echo $admin['email'];?>" autocomplete="off" required>
+			        </div>
+
+			        <center>
 			          <button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>
 			        </center>
-				</form>
+			        <br>
+			    </form>
 			</div>
 		</div>
 	</div>

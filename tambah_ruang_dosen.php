@@ -15,6 +15,10 @@
 	
 	$dataRuangDosen = $conn->query("SELECT DISTINCT ruangan.id, ruangan.nama FROM dosen_ruang, ruangan WHERE ruangan.id NOT IN (SELECT id_ruang FROM dosen_ruang) AND id_dosen = $id_dosen");
 
+	if($dataRuangDosen->num_rows == 0){
+		$dataRuangDosen = $conn->query("SELECT * FROM ruangan");
+	}
+
 	$tgt = $_SESSION['tgt'];
 ?>
 <!DOCTYPE html>

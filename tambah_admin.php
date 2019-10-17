@@ -1,16 +1,11 @@
 <?php
 	//Libraries
 
-	//Koneksi
-	include("koneksi.php");
-
 	//Fungsi2
 	include("functions.php");
-
+	
 	//Session checker
 	include("session_check.php");
-
-	$dataAdmin = $conn->query("SELECT * FROM admin");
 	$tgt = $_SESSION['tgt'];
 ?>
 <!DOCTYPE html>
@@ -44,50 +39,35 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
-				<h1 class="mt-5 text-center">Admin</h1><hr>
+				<h1 class="mt-5 text-center">Tambah Admin</h1><hr>
 
-				<table class="w-auto table table-dark table-hover table-sm table-bordered">
-					<table class="table table-striped table-advance table-hover table-condensed">
-					<thead>
-				      <th>id</th>
-				      <th>Nama Admin</th>
-				      <th>Email</th>
-				      <th></th>
-				    </thead>
-						<tbody>
-				          <?php
-				          while($admin = $dataAdmin->fetch_assoc()){
-				            echo "
-			              	<tr>
-				                <td>
-				                  $admin[id]
-				                </td>
-				                <td>
-				                  $admin[nama]
-				                </td>
-				                <td>
-				                  $admin[email]
-				                </td>
-				            ";
-
-				            echo "
-				                <td align =\"right\">
-				                  <a href=\"edit_admin.php?id=$admin[id]\" class=\"btn btn-primary btn-sm\" role=\"button\"><i class=\"fa fa-pencil\" data-toggle=\"modal\" data-target=\"#myModal\"></i></a>
-				            ";
-
-				            if($tgt === '0'){
-				            	echo "
-					            	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"process/hapus_admin.php?id=$admin[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
-					                </td>
-				              	</tr>
-					            ";
-				            }				            
-				          }
-				          ?>
-						</tbody>
-					</table>
-				</table>
-				<a href="tambah_admin.php" class="btn btn-primary">Admin Baru</a>
+				<form class="form-horizontal style-form" method="post" action ="process/tambah_admin.php">
+			        <!--nama_dosen-->
+			        <div class="form-group" data-dismiss="alert" >
+						<label>Nama</label>
+						<input type="text" class="form-control" placeholder="Nama" name="nama" required="true">
+					</div>
+					<div class="form-group" data-dismiss="alert" >
+						<label>Username</label>
+						<input type="text" class="form-control" placeholder="Username" name="username" required="true">
+					</div>
+					<div class="form-group">
+						<label>Email</label>
+						<input type="text" class="form-control" placeholder="email@example.com" name="email" required="true">
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<input type="password" class="form-control" placeholder="Password" name="password_1" required="true">
+					</div>
+					<div class="form-group">
+						<label>Confirm Password</label>
+						<input type="password" class="form-control" placeholder="Ulangi Password" name="password_2" required="true">
+					</div>
+					<center>
+			          <button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>
+			        </center>
+			        <br>
+			    </form>
 			</div>
 		</div>
 	</div>
