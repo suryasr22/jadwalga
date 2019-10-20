@@ -9,11 +9,12 @@
 	//Session checker
 	include("session_check.php");
 
+	//Kosongkan table
 	$conn->query("TRUNCATE TABLE jadwal");
 	//INISILAISASI==================================================
 	//1. Makul diload pertama, terus disimpen di array dimensi 2,
-	//array_makul[jml_makul][0] = id makul
-	//array_makul[jml_makul][1] = sks
+	//$array_makul[jml_makul][0] = id makul
+	//$array_makul[jml_makul][1] = sks
 	$array_makul = array();
 	$result_makul = $conn->query("SELECT id, sks FROM matakuliah");
 	while($makul = $result_makul->fetch_assoc()){
@@ -24,15 +25,8 @@
 	}
 	$len_makul = sizeof($array_makul);
 
-	//debug makul
-	// echo 'Makul<hr>';
-	// for($i = 0; $i < $len_makul; $i++){
-	// 	echo $i . ': ' . $array_makul[$i][0] . ', ' . $array_makul[$i][1] . '<br>';
-	// }
-	// echo '<br>';
-
 	//2. Ruangan diload kedua, terus disimpen di array dimensi 2,
-	//array_ruang[0] = id_ruangan
+	//$array_ruang[0] = id_ruangan
 	$array_ruang = array();
 	$result_ruang = $conn->query("SELECT id FROM ruangan");
 	while($ruang = $result_ruang->fetch_assoc()){
@@ -40,16 +34,8 @@
 	}
 	$len_ruang = sizeof($array_ruang);
 
-	//debug ruang
-	// echo 'Ruangan<hr>';
-	// for($i = 0; $i < $len_ruang; $i++){
-	// 	echo $i . ': ' . $array_ruang[$i][0] . '<br>';
-	// }
-	// echo '<br>';
-
 	//3. Inisialisasi array jadwal
-	//array_jadwal[jml_makul][jml_ruang] = id_jam
-
+	//$array_jadwal[jml_makul][jml_ruang] = id_jam
 	//push makul
 	$array_jadwal = array();
 	for($i = 0; $i < $len_makul; $i++){
@@ -57,25 +43,17 @@
 	}
 
 	//push ruang
-	// echo 'Jadwal<hr>';
-	// for($i = 0; $i < $len_makul; $i++){
-	// 	for($j = 0; $j < $len_ruang; $j++){
-	// 		array_push($array_jadwal[$i], 0);
-	// 	}
-	// }
-
-	// for($i = 0; $i < $len_makul; $i++){
-	// 	for($j = 0; $j < $len_ruang; $j++){
-	// 		echo $i . ': ' . $j . '> ' . $array_jadwal[$i][$j] . '<br>';
-	// 	}
-	// 	echo '<br>';
-	// }
+	for($i = 0; $i < $len_makul; $i++){
+		for($j = 0; $j < $len_ruang; $j++){
+			array_push($array_jadwal[$i], 0);
+		}
+	}
 	
 	//4. Load constraint
 	//- Constraint jam -> makul -> dosen_makul -> dosen -> dosen_jam
 	//- Constraint ruangan -> makul -> dosen_makul -> dosen -> dosen_ruang
-	//array_jam[jml_makul][cnt_jam] = id_jam	
-	//array_ruang[jml_makul][cnt_rng] = id_ruang
+	//$array_jam[jml_makul][cnt_jam] = id_jam	
+	//$array_ruang[jml_makul][cnt_rng] = id_ruang
 
 	//Constraint Jam
 	$array_cstr_jam = array();	
@@ -84,20 +62,10 @@
 		array_push($array_cstr_jam, array());
 		$id_makul = $array_makul[$i][0];
 		$result_dosen_jam = $conn->query("SELECT dosen_jam.id_jam FROM matakuliah, dosen_makul, dosen_jam WHERE matakuliah.id = dosen_makul.id_makul AND dosen_makul.id_dosen = dosen_jam.id_dosen AND matakuliah.id = $id_makul");
-		//echo "SELECT matakuliah.id, dosen_jam.id_jam FROM matakuliah, dosen_makul, dosen_jam WHERE matakuliah.id = dosen_makul.id_makul AND dosen_makul.id_dosen = dosen_jam.id_dosen AND matakuliah.id = $id_makul<br>";
 		while ($dosen_jam = $result_dosen_jam->fetch_assoc()) {
 			array_push($array_cstr_jam[$i], $dosen_jam['id_jam']);
 		}
 	}
-
-	// echo 'Constraint Jam<hr>';
-	// for($i = 0; $i < $len_makul; $i++){
-	// 	$len_dosen_jam = sizeof($array_cstr_jam[$i]);
-	// 	for($j = 0; $j < $len_dosen_jam; $j ++){
-	// 		echo $i . ': ' . $j . '> ' . $array_cstr_jam[$i][$j] . '<br>';
-	// 	}
-	// 	echo '<br>';
-	// }
 
 	//Constraint Ruangan
 	$array_cstr_ruang = array();
@@ -106,23 +74,12 @@
 		array_push($array_cstr_ruang, array());
 		$id_makul = $array_makul[$i][0];
 		$result_dosen_ruang = $conn->query("SELECT dosen_ruang.id_ruang FROM matakuliah, dosen_makul, dosen_ruang WHERE matakuliah.id = dosen_makul.id_makul AND dosen_makul.id_dosen = dosen_ruang.id_dosen AND matakuliah.id = $id_makul");
-		//echo "SELECT dosen_ruang.id_ruang FROM matakuliah, dosen_makul, dosen_ruang WHERE matakuliah.id = dosen_makul.id_makul AND dosen_makul.id_dosen = dosen_ruang.id_dosen AND matakuliah.id = $id_makul<br>";
 		while ($dosen_ruang = $result_dosen_ruang->fetch_assoc()) {
 			array_push($array_cstr_ruang[$i], $dosen_ruang['id_ruang']);
 		}
 	}
 
-	// echo 'Constraint Ruangan<hr>';
-	// for($i = 0; $i < $len_makul; $i++){
-	// 	$id_makul = $array_makul[$i][0];
-	// 	echo 'Makul ' . $id_makul . '<br>';
-	// 	$len_dosen_ruang = sizeof($array_cstr_ruang[$i]);
-	// 	for($j = 0; $j < $len_dosen_ruang; $j ++){
-	// 		echo $i . ': ' . $j . '> ' . $array_cstr_ruang[$i][$j] . '<br>';
-	// 	}
-	// 	echo '<br>';
-	// }
-
+	//Tutup koneksi
 	$conn->close();
 
 	//Start GA=====================================================================================================================================================
@@ -137,170 +94,183 @@
 	//max iteration
 	$max_generations = 500;
 	//max fitness
-	$max_w = 0;
+	$max_fitness = 0;
 	//iterator
 	$iter = 0;
 
+	//Inisialisasi generasi
 	$array_pop = generatePopulation($len_pop, $array_jadwal, $array_makul, $array_ruang);
 
-	$array_w = countFitness($array_pop, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
+	//Hitung fitness
+	$array_fitness = countFitness($array_pop, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
 
-	// $len_w = sizeof($ranked_w);
-	// for($i = 0; $i < $len_w; $i++){
-	// 	echo $array_w[$i][0] . ' ' . $array_w[$i][1] . '<br> ';
-	// 	echo $ranked_w[$i][0] . ' ' . $ranked_w[$i][1] . '<br> ';
-	// }
+	//Copy nilai $array_fitness kedalam array baru ($ranked_fitness)
+	//Array $ranked_fitness akan berfungsi menyortir fitness dan menentukan individu2 terbaik
+	$ranked_fitness = $array_fitness;
+	sort($ranked_fitness);
 
-	//echo 'Max_W : ' . max($array_w) . ' dari ' . ($len_makul*3) . '.<hr>';
-
-	//pilih 2 individu melalui roulette
-	while(!hasFoundOptimum($max_w, $iter, $len_makul) && !hasReachedMaxIter($iter, $max_generations)){
+	//Perulangan utama algoritma GA
+	//Akan berhenti ketika salah satu kondisi berikut terpenuhi
+	//1. Ditemukan solusi optimum
+	//2. Generasi telah mencapai maksimum yang telah ditentukan
+	while(!hasFoundOptimum($max_fitness, $iter, $len_makul) && !hasReachedMaxIter($iter, $max_generations)){
 
 		$iter++;
+
+		//Inisialisasi array keperluan GA
+		//1. $newborn untuk individu baru
+		//2. $array_pool untuk mating pool
 		$newborn = array();
-		$array_pool = array();		
+		$array_pool = array();
 
-		$ranked_w = $array_w;
-		sort($ranked_w);
+		//Ambil ukuran dari array $ranked_fitness untuk operasi elitisme
+		$len_fitness = sizeof($ranked_fitness);
 
-		$len_w = sizeof($ranked_w);
-		// for($i = 0; $i < $len_w; $i++){
-		// 	//echo $array_w[$i][0] . ' ' . $array_w[$i][1] . '<br> ';
-		// 	echo $ranked_w[$i][0] . ' ' . $ranked_w[$i][1] . '<br> ';
-		// }
-
-		$bound = $len_w - $elite_size;
-		for($i = $len_w-1; $i >= $bound; $i--){
-			array_push($array_pool, $ranked_w[$i]);
+		//Masukkan seluruh n-individu dengan fitness terbaik kedalam mating pool
+		$bound = $len_fitness - $elite_size;
+		for($i = $len_fitness-1; $i >= $bound; $i--){
+			array_push($array_pool, $ranked_fitness[$i]);
 		}
-			
-		// echo 'Sekarang individu terpilih:<br>';
-		// for($i = 0; $i < $elite_size; $i++){
-		// 	echo 'Individu ke - ' . ($array_pool[$i][1]+1) . ' dengan fitness = ' . $array_pool[$i][0] . '<br>';
-		// }
 
-		//roulette
-		$idx = selection($ranked_w, $elite_size);
-		array_push($array_pool, $ranked_w[$idx]);
-		$len_pool = sizeof($array_pool);
+		//Roulette satu individu diluar dari jumlah elit untuk masuk ke mating pool
+		$idx = selection($ranked_fitness, $elite_size);
+		array_push($array_pool, $ranked_fitness[$idx]);
 
-		//echo 'Individu tambahan ' . $idx . ' dengan fitness = ' . $array_pool[$len_pool-1][0] . '<br><br>';
-
-		//echo 'jml individu ' . sizeof($array_pop) . '<br><br>';
-
+		//Lakukan undian crossover
 		if(rollCrossover($pc)){
-			//echo 'Terjadi Crossover<hr><br>';
+			//Jika dinyatakan crossover
+
+			//Ambil ukuran dari array mating pool untuk operasi crossover
 			$len_pool = sizeof($array_pool);
-			//echo $len_pool;
+
+			//Lakukan crossover setiap 2 individu pada mating pool
 			for($i = 0; $i < $len_pool-1; $i+=2){
 				$idx_a = $array_pool[$i][1];
 				$idx_b = $array_pool[$i+1][1];
 
-				//echo $i . ' INDEX A : '. $idx_a . ' INDEX B : ' . $idx_b . '<br>';
+				//Masukkan keturunan crossover ke dalam array $newborn
 				$newborn = crossover($newborn, $idx_a, $idx_b, $array_pop, $array_makul, $array_ruang);
 			}
 
+			//Ambil ukuran dari array newborn untuk operasi mutasi
 			$len_newborn = sizeof($newborn);
 
-			//echo 'JML KETURUNAN ' . $len_newborn . '<br>';
+			//Lakukan undian mutasi untuk setiap keturunan pada array $newborn
 			for($i = 0; $i < $len_newborn; $i++){
-				if(rollMutation($pm)){
-					//echo 'Terjadi Mutasi Pada Individu ke - ' . $i . '<hr><br>';
+				if(rollMutation($pm)){{
+					//Jika dinyatakan mutasi
 					$newborn[$i] = mutate($newborn[$i], $array_makul, $array_ruang);
-				} else {
-					//echo 'Tidak Terjadi Mutasi Pada Individu ke - ' . $i . '<hr><br>';
-				}
+				}					
 			}
 
+			//Refresh ukuran dari array newborn
 			$len_newborn = sizeof($newborn);
 
-			//echo 'JML KETURUNAN ' . $len_newborn . '<br>';
-
+			//Hitung fitness masing2 keturunan, kemudian masukkan ke $array_fitness
+			//Masukkan juga masing2 keturunan ke dalam array populasi ($array_pop)
 			for($i = 0; $i < $len_newborn; $i++){
-				$new_w = countFitnessIdv($newborn[$i], $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
+				$new_fitness = countFitnessIdv($newborn[$i], $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
 				array_push($array_pop, $newborn[$i]);
-
 				$len_pop = sizeof($array_pop);
-				array_push($array_w, array($new_w, $len_pop-1));
-				//echo 'Muncul Individu Baru dengan fitness = ' . $new_w . '<br>';
+				array_push($array_fitness, array($new_fitness, $len_pop-1));
 			}
-		} else {
-			//echo 'Tidak Terjadi Crossover<hr><br>';
 		}
-		//echo 'JML INDIVIDU ' . sizeof($array_pop) . '<br>';
-		$len_w = sizeof($ranked_w);
-		$max_w = $ranked_w[$len_w - 1][0];
+		//Simpan data fitness maksimum untuk dicek pada perulangan
+		//apakah telah menemukan solusi optimum atau tidak
+		$len_fitness = sizeof($ranked_fitness);
+		$max_fitness = $ranked_fitness[$len_fitness - 1][0];
+
+		//Lakukan penyortiran fitness untuk dicek apakah menemui solusi optimum
+		$ranked_fitness = $array_fitness;
+		sort($ranked_fitness);
 	}
-	$ranked_w = $array_w;
-	sort($ranked_w);
 
-	$len_w = sizeof($ranked_w);
-	$max_w = $ranked_w[$len_w - 1][0];
-	$idx_w = $ranked_w[$len_w - 1][1];
+	//Telah menemukan solusi optimum / mencapai generasi maksimum
 
-	$real_jadwal = $array_pop[$idx_w];
+	//Ambil nilai fitness maximum dan index array dari nilai fitness maximum
+	$len_fitness = sizeof($ranked_fitness);
+	$max_fitness = $ranked_fitness[$len_fitness - 1][0];
+	$idx_max_fitness = $ranked_fitness[$len_fitness - 1][1];
 
+	//Copy individu pada populasi dengan fitness maximum ke array baru ($real_jadwal)
+	$real_jadwal = $array_pop[$idx_max_fitness];
+
+	//Lakukan ekstraksi informasi dari array $real_jadwal dan update data pada database
 	extractJadwal($real_jadwal, $array_makul, $array_ruang);
 
-	// for($i = 0; $i < $len_w; $i++){
-	// 	//echo $array_w[$i][0] . ' ' . $array_w[$i][1] . '<br> ';
-	// 	echo $ranked_w[$i][0] . ' ' . $ranked_w[$i][1] . '<br> ';
-	// }
+	//Functions=========================================================================================================
 
-	// echo '<br>Total Seluruh Fitness  = ' . $len_w;
-	// echo '<br>Fitness Tertinggi = ' . $max_w;
-	// echo '<br>';
-
-	//debugFitness($real_jadwal, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
-
-	//Functions====================================================================================================================================================
+	//Fungsi untuk generasi populasi baru
 	function generatePopulation($len_pop, $array_jadwal, $array_makul, $array_ruang){
-		//Generate populasi
 		$array_pop = array();
 		$len_makul = sizeof($array_makul);
 		$len_ruang = sizeof($array_ruang);
 
-		//echo 'Populasi<hr><br>';
+		//Generasi populasi dengan cara:
+		//- Lakukan iterasi sesuai jumlah populasi
+		//- Untuk tiap makulnya, randomisasi nilai jam dengan ketentuan
+		//  tidak melebihi atau kurang dari jam setiap harinya
 		for($i = 0; $i < $len_pop; $i++){
 
-			//echo 'Individu ke - ' . ($i+1) . '<hr>';
 			array_push($array_pop, $array_jadwal);
 
 			for($j = 0; $j < $len_makul; $j++){
 
+				//Randomisasi nilai ruangan
 				$idxRuang = rand(0, $len_ruang-1);
-				//echo 'ID Makul : ' . $array_makul[$j][0] . ', SKS : ' . $array_makul[$j][1] . '<br>';
 
+				//Randomisasi hari
 				$idxHari = rand(1, 5);
+
+				//Tentukan batas bawah sesuai dengan nilai hari hasil random
 				$limBawahJam = (($idxHari - 1) * 13) + 1;
-				//echo 'Batas Bawah Jam : ' . $limBawahJam . '<br>';
 
+				//Tentukan batas atas dari nilai hari hasil random
+				//Dalam hal ini, batas atas = jam maksimum per hari - sks mata kuliah
 				$limAtasJam = ($idxHari * 13) - $array_makul[$j][1] + 1;
-				//echo 'Batas Atas Jam : ' . $limAtasJam . '<br>';
 
+				//Randomisasi jam mata kuliah sesuai dengan batas atas dan batas bawah
 				$idxJam = rand($limBawahJam, $limAtasJam);
-				//echo 'Index Ruang : ' . $idxRuang . ', ID Jam : ' . $idxJam . '<br>';
 
 				for($k = 0; $k < $len_ruang; $k++){
+					//Isi nilai jam sesuai dengan ruangannya
+					//Berikan nilai 0 jika bukan ruangan hasil random (index ruangan != hasil random ruangan)
 					if($k === $idxRuang)
 						$array_pop[$i][$j][$k] = $idxJam;
 					else
 						$array_pop[$i][$j][$k] = 0;
-					//echo $i . ': ' . $j . '> ' . $k . ' = ' . $array_pop[$i][$j][$k] . '<br>';
 				}
-				//echo '<br>';
 			}
-			//echo '<br>';
 		}
 
 		return $array_pop;
 	}
 
+	//Fungsi untuk menghitung fitness populasi
 	function countFitness($array_pop, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam){
 		$len_pop = sizeof($array_pop);
 		$len_makul = sizeof($array_makul);
 		$len_ruang = sizeof($array_ruang);
-		$array_w = array();
+		$array_fitness = array();
+
+		for($i = 0; $i < $len_pop; $i++){
+			//Hitung fitness masing populasi
+			$w = countFitnessIdv($array_pop[$i], $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
+
+			array_push($array_fitness, array($w, $i));
+		}
+
+		return $array_fitness;
+	}
+
+	//Fungsi menghitung fitness individu
+	function countFitnessIdv($idv, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam){
+		$len_makul = sizeof($array_makul);
+		$len_ruang = sizeof($array_ruang);
+
+		$bentrok = 0;
+		$salah_ruang = 0;
+		$salah_jam = 0;
 
 		//Hitung fitness, berdasarkan:
 		//1. jumlah matakuliah yang tidak bentrok
@@ -309,163 +279,152 @@
 		//1. tidak sesuai dengan constraint ruang
 		//2. tidak sesuai dengan constriant jam
 
-		//Hitung bentrok		
-		for($i = 0; $i < $len_pop; $i++){
-			$bentrok = 0;
-			$salah_ruang = 0;
-			$salah_jam = 0;
-			for($j = 0; $j < $len_makul; $j++){
-				//Bentrok
-				for($k = $j+1; $k < $len_makul; $k++){
-					for($l = 0; $l < $len_ruang; $l++){
-						$idv_a = $array_pop[$i][$j][$l] !== 0;
-						$idv_b = $array_pop[$i][$k][$l] !== 0;
-						if($idv_a && $idv_b){
-							$id_a = $array_makul[$j][0];
-							$sks_a = $array_makul[$j][1];
-							$bb_a = $array_pop[$i][$j][$l];
-							$ba_a = $bb_a + $sks_a;
+		for($j = 0; $j < $len_makul; $j++){
+			//Lakukan pengecekan bentrok untuk seluruh makul, dengan cara:
+			//- Tentukan makul dengan index $array_makul[$j] & $array_makul[$j+1]
+			//  (untuk mengecek makul di sebelahnya)
+			//- Cek apakah ada kesamaan ruang, jika iya
+			//- Cek apakah salah satu jam berbentrokan, jika tidak
+			//- Skip ke cek kesalahan ruangan dan kesalahan
+			for($k = $j+1; $k < $len_makul; $k++){
 
-							$id_b = $array_makul[$k][0];
-							$sks_b = $array_makul[$k][1];
-							$bb_b = $array_pop[$i][$k][$l];
-							$ba_b = $bb_b + $sks_b;
-							
-							//echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu ruangan';
+				//Iterasi pengecekan bentrok
+				for($l = 0; $l < $len_ruang; $l++){
+					$idv_a = $idv[$j][$l] !== 0;
+					$idv_b = $idv[$k][$l] !== 0;
 
-							$allowed = TRUE;
-							for($m = $bb_a; $m < $ba_a; $m++){
-								for($n = $bb_b; $n < $ba_b; $n++){
-									if($m === $n){
-										//echo ' (BENTROK pada jam ' . $m . ')';
-										if($allowed){
-											$bentrok++;
-											$allowed = FALSE;
-										}
+					//Jika individu a dan b berada pada ruangan yang sama
+					if($idv_a && $idv_b){
+						//ambil nilai batas bawah dan batas atas jam
+						//batas bawah = nilai jam pada individu
+						//batas atas = batas bawah + sks mata kuliah
+
+						$sks_a = $array_makul[$j][1];
+						$bb_a = $idv[$j][$l];
+						$ba_a = $bb_a + $sks_a;
+
+						$sks_b = $array_makul[$k][1];
+						$bb_b = $idv[$k][$l];
+						$ba_b = $bb_b + $sks_b;
+
+						//variabel supaya bentrok hanya dihitung per mata kuliah tidak redundan
+						//kita harus menghindari dihitungnya bentrok lebih dari satu kali
+						//karena pengecekan bentrok ada pada setiap jamnya (satu bentrok = satu atau lebih jam)
+						//yang dihitung bentrok itu makulnya bukan jamnya
+						$allowed = TRUE;
+						for($m = $bb_a; $m < $ba_a; $m++){
+							for($n = $bb_b; $n < $ba_b; $n++){
+								//tambah nilai bentrok jika ada nilai batas bawah dan batas atas
+								//jam makul a dan b yang saling bentrok
+								if($m === $n){
+									if($allowed){
+										$bentrok++;
+										$allowed = FALSE;
 									}
 								}
 							}
-							//echo '.<br>';
 						}
 					}
 				}
-				//Salah
-				$id = $array_makul[$j][0];
-				for($k = 0; $k < $len_ruang; $k++){
-					$idv = $array_pop[$i][$j][$k] !== 0;
-					if($idv){
-						$idxRuang = $k;
-						$benerRuang = 0;
-
-						$len_cstr_ruang = sizeof($array_cstr_ruang[$j]);
-						for($l = 0; $l < $len_cstr_ruang; $l++){
-							$idxCstR = $array_cstr_ruang[$j][$l];
-							if($idxRuang == $idxCstR){
-								$benerRuang++;
-							}
-						}
-						if(!$benerRuang){
-							//echo 'Makul>' . $id . ' SALAH RUANG dengan ruangan ' . $k . '<br>';
-							$salah_ruang++;
-						}
-
-						$benerJam = 0;
-						$jam = $array_pop[$i][$j][$k];
-						$len_cstr_jam = sizeof($array_cstr_jam);
-						for($m = 0; $m < $len_cstr_jam; $m++){
-							$idxCstJ = $array_cstr_jam[$j][$m];
-							//echo 'Makul>' . $id. ' Jam = ' . $jam . ' & Constraint ' . $idxCstJ . ' <br>';
-							if($jam == $idxCstJ){
-								$benerJam++;
-							}
-						}
-
-						if($benerJam == 0){
-							//echo 'Makul>' . $id. ' SALAH JAM dengan jam ' . $array_pop[$i][$j][$k] . '<br>';
-							$salah_jam++;
-						}
-					}
-				}
-				//echo '<br>';
 			}
-			// echo '<hr>';
-			// echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<hr>';
+			//Salah
+			$id = $array_makul[$j][0];
+			for($k = 0; $k < $len_ruang; $k++){
+				$idv_s = $idv[$j][$k] !== 0;
 
+				//Jika jam matakuliah telah ditetapkan (tidak 0)
+				//Mengapa? karena jam makul ditentukan dari range 1-65, dan 0 tidak termasuk
+				//0 berarti jam makul tidak terdaftar pada ruangan yang dimaksud
 
-			$max_tdk_bentrok = $len_makul;
-			$max_blh_ruang = $len_makul;
-			$max_blh_jam = $len_makul;
+				if($idv_s){
 
-			$w = ($max_tdk_bentrok - $bentrok) + ($max_blh_ruang - $salah_ruang) + ($max_blh_jam - $salah_jam);
+					//Lakukan pengecekan kesalahan jam untuk seluruh makul, dengan cara:
+					//- Iterasi setiap index ruang pada individu
+					//- Ambil id_ruang pada $array_ruang, kemudian bandingkan dengan id_ruang pada array constraint ruang ($array_cstr_ruang)
+					//- Jika id_ruang terdapat pada array constraint ruang, maka makul telah ditempatkan pada ruangan yang benar
 
-			//echo 'fitness = ' . $w . '<hr>';
+					//id_ruang
+					$idxRuang = $array_ruang[$k];
+					$benerRuang = 0;
 
-			array_push($array_w, array($w, $i));
+					$len_cstr_ruang = sizeof($array_cstr_ruang[$j]);
+					for($l = 0; $l < $len_cstr_ruang; $l++){
+						$idxCstR = $array_cstr_ruang[$j][$l];
+
+						//tambah nilai benar jika makul ditempatkan pada ruangan yang benar
+						if($idxRuang == $idxCstR){
+							$benerRuang++;
+						}
+					}
+
+					//jika nilai benar masih 0(FALSE) maka tambah nilai salah ruangan
+					if(!$benerRuang){
+						$salah_ruang++;
+					}
+
+					//Lakukan pengecekan kesalahan jam untuk seluruh makul, dengan cara:
+					//- Ambil nilai jam pada array individu
+					//- Lakukan iterasi pada setiap individu, nilai jam akan bernilai lebih besar dari 0 jika dilakukan penempatan
+					//- Bandingkan nilai jam setiap individu dengan nilai jam pada array constraint jam ($array_cstr_jam)
+					//- Jika setiap nilai jam termasuk jumlah sks makul terdapat pada constraint jam, maka
+					//  makul telah ditempatkan pada ruangan yang benar
+
+					//nilai jam
+					$jam = $idv[$j][$k];
+					$benerJam = 0;
+
+					$len_cstr_jam = sizeof($array_cstr_jam);
+					for($m = 0; $m < $len_cstr_jam; $m++){
+						$idxCstJ = $array_cstr_jam[$j][$m];
+
+						//tambah nilai benar jika makul ditempatkan pada jam yang benar
+						if($jam == $idxCstJ){
+							$benerJam++;
+						}
+					}
+
+					//jika nilai benar masih 0(FALSE) maka tambah nilai salah jam
+					if($benerJam == 0){
+						$salah_jam++;
+					}
+				}
+			}
 		}
 
-		return $array_w;
-		//Hitung salah tempat
-		// $salah_ruang = 0;
-		// $salah_jam = 0;
-		// for($i = 0; $i < $len_pop; $i++){
-		// 	for($j = 0; $j < $len_makul; $j++){
-		// 		$id = $array_makul[$j][0];
-		// 		for($k = 0; $k < $len_ruang; $k++){
-		// 			$idv = $array_pop[$i][$j][$k] !== 0;
-		// 			if($idv){
-		// 				$idxRuang = $k;
-		// 				$benerRuang = 0;
+		//nilai fitness = (jumlah makul - bentrok) + (jumlah makul - salah ruangan) + (jumlah makul - salah jam)
+		$w = ($len_makul - $bentrok) + ($len_makul - $salah_ruang) + ($len_makul - $salah_jam);
 
-		// 				$len_cstr_ruang = sizeof($array_cstr_ruang[$j]);
-		// 				for($l = 0; $l < $len_cstr_ruang; $l++){
-		// 					$idxCstR = $array_cstr_ruang[$j][$l];
-		// 					if($idxRuang == $idxCstR){
-		// 						$benerRuang++;
-		// 					}
-		// 				}
-		// 				if(!$benerRuang){
-		// 					echo 'Makul>' . $id . ' SALAH RUANG dengan ruangan ' . $k . '<br>';
-		// 					$salah_ruang++;
-		// 				}
-
-		// 				$benerJam = 0;
-		// 				$jam = $array_pop[$i][$j][$k];
-		// 				$len_cstr_jam = sizeof($array_cstr_jam);
-		// 				for($m = 0; $m < $len_cstr_jam; $m++){
-		// 					$idxCstJ = $array_cstr_jam[$j][$m];
-		// 					//echo 'Makul>' . $id. ' Jam = ' . $jam . ' & Constraint ' . $idxCstJ . ' <br>';
-		// 					if($jam == $idxCstJ){
-		// 						$benerJam++;
-		// 					}
-		// 				}
-
-		// 				if($benerJam == 0){
-		// 					echo 'Makul>' . $id. ' SALAH JAM dengan jam ' . $array_pop[$i][$j][$k] . '<br>';
-		// 					$salah_jam++;
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
+		return $w;
 	}
 
+	//Fungsi seleksi individu
 	function selection($array_fitness, $elite_size){
-		$max_w = 0;
-		$len_w = sizeof($array_fitness);
-		for($i = 0; $i < $len_w - $elite_size; $i++){
-			$max_w += $array_fitness[$i][0];
+		//Fungsi seleksi individu dilakukan dengan melakukan roulette, dengan langkah:
+		//- Pisahkan individu elit dengan yang non-elit
+		//- Lakukan perhitungan maksimum fitness untuk individu non-elit
+		//- Picu nilai random
+
+		$max_fitness = 0;
+		$len_fitness = sizeof($array_fitness);
+		//hitung fitness individu non elit
+		for($i = 0; $i < $len_fitness - $elite_size; $i++){
+			$max_fitness += $array_fitness[$i][0];
 		}
 		
-		$rand_val = rand(0, $max_w);
+		//picu nilai random
+		$rand_val = rand(0, $max_fitness);
 
 		$w = 0;
 		$idx = 0;
 
-		for($i = 0; $i < $len_w - $elite_size; $i++){
+		//lakukan iterasi untuk setiap individu non-elit
+		for($i = 0; $i < $len_fitness - $elite_size; $i++){
 			$w += $array_fitness[$i][0];
+			//ambil index dari fitness jika nilai random lebih dari fitness individu[i], namun tidak lebih dari
+			//nilai fitness individu[i+1]
 			if($rand_val > $w){
 				$idx = $i+1;
-				if($i == ($len_w - 1))
+				if($i == ($len_fitness - 1))
 					$idx = $i;
 			}
 		}
@@ -473,26 +432,30 @@
 		return $idx;
 	}
 
+	//Fungsi undian crossover
 	function rollCrossover($pc){
+		//picu nilai random dari 0-100
 		$x = rand(0,100);
 
-		if($x < $pc)
+		//jika nilai kurang dari batas probabilitas crossover, lakukan mutasi
 			return true;
 		else
 			return false;
 	}
 
+	//Fungsi crossover
 	function crossover($newborn, $idx1, $idx2, $array_pop, $array_makul, $array_ruang){
 		$len_makul = sizeof($array_makul);
 		$len_ruang = sizeof($array_ruang);
 
+		//Tentukan titik potong crossover secara random
 		$cut_point = rand(1, $len_makul-2);
 
-		//simpen array individu 1 ke buffer
+		//Simpan individu yang ingin di crossover ke variabel
 		$new_1 = $array_pop[$idx1];
 		$new_2 = $array_pop[$idx2];
 
-		//swap nilai
+		//Crossover nilai jam individu 1 dan 2
 		for($i = 0; $i < $len_makul; $i++){
 			for($j = 0; $j < $len_ruang; $j++){
 				if($i < $cut_point){
@@ -502,39 +465,36 @@
 			}
 		}
 
+		//Push salah satu individu ke array individu baru
 		array_push($newborn, $new_2);
-
-		// echo 'Keturunan Baru<hr><br>';
-		// for($i = 0; $i < 2; $i++){
-		// 	echo 'Individu ke - ' . ($i+1) . '<hr>';
-		// 	for($j = 0; $j < $len_makul; $j++){
-		// 		echo 'ID Makul : ' . $array_makul[$j][0] . ', SKS : ' . $array_makul[$j][1] . '<br>';
-		// 		for($k = 0; $k < $len_ruang; $k++){
-		// 			echo $i . ': ' . $j . '> ' . $k . ' = ' . $newborn[$i][$j][$k] . '<br>';
-		// 		}
-		// 		echo '<br>';
-		// 	}
-		// 	echo '<br>';
-		// }
 
 		return $newborn;
 	}
 
+	//Fungsi undian mutasi
 	function rollMutation($pm){
+		//picu nilai random dari 0-100
 		$x = rand(0,100);
 
+		//jika nilai kurang dari batas probabilitas mutasi, lakukan mutasi
 		if($x < $pm)
 			return true;
 		else
 			return false;
 	}
 
+	//Fungsi mutasi
 	function mutate($idv, $array_makul, $array_ruang){
+		//Proses mutasi sebenarnya sama dengan proses randomisasi
+		//nilai jam pada tiap individu pada fase generasi,
+		//hanya saja bedanya satu gen (makul) saja yang dirandomisasi ulang,
+		//sementara kalau fase generasi seluruh gen akan dirandomisasi
 		$len_makul = sizeof($array_makul);
 		$len_ruang = sizeof($array_ruang);
 		$mutation_point = rand(0, $len_makul-1);
 
 		for($i = 0; $i < $len_makul; $i++){
+
 			$idxRuang = rand(0, $len_ruang-1);
 			$idxHari = rand(1, 5);
 			$limBawahJam = (($idxHari - 1) * 13) + 1;
@@ -542,8 +502,6 @@
 			$idxJam = rand($limBawahJam, $limAtasJam);
 
 			if($i === $mutation_point){
-				//echo 'Poin mutasi pada makul ' . $array_makul[$i][0] . '<br>';
-				//kosongin value ruangan
 				for($j = 0; $j < $len_ruang; $j++){
 					if($j === $idxRuang)
 						$idv[$i][$j] = $idxJam;
@@ -553,227 +511,40 @@
 			}
 		}
 
-		for($i = 0; $i < $len_makul; $i++){
-			//echo 'ID Makul : ' . $array_makul[$i][0] . ', SKS : ' . $array_makul[$i][1] . '<br>';
-			for($j = 0; $j < $len_ruang; $j++){
-				//echo $i . '> ' . $j . ' = ' . $idv[$i][$j] . '<br>';
-			}
-			//echo '<br>';
-		}
-
 		return $idv;
 	}
 
-	function countFitnessIdv($idv, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam){
-		$len_makul = sizeof($array_makul);
-		$len_ruang = sizeof($array_ruang);
-
-		$bentrok = 0;
-		$salah_ruang = 0;
-		$salah_jam = 0;
-
-		for($j = 0; $j < $len_makul; $j++){
-			//Bentrok
-			for($k = $j+1; $k < $len_makul; $k++){
-				for($l = 0; $l < $len_ruang; $l++){
-					$idv_a = $idv[$j][$l] !== 0;
-					$idv_b = $idv[$k][$l] !== 0;
-					if($idv_a && $idv_b){
-						$id_a = $array_makul[$j][0];
-						$sks_a = $array_makul[$j][1];
-						$bb_a = $idv[$j][$l];
-						$ba_a = $bb_a + $sks_a;
-
-						$id_b = $array_makul[$k][0];
-						$sks_b = $array_makul[$k][1];
-						$bb_b = $idv[$k][$l];
-						$ba_b = $bb_b + $sks_b;
-						
-						//echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu ruangan';
-
-						$allowed = TRUE;
-						for($m = $bb_a; $m < $ba_a; $m++){
-							for($n = $bb_b; $n < $ba_b; $n++){
-								if($m === $n){
-									//echo ' (BENTROK pada jam ' . $m . ')';
-									if($allowed){
-										$bentrok++;
-										$allowed = FALSE;
-									}
-								}
-							}
-						}
-						//echo '.<br>';
-					}
-				}
-			}
-			//Salah
-			$id = $array_makul[$j][0];
-			for($k = 0; $k < $len_ruang; $k++){
-				$idv_s = $idv[$j][$k] !== 0;
-				if($idv_s){
-					$idxRuang = $k;
-					$benerRuang = 0;
-
-					$len_cstr_ruang = sizeof($array_cstr_ruang[$j]);
-					for($l = 0; $l < $len_cstr_ruang; $l++){
-						$idxCstR = $array_cstr_ruang[$j][$l];
-						if($idxRuang == $idxCstR){
-							$benerRuang++;
-						}
-					}
-					if(!$benerRuang){
-						//echo 'Makul>' . $id . ' SALAH RUANG dengan ruangan ' . $k . '<br>';
-						$salah_ruang++;
-					}
-
-					$benerJam = 0;
-					$jam = $idv[$j][$k];
-					$len_cstr_jam = sizeof($array_cstr_jam);
-					for($m = 0; $m < $len_cstr_jam; $m++){
-						$idxCstJ = $array_cstr_jam[$j][$m];
-						//echo 'Makul>' . $id. ' Jam = ' . $jam . ' & Constraint ' . $idxCstJ . ' <br>';
-						if($jam == $idxCstJ){
-							$benerJam++;
-						}
-					}
-
-					if($benerJam == 0){
-						//echo 'Makul>' . $id. ' SALAH JAM dengan jam ' . $array_pop[$i][$j][$k] . '<br>';
-						$salah_jam++;
-					}
-				}
-			}
-			//echo '<br>';
-		}
-		// echo '<hr>';
-		// echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<hr>';
-
-		$w = ($len_makul - $bentrok) + ($len_makul - $salah_ruang) + ($len_makul - $salah_jam);
-
-		//echo 'fitness = ' . $w . '<hr>';
-
-		return $w;
-	}
-
-	function debugFitness($idv, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam){
-		$len_makul = sizeof($array_makul);
-		$len_ruang = sizeof($array_ruang);
-
-		$bentrok = 0;
-		$salah_ruang = 0;
-		$salah_jam = 0;
-
-		for($j = 0; $j < $len_makul; $j++){
-			//Bentrok
-			for($k = $j+1; $k < $len_makul; $k++){
-				for($l = 0; $l < $len_ruang; $l++){
-					$idv_a = $idv[$j][$l] !== 0;
-					$idv_b = $idv[$k][$l] !== 0;
-					if($idv_a && $idv_b){
-						$id_a = $array_makul[$j][0];
-						$sks_a = $array_makul[$j][1];
-						$bb_a = $idv[$j][$l];
-						$ba_a = $bb_a + $sks_a;
-
-						$id_b = $array_makul[$k][0];
-						$sks_b = $array_makul[$k][1];
-						$bb_b = $idv[$k][$l];
-						$ba_b = $bb_b + $sks_b;
-						
-						//echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu ruangan';
-
-						$allowed = TRUE;
-						for($m = $bb_a; $m < $ba_a; $m++){
-							for($n = $bb_b; $n < $ba_b; $n++){
-								if($m === $n){
-									//echo ' (BENTROK pada jam ' . $m . ')';
-									if($allowed){
-										$bentrok++;
-										$allowed = FALSE;
-									}
-								}
-							}
-						}
-						//echo '.<br>';
-					}
-				}
-			}
-			//Salah
-			$id = $array_makul[$j][0];
-			for($k = 0; $k < $len_ruang; $k++){
-				$idv_s = $idv[$j][$k] !== 0;
-				if($idv_s){
-					$idxRuang = $k;
-					$benerRuang = 0;
-
-					$len_cstr_ruang = sizeof($array_cstr_ruang[$j]);
-					for($l = 0; $l < $len_cstr_ruang; $l++){
-						$idxCstR = $array_cstr_ruang[$j][$l];
-						if($idxRuang == $idxCstR){
-							$benerRuang++;
-						}
-					}
-					if(!$benerRuang){
-						//echo 'Makul>' . $id . ' SALAH RUANG dengan ruangan ' . $k . '<br>';
-						$salah_ruang++;
-					}
-
-					$benerJam = 0;
-					$jam = $idv[$j][$k];
-					$len_cstr_jam = sizeof($array_cstr_jam);
-					for($m = 0; $m < $len_cstr_jam; $m++){
-						$idxCstJ = $array_cstr_jam[$j][$m];
-						//echo 'Makul>' . $id. ' Jam = ' . $jam . ' & Constraint ' . $idxCstJ . ' <br>';
-						if($jam == $idxCstJ){
-							$benerJam++;
-						}
-					}
-
-					if($benerJam == 0){
-						//echo 'Makul>' . $id. ' SALAH JAM dengan jam ' . $idv[$j][$k] . '<br>';
-						$salah_jam++;
-					}
-				}
-			}
-			//echo '<br>';
-		}
-		echo '<hr>';
-		echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<hr>';
-
-		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$salah_ruang.') + ('.$len_makul .'-'. $salah_jam.') ';
-		$w_makul = $len_makul - $bentrok;
-		$w_ruang = $len_makul - $salah_ruang;
-		$w_jam = $len_makul - $salah_jam;
-
-		$w = $w_makul + $w_ruang + $w_jam;
-
-		//echo 'fitness = ' . $w . '<hr>';
-
-		//return $w;
-	}
-
+	//Fungsi pengecek apakah menemukan optimum
 	function hasFoundOptimum($w, $iter, $len_makul){
+		//Dalam hal ini, jadwal akan dikatakan optimum
+		//Jika nilai bentrok = 0, salah ruang = 0, dan salah jam = 0
+		//Ingat, bahwasanya:
+		//Fitness = (jumlah makul - bentrok) + (jumlah makul - salah ruang) + (jumlah makul - salah jam)
+		//Fitness = (jumlah makul - 0) + (jumlah makul - 0) + (jumlah makul - 0)
+		//Fitness = jumlah makul + jumlah makul + jumlah makul;
+		//Jadi, jumlah fitness pada solusi optimum = jumlah makul x 3;
 		$optimum_w = $len_makul * 3;
 		$optimum = $w === $optimum_w;
 
+		//return true jika optimum
 		if($optimum){
-			//echo 'Optimum Ditemukan Pada Generasi ke - ' . $iter . '<br>';
 			return TRUE;
 		}
 		else
 			return FALSE;
 	}
 
+	//Fungsi pengecek apakah telah mencapai generasi maksimum
 	function hasReachedMaxIter($iter, $max){
+		//Return true jika telah mencapai generasi maksimum
 		if($iter >= $max){
-			//echo 'Iterasi Selesai';
 			return TRUE;
 		}
 		else
 			return FALSE;
 	}
 
+	//Fungsi ekstraksi jadwal pada algoritma GA
 	function extractJadwal($real_jadwal, $array_makul, $array_ruang){
 		$servername = "localhost";
 		$username = "root";
@@ -786,6 +557,7 @@
 		$id_ruang = 0;
 		$id_jam = 0;
 
+		//Ekstraksi nilai matakuliah, jam dan ruang, kemudian masukkan ke tabel jadwal pada database
 		for($i = 0; $i < $len_makul; $i++){
 			$id_makul = $array_makul[$i][0];
 			for($j = 0; $j < $len_ruang; $j++){
@@ -804,6 +576,7 @@
 						echo "Failed to connect to MySQL: " . mysqli_connect_error();
 					}
 
+					//Redirect jika berhasil
 					if($conn->query($sql)===TRUE){
 						echo "<script>
 						location='jadwal.php';
