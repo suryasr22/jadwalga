@@ -22,10 +22,12 @@
 	<!-- Font Awesome CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
 	<?php print_title($tgt); ?>
 </head>
 
-<body>
+<body class="w-75 p-4 mx-auto shadow-lg">
 	<!--KONTEN-->
 	<!-- Navigation -->
 	<?php
@@ -36,7 +38,7 @@
 	?>
 
 	<!-- Page Content -->
-	<div class="container mh-100">
+	<div class="container mh-100 col-6">
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
@@ -45,6 +47,7 @@
 				<form class="form-horizontal style-form" method="post" action ="process/tambah_makul.php">
 			        <!--nama_dosen-->
 			        <div class="form-group">
+			        	<br>
 						<label>Nama</label>
 						<input type="text" class="form-control" placeholder="Nama" name="nama" required="true">
 					</div>

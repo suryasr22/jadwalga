@@ -54,7 +54,7 @@
 	?>
 
 	<!-- Page Content -->
-	<div class="container mh-100 col-9 ">		
+	<div class="container mh-100 col-9">		
 		<br>
 		<h1 class="mt-5 text-center">Ubah Profil</h1>
 		<hr><br>

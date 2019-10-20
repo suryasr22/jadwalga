@@ -29,10 +29,12 @@
 	<!-- Font Awesome CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
 	<?php print_title($tgt); ?>
 </head>
 
-<body>
+<body class="w-75 p-4 mx-auto shadow-lg">
 	<!--KONTEN-->
 	<!-- Navigation -->
 	<?php
@@ -43,11 +45,12 @@
 	?>
 
 	<!-- Page Content -->
-	<div class="container mh-100">
+	<div class="container mh-100 col-6">
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
 				<h1 class="mt-5 text-center">Tambah Mata Kuliah</h1><hr>
+				<br>
 
 				<form class="form-horizontal style-form" method="post" action ="process/edit_makul.php?id=<?php echo $id;?>">
 			        <!--nama_dosen-->

@@ -8,7 +8,7 @@
   <body>
     <div class="signin container col-3 rounded shadow-lg">
       <div class="col-12 mx-auto">        
-        <form class="form-group" method="POST" action="process/proses_signin.php">
+        <form class="form-group" method="POST" action="process/signin.php">
           <div class="row modal-header ">
             <h2 class="mx-auto">Sign In</h2>
           </div>
