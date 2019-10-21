@@ -157,7 +157,7 @@
 
 			//Lakukan undian mutasi untuk setiap keturunan pada array $newborn
 			for($i = 0; $i < $len_newborn; $i++){
-				if(rollMutation($pm)){{
+				if(rollMutation($pm)){
 					//Jika dinyatakan mutasi
 					$newborn[$i] = mutate($newborn[$i], $array_makul, $array_ruang);
 				}					
@@ -438,6 +438,7 @@
 		$x = rand(0,100);
 
 		//jika nilai kurang dari batas probabilitas crossover, lakukan mutasi
+		if($x < $pc)
 			return true;
 		else
 			return false;
