@@ -159,7 +159,7 @@
 			for($i = 0; $i < $len_newborn; $i++){
 				if(rollMutation($pm)){
 					//Jika dinyatakan mutasi
-					$newborn[$i] = mutate($newborn[$i], $array_makul, $array_ruang);
+					$newborn[$i] = mutate($newborn[$i], $array_makul, $array_ruang, $array_cstr_ruang);
 				}					
 			}
 
@@ -197,6 +197,7 @@
 
 	//Lakukan ekstraksi informasi dari array $real_jadwal dan update data pada database
 	extractJadwal($real_jadwal, $array_makul, $array_ruang);
+	//debugFitness($real_jadwal, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
 
 	//Functions=========================================================================================================
 
@@ -485,18 +486,35 @@
 	}
 
 	//Fungsi mutasi
-	function mutate($idv, $array_makul, $array_ruang){
+	function mutate($idv, $array_makul, $array_ruang, $array_cstr_ruang){
 		//Proses mutasi sebenarnya sama dengan proses randomisasi
 		//nilai jam pada tiap individu pada fase generasi,
 		//hanya saja bedanya satu gen (makul) saja yang dirandomisasi ulang,
 		//sementara kalau fase generasi seluruh gen akan dirandomisasi
+		//randomisasi ruangan akan diarahkan untuk memenuhi constraint
 		$len_makul = sizeof($array_makul);
 		$len_ruang = sizeof($array_ruang);
 		$mutation_point = rand(0, $len_makul-1);
 
 		for($i = 0; $i < $len_makul; $i++){
-
+			$len_cstr_ruang = sizeof($array_cstr_ruang[$i]);
+			//$len_cstr_jam = sizeof($array_cstr_jam[$i]);
+			$bener_ruang = 0;
+			//$bener_jam = 0;
 			$idxRuang = rand(0, $len_ruang-1);
+
+			while ($bener_ruang == 0) {
+				for($l = 0; $l < $len_cstr_ruang; $l++){
+					$idxCstR = $array_cstr_ruang[$i][$l];
+					if($idxRuang == $idxCstR)
+						$bener_ruang++;
+				}
+
+				if($bener_ruang == 0){
+					$idxRuang = rand(0, $len_ruang-1);
+				}
+			}
+
 			$idxHari = rand(1, 5);
 			$limBawahJam = (($idxHari - 1) * 13) + 1;
 			$limAtasJam = ($idxHari * 13) - $array_makul[$i][1];
@@ -586,5 +604,132 @@
 				}
 			}
 		}
+	}
+
+	function debugFitness($idv, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam){
+		$len_makul = sizeof($array_makul);
+		$len_ruang = sizeof($array_ruang);
+
+		$bentrok = 0;
+		$salah_ruang = 0;
+		$salah_jam = 0;
+
+		for($j = 0; $j < $len_makul; $j++){
+			//Bentrok
+			for($k = $j+1; $k < $len_makul; $k++){
+				for($l = 0; $l < $len_ruang; $l++){
+					$idv_a = $idv[$j][$l] !== 0;
+					$idv_b = $idv[$k][$l] !== 0;
+					if($idv_a && $idv_b){
+						$id_a = $array_makul[$j][0];
+						$sks_a = $array_makul[$j][1];
+						$bb_a = $idv[$j][$l];
+						$ba_a = $bb_a + $sks_a;
+
+						$id_b = $array_makul[$k][0];
+						$sks_b = $array_makul[$k][1];
+						$bb_b = $idv[$k][$l];
+						$ba_b = $bb_b + $sks_b;
+						
+						echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu ruangan di ruangan ' . $array_ruang[$l];
+
+						$allowed = TRUE;
+						for($m = $bb_a; $m < $ba_a; $m++){
+							for($n = $bb_b; $n < $ba_b; $n++){
+								if($m === $n){
+									echo ' (BENTROK pada jam ' . $m . ')';
+									if($allowed){
+										$bentrok++;
+										$allowed = FALSE;
+									}
+								}
+							}
+						}
+						echo '.<br>';
+					}
+				}
+			}
+			//Salah
+			$id = $array_makul[$j][0];
+			for($k = 0; $k < $len_ruang; $k++){
+				$idv_s = $idv[$j][$k] !== 0;
+				if($idv_s){
+					$idxRuang = $array_ruang[$k];
+					$benerRuang = 0;
+
+					$len_cstr_ruang = sizeof($array_cstr_ruang[$j]);
+					for($l = 0; $l < $len_cstr_ruang; $l++){
+						$idxCstR = $array_cstr_ruang[$j][$l];
+						echo 'Constraint ruangan ' . $idxCstR . '<br>';
+						if($idxRuang == $idxCstR){
+							echo 'Makul>' . $id . ' dalam ruangan ' . $idxRuang . '<br>';
+							$benerRuang++;
+						}
+					}
+					if($benerRuang == 0){
+						echo 'Makul>' . $id . ' SALAH RUANG dengan ruangan ' . $idxRuang . '<br>';
+						$salah_ruang++;
+					}
+
+					$benerJam = 0;
+					$jam = $idv[$j][$k];
+					$len_cstr_jam = sizeof($array_cstr_jam);
+					for($m = 0; $m < $len_cstr_jam; $m++){
+						$idxCstJ = $array_cstr_jam[$j][$m];
+						if($jam == $idxCstJ){
+							echo 'Makul>' . $id. ' Jam = ' . $jam . ' & Constraint ' . $idxCstJ . ' <br>';
+							$benerJam++;
+						}
+					}
+
+					if($benerJam == 0){
+						echo 'Makul>' . $id. ' SALAH JAM dengan jam ' . $idv[$j][$k] . '<br>';
+						$salah_jam++;
+					}
+				}
+			}
+			echo '<br>';
+		}
+		echo '<hr>';
+		echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<hr>';
+
+		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$salah_ruang.') + ('.$len_makul .'-'. $salah_jam.') ';
+		$w_makul = $len_makul - $bentrok;
+		$w_ruang = $len_makul - $salah_ruang;
+		$w_jam = $len_makul - $salah_jam;
+
+		$w = $w_makul + $w_ruang + $w_jam;
+		echo '<br>';
+		for($i = 0; $i < $len_makul; $i++){
+			$id_makul = $array_makul[$i][0];
+			for($j = 0; $j < $len_ruang; $j++){
+				$id_ruang = $array_ruang[$j];
+
+				$id_jam = $idv[$i][$j];
+				$ruang_kosong = $id_jam == 0;
+
+				if(!$ruang_kosong){
+					echo $id_makul . ', ' . $id_ruang . ', ' . $id_jam . '<br>';
+					// $sql = 'INSERT INTO jadwal (id_makul, id_ruang, id_jam) VALUES
+					// (' . $id_makul . ', ' . $id_ruang . ', ' . $id_jam . ')';
+					
+					// $conn = mysqli_connect($servername, $username, $password, $db);
+					// if (mysqli_connect_errno())
+					// {
+					// 	echo "Failed to connect to MySQL: " . mysqli_connect_error();
+					// }
+
+					// if($conn->query($sql)===TRUE){
+					// 	echo "<script>
+					// 	location='jadwal.php';
+					// 	</script>";
+					// }
+				}
+			}
+		}
+
+		//echo 'fitness = ' . $w . '<hr>';
+
+		//return $w;
 	}
 ?>
