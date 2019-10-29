@@ -47,7 +47,7 @@
 
 		$nav_item_logout = '
 			<li class="nav-item">
-				<a class="nav-link" href="process/signout.php">Logout</a>
+				<a class="nav-link" onclick ="return confirm(\'Yakin Ingin sign out?\') "href="process/signout.php">Logout</a>
 			</li>
 		';
 
@@ -107,7 +107,7 @@
 			');
 		array_push($nav_makul_d, '
 			<li class="nav-item active">
-				<a class="nav-link" href="asbor_dosen.php">Mata Kuliah
+				<a class="nav-link" href="dasbor_dosen.php">Mata Kuliah
 					<span class="sr-only">(current)</span>
 				</a>
 			</li>

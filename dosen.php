@@ -48,6 +48,7 @@
 				<br>
 				<h1 class="mt-5 text-center">Dosen</h1><hr>
 				<br>
+				<a href="tambah_dosen.php" class="btn btn-primary">Dosen Baru</a>
 				<table class="w-auto table table-dark table-hover table-sm table-bordered">
 					<table class="table table-striped table-advance table-hover table-condensed">
 					<thead>
@@ -89,7 +90,6 @@
 						</tbody>
 					</table>
 				</table>
-				<a href="tambah_dosen.php" class="btn btn-primary">Dosen Baru</a>
 			</div>
 		</div>
 	</div>

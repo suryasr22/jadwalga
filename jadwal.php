@@ -45,8 +45,10 @@
 			<div class="col-lg-12">
 				<br>
 				<h1 class="mt-5 text-center">Jadwal</h1><hr>
+
+				<?php //build_jadwal_ga($conn);?>
 				
-				<a href="tambah_dosen.php" class="btn btn-primary">Dosen Baru</a>
+				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center>
 			</div>
 		</div>
 	</div>

@@ -46,7 +46,7 @@
 				<br>
 				<h1 class="mt-5 text-center">Jadwal</h1><hr>
 
-				<?php build_jadwal_ga($conn);?>
+				<?php// build_jadwal_ga($conn);?>
 				
 				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center>
 			</div>
