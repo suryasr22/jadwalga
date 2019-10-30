@@ -44,10 +44,10 @@
 	<!-- Page Content -->
 	<div class="container mh-100 col-9">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-9 mx-auto">
 				<br>
-				<h1 class="mt-5 text-center">Ruangan</h1><hr><br>
-
+				<h1 class="mt-5 text-center">Data Ruangan</h1><hr><br>
+				<a href="tambah_ruangan.php" class="btn btn-primary">Ruangan Baru</a>
 				<table class="w-auto table table-dark  table-hover table-sm table-bordered">
 					<table class="table table-striped table-advance table-hover table-condensed">
 					<thead>
@@ -73,7 +73,7 @@
 				                <td align =\"right\">
 				                  	<a href=\"edit_ruangan.php?id=$ruangan[id]\" class=\"btn btn-primary btn-sm\" role=\"button\"><i class=\"fa fa-pencil\" data-toggle=\"modal\" data-target=\"#myModal\"></i></a>
 
-			                		<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"process/hapus_ruangan.php?id=$ruangan[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+			                		<a onclick =\"return confirm('Yakin Ingin menghapus data ruangan?')\" href=\"process/hapus_ruangan.php?id=$ruangan[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
 				                </td>
 			              	</tr>
 				            ";
@@ -82,7 +82,6 @@
 						</tbody>
 					</table>
 				</table>
-				<a href="tambah_ruangan.php" class="btn btn-primary">Ruangan Baru</a>
 			</div>
 		</div>
 	</div>

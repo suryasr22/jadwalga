@@ -46,7 +46,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
-				<h1 class="mt-5 text-center">Mata Kuliah</h1><hr>
+				<h1 class="mt-5 text-center">Data Mata Kuliah</h1><hr>
 				<br>
 				<table class="w-auto table table-dark  table-hover table-sm table-bordered">
 					<table class="table table-striped table-advance table-hover table-condensed">

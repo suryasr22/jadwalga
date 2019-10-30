@@ -44,11 +44,11 @@
 	<!-- Page Content -->
 	<div class="container mh-100 col-9">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-12 mx-auto">
 				<br>
-				<h1 class="mt-5 text-center">Dosen</h1><hr>
+				<h1 class="mt-5 text-center">Data Dosen</h1><hr>
 				<br>
-				<a href="tambah_dosen.php" class="btn btn-primary">Dosen Baru</a>
+				<a href="tambah_dosen.php" class="btn btn-primary ">Dosen Baru</a>
 				<table class="w-auto table table-dark table-hover table-sm table-bordered">
 					<table class="table table-striped table-advance table-hover table-condensed">
 					<thead>
