@@ -267,7 +267,7 @@
 	function build_konten_jadwal($conn, $id_dosen){
 		//vars
 		$waktu_awal = '08:00';
-		$jam = 13;
+		$jam = 11;
 		$hari = 5;
 
 		//batas bawah (timestamp > date)
@@ -275,7 +275,7 @@
 		$bb_dt = date('H:i', $bb_tms);
 
 		//batas atas (timestamp > date)
-		$ba_tms = strtotime("+45 minutes", strtotime($bb_dt));
+		$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
 		$ba_dt = date('H:i', $ba_tms);
 
 		//print head table
@@ -286,19 +286,20 @@
 			      	<tr scope="row">
 		                <th scope="col"></th>
 		                <th scope="col"></th>
-		                <th scope="col" colspan="5" class="text-center">Hari</th>
+		                <th scope="col" colspan="6" class="text-center">Hari</th>
 	              	</tr>
 			    </thead>
 				<tbody class="text-center">
 			        <tr>
-	                <th>No</th>
-	                <th>Jam</th>
-	                <th>Senin</th>
-	                <th>Selasa</th>
-	                <th>Rabu</th>
-	                <th>Kamis</th>
-	                <th>Jum\'at</th>
-	          	</tr>
+		                <th>No</th>
+		                <th>Jam</th>
+		                <th>Senin</th>
+		                <th>Selasa</th>
+		                <th>Rabu</th>
+		                <th>Kamis</th>
+		                <th>Jum\'at</th>
+		                <th><></th>
+	          		</tr>
 		';
 
 		//ambil data dosen_jam
@@ -309,7 +310,7 @@
 		//array buat nyimpen status dosen_jam
 		$array_jam = array();
 		//inisialisasi array (diisi FALSE dulu semua)
-		for($i = 1; $i <= 65; $i++){
+		for($i = 1; $i <= 55; $i++){
 			$array_jam[$i] = 0;
 		}
 
@@ -330,17 +331,31 @@
 		    //print ceklis per hari
 		    for($j = 0; $j < $hari; $j++){
 		    	echo '
-		    		<th><input class="form-check-input" type="checkbox" name="cb_j_' . 
-		    		($i + ($j * $jam)) . '" value="option1" 
+		    		<td><input class="form-check-input" type="checkbox"
+		    		id="cb_j_' . ($i + ($j * $jam)) . '" 
+		    		name="cb_j_' . ($i + ($j * $jam)) . '" 
+		    		value="option1" 
 		    	';
 
 		    	if($array_jam[$i + ($j * $jam)])
 		    		echo 'checked';
 
 		    	echo '
-		    		></th>
+		    		></td>
 		    	';
 		    }
+
+		    if($i == 1){
+		    	echo '
+			    	<td rowspan="5">Pagi<br><input class="form-check-input" type="checkbox" id="cb_pagi"></td>
+				';
+			}
+
+			if($i == 6){
+		    	echo '
+			    	<td rowspan="6">Siang<br><input class="form-check-input" type="checkbox" id="cb_siang"></td>
+				';
+			}
 
 		    echo '
 	          	</tr>
@@ -350,12 +365,12 @@
 			$bb_tms = strtotime($ba_dt);
 
 			//Skip jam isoma siang
-			if($i === 6)
+			if($i === 5)
 				$bb_tms = strtotime('13:00');
 
 			$bb_dt = date('H:i', $bb_tms);
 
-			$ba_tms = strtotime("+45 minutes", strtotime($bb_dt));
+			$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
 			$ba_dt = date('H:i', $ba_tms);
 		}
 
@@ -369,7 +384,7 @@
 	function build_jadwal_ga($conn){
 		//vars
 		$waktu_awal = '08:00';
-		$jam = 13;
+		$jam = 11;
 		$hari = 5;
 
 		//batas bawah (timestamp > date)
@@ -377,7 +392,7 @@
 		$bb_dt = date('H:i', $bb_tms);
 
 		//batas atas (timestamp > date)
-		$ba_tms = strtotime("+45 minutes", strtotime($bb_dt));
+		$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
 		$ba_dt = date('H:i', $ba_tms);
 
 		//print head table
@@ -532,12 +547,12 @@
 			$bb_tms = strtotime($ba_dt);
 
 			//Skip jam isoma siang
-			if($i === 6)
+			if($i === 5)
 				$bb_tms = strtotime('13:00');
 
 			$bb_dt = date('H:i', $bb_tms);
 
-			$ba_tms = strtotime("+45 minutes", strtotime($bb_dt));
+			$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
 			$ba_dt = date('H:i', $ba_tms);
 		}
 

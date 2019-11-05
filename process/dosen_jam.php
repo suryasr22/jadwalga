@@ -43,13 +43,26 @@
 	$filter = substr($filter, 0, $start1);
 	$sql3 = "DELETE dosen_jam.* FROM dosen_jam LEFT JOIN (SELECT * FROM dosen_jam WHERE " . $filter . " group by id_jam) a ON a.id_jam = dosen_jam.id_jam WHERE dosen_jam.id_dosen = $id_dosen AND a.id_dosen IS NULL AND a.id_jam IS NULL";
 
-	if($conn->query($sql2) === TRUE && $conn->query($sql3) === TRUE){
-		echo "<script> alert('Data berhasil diinputkan');
-		location='../dasbor_dosen.php';
-		</script>";
+	if($insert != ''){
+		if($conn->query($sql2) === TRUE && $conn->query($sql3) === TRUE){
+			echo "<script> alert('Data berhasil diinputkan');
+			location='../dasbor_dosen.php';
+			</script>";
+		} else {
+			echo "<script> alert('Data gagal diinputkan');
+			location='../dasbor_dosen.php';
+			</script>";
+		}
 	} else {
-		echo "<script> alert('Data gagal diinputkan');
-		location='../dasbor_dosen.php';
-		</script>";
+		if($conn->query($sql3) === TRUE){
+			echo "<script> alert('Data berhasil diinputkan');
+			location='../dasbor_dosen.php';
+			</script>";
+		} else {
+			echo "<script> alert('Data gagal diinputkan');
+			location='../dasbor_dosen.php';
+			</script>";
+		}
 	}
+	
 ?>

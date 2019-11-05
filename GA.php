@@ -11,7 +11,7 @@
 
 	//Kosongkan table
 	$conn->query("TRUNCATE TABLE jadwal");
-	//INISILAISASI==================================================
+	//INISIALISASI==================================================
 	//1. Makul diload pertama, terus disimpen di array dimensi 2,
 	//$array_makul[jml_makul][0] = id makul
 	//$array_makul[jml_makul][1] = sks
@@ -93,6 +93,7 @@
 	$pm = 100;
 	//max iteration
 	$max_generations = 500;
+	
 	//max fitness
 	$max_fitness = 0;
 	//iterator
@@ -159,7 +160,7 @@
 			for($i = 0; $i < $len_newborn; $i++){
 				if(rollMutation($pm)){
 					//Jika dinyatakan mutasi
-					$newborn[$i] = mutate($newborn[$i], $array_makul, $array_ruang, $array_cstr_ruang);
+					$newborn[$i] = mutate($newborn[$i], $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
 				}					
 			}
 
@@ -224,11 +225,11 @@
 				$idxHari = rand(1, 5);
 
 				//Tentukan batas bawah sesuai dengan nilai hari hasil random
-				$limBawahJam = (($idxHari - 1) * 13) + 1;
+				$limBawahJam = (($idxHari - 1) * 11) + 1;
 
 				//Tentukan batas atas dari nilai hari hasil random
 				//Dalam hal ini, batas atas = jam maksimum per hari - sks mata kuliah
-				$limAtasJam = ($idxHari * 13) - $array_makul[$j][1] + 1;
+				$limAtasJam = ($idxHari * 11) - $array_makul[$j][1] + 1;
 
 				//Randomisasi jam mata kuliah sesuai dengan batas atas dan batas bawah
 				$idxJam = rand($limBawahJam, $limAtasJam);
@@ -371,7 +372,9 @@
 					//  makul telah ditempatkan pada ruangan yang benar
 
 					//nilai jam
-					$jam = $idv[$j][$k];
+					$jam_bwh = $idv[$j][$k];
+					$sks = $array_makul[$j][1];
+					$jam_ats = $jam_bwh + $sks - 1;
 					$benerJam = 0;
 
 					$len_cstr_jam = sizeof($array_cstr_jam);
@@ -379,13 +382,13 @@
 						$idxCstJ = $array_cstr_jam[$j][$m];
 
 						//tambah nilai benar jika makul ditempatkan pada jam yang benar
-						if($jam == $idxCstJ){
+						if($idxCstJ >= $jam_bwh && $idxCstJ <= $jam_ats){
 							$benerJam++;
 						}
 					}
 
 					//jika nilai benar masih 0(FALSE) maka tambah nilai salah jam
-					if($benerJam == 0){
+					if($benerJam < $sks){
 						$salah_jam++;
 					}
 				}
@@ -486,7 +489,7 @@
 	}
 
 	//Fungsi mutasi
-	function mutate($idv, $array_makul, $array_ruang, $array_cstr_ruang){
+	function mutate($idv, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam){
 		//Proses mutasi sebenarnya sama dengan proses randomisasi
 		//nilai jam pada tiap individu pada fase generasi,
 		//hanya saja bedanya satu gen (makul) saja yang dirandomisasi ulang,
@@ -498,9 +501,9 @@
 
 		for($i = 0; $i < $len_makul; $i++){
 			$len_cstr_ruang = sizeof($array_cstr_ruang[$i]);
-			//$len_cstr_jam = sizeof($array_cstr_jam[$i]);
+			$len_cstr_jam = sizeof($array_cstr_jam[$i]);
 			$bener_ruang = 0;
-			//$bener_jam = 0;
+			$bener_jam = 0;
 			$idxRuang = rand(0, $len_ruang-1);
 
 			while ($bener_ruang == 0) {
@@ -515,10 +518,34 @@
 				}
 			}
 
-			$idxHari = rand(1, 5);
-			$limBawahJam = (($idxHari - 1) * 13) + 1;
-			$limAtasJam = ($idxHari * 13) - $array_makul[$i][1];
-			$idxJam = rand($limBawahJam, $limAtasJam);
+			$sks = $array_makul[$i][1];
+			while ($bener_jam < $sks){
+				$idxHari = rand(1, 5);
+				$segmen = rand(0, 1);
+				if(!$segmen){
+					$limBawahJam = (($idxHari - 1) * 11) + 1;
+					$limAtasJam = ($idxHari * 11) - $sks - 5;
+					//echo 'Lim bwh pagi = ' . $limBawahJam . '<br>';
+					//echo 'Lim ats pagi = ' . $limAtasJam . '<br>';
+				}
+				else{
+					$limBawahJam = (($idxHari - 1) * 11) + 6;
+					$limAtasJam = ($idxHari * 11) - $sks + 1;
+					//echo 'Lim bwh siang = ' . $limBawahJam . '<br>';
+					//echo 'Lim ats siang = ' . $limAtasJam . '<br>';
+				}
+				$idxJam = rand($limBawahJam, $limAtasJam);
+				$idxJamAts = $idxJam + $sks - 1;
+
+				for($m = 0; $m < $len_cstr_jam; $m++){
+					$idxCstJ = $array_cstr_jam[$i][$m];
+
+					//tambah nilai benar jika makul ditempatkan pada jam yang benar
+					if($idxCstJ >= $idxJam && $idxCstJ <= $idxJamAts){
+						$bener_jam++;
+					}
+				}
+			}
 
 			if($i === $mutation_point){
 				for($j = 0; $j < $len_ruang; $j++){
@@ -672,17 +699,21 @@
 					}
 
 					$benerJam = 0;
-					$jam = $idv[$j][$k];
+					$jam_bwh = $idv[$j][$k];
+					$sks = $array_makul[$j][1];
+					$jam_ats = $jam_bwh + $sks - 1;
 					$len_cstr_jam = sizeof($array_cstr_jam);
+
 					for($m = 0; $m < $len_cstr_jam; $m++){
 						$idxCstJ = $array_cstr_jam[$j][$m];
-						if($jam == $idxCstJ){
-							echo 'Makul>' . $id. ' Jam = ' . $jam . ' & Constraint ' . $idxCstJ . ' <br>';
+						if($idxCstJ >= $jam_bwh && $idxCstJ <= $jam_ats){
+							echo 'Makul>' . $id. ' Jam = ' . $jam_bwh . ' & Constraint ' . $idxCstJ . ' <br>';
 							$benerJam++;
 						}
 					}
 
-					if($benerJam == 0){
+					echo $benerJam . ' <br>';
+					if($benerJam < $sks){
 						echo 'Makul>' . $id. ' SALAH JAM dengan jam ' . $idv[$j][$k] . '<br>';
 						$salah_jam++;
 					}

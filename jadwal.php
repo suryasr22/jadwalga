@@ -44,11 +44,11 @@
 	<!-- Page Content -->
 	<div class="container mh-100 col-9">
 		<div class="row">
-			<div class="col-lg-9 mx-auto">
+			<div class="col-lg-12 mx-auto">
 				<br>
 				<h1 class="mt-5 text-center">Jadwal</h1><hr>
 
-				<?php //build_jadwal_ga($conn);?>
+				<?php build_jadwal_ga($conn);?>
 				
 				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center>
 			</div>

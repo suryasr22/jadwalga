@@ -55,7 +55,7 @@
 					</div>
 					<div class="form-group">
 						<label>NIP</label>
-						<input type="text" class="form-control" placeholder="NIP" name="nip" required="true"required="true">
+						<input type="text" class="form-control" placeholder="NIP" name="nip" required="true" required="true">
 					</div>
 					<div class="form-group">
 						<label>Email</label>
