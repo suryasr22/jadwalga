@@ -48,7 +48,69 @@
 				<br>
 				<h1 class="mt-5 text-center">Jadwal</h1><hr>
 
-				<?php build_jadwal_ga($conn);?>
+				<form>
+					<div class="col-12">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-5">
+									<input type="date" class="form-control" name="tanggal1" autocomplete="off" required>
+								</div>
+								<div class="col-2 text-center">
+									s/d
+								</div>
+								<div class="col-5">
+									<input type="date" class="form-control" name="tanggal2" autocomplete="off" required>
+								</div>
+							</div>				
+						</div>
+					</div>
+					
+			        <center>
+			          <button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>
+			        </center>
+				</form>
+				<hr>
+
+				<div class="col-12">
+					<div class="row">
+						<div class="col-4">
+							<button class="btn btn-primary" id="mail-first">Kirim Email Pengingat Awal Masa Pengisian Jadwal</button>
+						</div>
+						<div class="col-4">
+							<button class="btn btn-primary" id="mail-three-day">Kirim Email Pengingat Masa Pengisian Jadwal kurang dari 3 hari</button>
+						</div>
+						<div class="col-4">
+							<button class="btn btn-primary" id="mail-one-day">Kirim Email Pengingat Masa Pengisian Jadwal kurang dari 1 hari</button>
+						</div>
+					</div>
+				</div>
+				<hr>
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#home">Jadwal Umum</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#menu1">Jadwal per Ruangan</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#menu2">Jadwal per Semester</a>
+					</li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div id="home" class="container tab-pane active"><br>
+						<?php build_jadwal_ga($conn);?>
+					</div>
+					<div id="menu1" class="container tab-pane fade"><br>
+						<?php build_jadwal_ruang($conn);?>
+					</div>
+					<div id="menu2" class="container tab-pane fade"><br>
+						<?php build_jadwal_semester($conn);?>
+					</div>
+				</div>
 				
 				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center>
 			</div>
@@ -62,6 +124,19 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//cek isi form
+			//cek kesamaan password lama
+			$('#mail-first').click(function(){
+				$.get("process/mailer.php", function(data, status){
+	            	alert(data);
+	            	console.log(data);
+	          	});
+			});
+		});
+	</script>
 </body>
 
 </body>

@@ -562,4 +562,379 @@
 			</table>
 		';
 	}
+
+	function build_jadwal_ruang($conn){
+		//array buat nyimpen data makul
+		//$array_makul[total_makul][0] = id_makul
+		//$array_makul[total_makul][1] = nama_makul
+		//$array_makul[total_makul][2] = sks
+
+		$sql = "SELECT * FROM matakuliah";
+		$data_makul = $conn->query($sql);
+
+		$array_makul = array();
+
+		while($makul = $data_makul->fetch_assoc()){
+			$id_makul = $makul['id'];
+			$nama_makul = $makul['nama'];
+			$sks = $makul['sks'];
+
+			array_push($array_makul, array($id_makul, $nama_makul, $sks));
+		}
+
+		$len_makul = sizeof($array_makul);
+
+		//array buat nyimpen data ruang
+		//$array_ruang[total_ruang][0] = id_ruang
+		//$array_ruang[total_ruang][1] = nama_ruang
+
+		$sql1 = "SELECT * FROM ruangan";
+		$data_ruang = $conn->query($sql1);
+
+		$array_ruang = array();
+
+		while($ruang = $data_ruang->fetch_assoc()){
+			$id_ruang = $ruang['id'];
+			$nama_ruang = $ruang['nama'];
+
+			array_push($array_ruang, array($id_ruang, $nama_ruang));
+		}
+
+		$len_ruang = sizeof($array_ruang);
+
+		//array buat nyimpen data jadwal
+		//$array_jadwal[jml_makul][0] = id_makul
+		//$array_jadwal[jml_makul][1] = id_ruang
+		//$array_jadwal[jml_makul][2] = batas bawah jam
+		//$array_jadwal[jml_makul][3] = batas atas jam
+
+		//ambil data jadwal
+		$sql2 = "SELECT * FROM jadwal";
+		$data_jadwal = $conn->query($sql2);
+		//echo $sql;
+
+		$array_jadwal = array();
+
+		//masukin data ke array
+		while($jadwal = $data_jadwal->fetch_assoc()){
+			$id_makul = $jadwal['id_makul'];
+			$id_ruang = $jadwal['id_ruang'];
+			$id_jam = $jadwal['id_jam'];
+
+			for($i = 0; $i < $len_makul; $i++){
+				if($array_makul[$i][0] === $id_makul)
+					$sks = $array_makul[$i][2];
+			}
+
+			$ba = $id_jam + $sks - 1;
+
+			array_push($array_jadwal, array($id_makul, $id_ruang, $id_jam, $ba));
+		}
+
+		//array jam
+		$array_jam = array();
+		//inisialisasi array (diisi FALSE dulu semua)
+		for($i = 1; $i <= 65; $i++){
+			$array_jam[$i] = 0;
+		}
+
+		//print isi table
+		//print per ruangan
+		for($i = 0; $i < $len_ruang; $i++){
+			//vars
+			$waktu_awal = '08:00';
+			$jam = 11;
+			$hari = 5;
+
+			//batas bawah (timestamp > date)
+			$bb_tms = strtotime($waktu_awal);
+			$bb_dt = date('H:i', $bb_tms);
+
+			//batas atas (timestamp > date)
+			$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
+			$ba_dt = date('H:i', $ba_tms);
+
+			$nama_ruang = $array_ruang[$i][1];
+			echo '<center><h4>Ruangan ' . $nama_ruang . '</h4></center><hr>';
+			//print head table
+			echo '
+				<table class="w-auto table table-dark table-hover table-sm table-bordered">
+					<table class="table table-striped table-advance table-hover table-condensed">
+					<thead>
+				      	<tr scope="row">
+			                <th scope="col"></th>
+			                <th scope="col"></th>
+			                <th scope="col" colspan="5" class="text-center">Hari</th>
+		              	</tr>
+				    </thead>
+					<tbody>
+				        <tr>
+		                <th>No</th>
+		                <th>Jam</th>
+		                <th>Senin</th>
+		                <th>Selasa</th>
+		                <th>Rabu</th>
+		                <th>Kamis</th>
+		                <th>Jum\'at</th>
+		          	</tr>
+			';
+
+			for($j = 1; $j <= $jam; $j++){
+				echo '
+					<tr>
+			            <th>' . $j . '</th>
+			            <td>' . $bb_dt . ' - ' . $ba_dt . '</td>
+			    ';
+
+			    //print ceklis per hari
+			    for($k = 0; $k < $hari; $k++){
+			    	$id_jam = $j + ($k * $jam);
+
+			    	echo '
+			    		<th>
+			    	';
+
+			    	for($l  = 0; $l < $len_makul; $l++){
+			    		//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
+			    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_jadwal[$l][1] === $array_ruang[$i][0]){
+
+			    			$nama_makul = $array_makul[$l][1];
+		    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
+
+			    			$pos = strpos($nama_makul, '-');
+			    			if($pos){
+			    				$len = strlen($nama_makul);
+				    			$nama = substr($nama_makul, 0, $pos);
+				    			$kelas = substr($nama_makul, $pos + 2, $len);
+				    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
+			    			} else {
+			    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+			    			}
+			    			
+			    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
+			    		}
+			    	}
+
+			    	echo '
+			    		</th>
+			    	';
+			    }
+
+			    echo '
+		          	</tr>
+				';
+
+				//Update batas bawah & atas
+				$bb_tms = strtotime($ba_dt);
+
+				//Skip jam isoma siang
+				if($j === 5)
+					$bb_tms = strtotime('13:00');
+
+				$bb_dt = date('H:i', $bb_tms);
+
+				$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
+				$ba_dt = date('H:i', $ba_tms);
+			}
+
+			//print foot table
+			echo '
+					</tbody>
+				</table>
+			';
+
+			echo '<hr>';
+		}
+	}
+
+	function build_jadwal_semester($conn){
+		//array buat nyimpen data makul
+		//$array_makul[total_makul][0] = id_makul
+		//$array_makul[total_makul][1] = nama_makul
+		//$array_makul[total_makul][2] = sks
+
+		$sql = "SELECT * FROM matakuliah";
+		$data_makul = $conn->query($sql);
+
+		$array_makul = array();
+
+		while($makul = $data_makul->fetch_assoc()){
+			$id_makul = $makul['id'];
+			$nama_makul = $makul['nama'];
+			$sks = $makul['sks'];
+			$semester = $makul['semester'];
+
+			array_push($array_makul, array($id_makul, $nama_makul, $sks, $semester));
+		}
+
+		$len_makul = sizeof($array_makul);
+		$len_smstr = 8;
+
+		//array buat nyimpen data ruang
+		//$array_ruang[total_ruang][0] = id_ruang
+		//$array_ruang[total_ruang][1] = nama_ruang
+
+		$sql1 = "SELECT * FROM ruangan";
+		$data_ruang = $conn->query($sql1);
+
+		$array_ruang = array();
+
+		while($ruang = $data_ruang->fetch_assoc()){
+			$id_ruang = $ruang['id'];
+			$nama_ruang = $ruang['nama'];
+
+			array_push($array_ruang, array($id_ruang, $nama_ruang));
+		}
+
+		$len_ruang = sizeof($array_ruang);
+
+		//array buat nyimpen data jadwal
+		//$array_jadwal[jml_makul][0] = id_makul
+		//$array_jadwal[jml_makul][1] = id_ruang
+		//$array_jadwal[jml_makul][2] = batas bawah jam
+		//$array_jadwal[jml_makul][3] = batas atas jam
+
+		//ambil data jadwal
+		$sql2 = "SELECT * FROM jadwal";
+		$data_jadwal = $conn->query($sql2);
+		//echo $sql;
+
+		$array_jadwal = array();
+
+		//masukin data ke array
+		while($jadwal = $data_jadwal->fetch_assoc()){
+			$id_makul = $jadwal['id_makul'];
+			$id_ruang = $jadwal['id_ruang'];
+			$id_jam = $jadwal['id_jam'];
+
+			for($i = 0; $i < $len_makul; $i++){
+				if($array_makul[$i][0] === $id_makul)
+					$sks = $array_makul[$i][2];
+			}
+
+			$ba = $id_jam + $sks - 1;
+
+			array_push($array_jadwal, array($id_makul, $id_ruang, $id_jam, $ba));
+		}
+
+		//array jam
+		$array_jam = array();
+		//inisialisasi array (diisi FALSE dulu semua)
+		for($i = 1; $i <= 65; $i++){
+			$array_jam[$i] = 0;
+		}
+
+		//print isi table
+		//print per ruangan
+		for($i = 1; $i <= $len_smstr; $i++){
+			//vars
+			$waktu_awal = '08:00';
+			$jam = 11;
+			$hari = 5;
+
+			//batas bawah (timestamp > date)
+			$bb_tms = strtotime($waktu_awal);
+			$bb_dt = date('H:i', $bb_tms);
+
+			//batas atas (timestamp > date)
+			$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
+			$ba_dt = date('H:i', $ba_tms);
+		
+			echo '<center><h4>Semester ' . $i . '</h4></center><hr>';
+			//print head table
+			echo '
+				<table class="w-auto table table-dark table-hover table-sm table-bordered">
+					<table class="table table-striped table-advance table-hover table-condensed">
+					<thead>
+				      	<tr scope="row">
+			                <th scope="col"></th>
+			                <th scope="col"></th>
+			                <th scope="col" colspan="5" class="text-center">Hari</th>
+		              	</tr>
+				    </thead>
+					<tbody>
+				        <tr>
+		                <th>No</th>
+		                <th>Jam</th>
+		                <th>Senin</th>
+		                <th>Selasa</th>
+		                <th>Rabu</th>
+		                <th>Kamis</th>
+		                <th>Jum\'at</th>
+		          	</tr>
+			';
+
+			for($j = 1; $j <= $jam; $j++){
+				echo '
+					<tr>
+			            <th>' . $j . '</th>
+			            <td>' . $bb_dt . ' - ' . $ba_dt . '</td>
+			    ';
+
+			    //print ceklis per hari
+			    for($k = 0; $k < $hari; $k++){
+			    	$id_jam = $j + ($k * $jam);
+
+			    	echo '
+			    		<th>
+			    	';
+
+			    	for($l  = 0; $l < $len_makul; $l++){
+			    		$bener = 0;
+						//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
+			    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_makul[$l][3] == $i){
+
+			    			$nama_makul = $array_makul[$l][1];
+		    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
+		    				for($m = 0; $m < $len_ruang; $m++){
+			    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
+			    				if($array_jadwal[$l][1] === $array_ruang[$m][0])
+			    					$nama_ruang = $array_ruang[$m][1];
+			    			}
+
+			    			$pos = strpos($nama_makul, '-');
+			    			if($pos){
+			    				$len = strlen($nama_makul);
+				    			$nama = substr($nama_makul, 0, $pos);
+				    			$kelas = substr($nama_makul, $pos + 2, $len);
+				    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
+			    			} else {
+			    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+			    			}
+			    			
+			    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
+			    		}
+			    	}
+
+			    	echo '
+			    		</th>
+			    	';
+			    }
+
+			    echo '
+		          	</tr>
+				';
+
+				//Update batas bawah & atas
+				$bb_tms = strtotime($ba_dt);
+
+				//Skip jam isoma siang
+				if($j === 5)
+					$bb_tms = strtotime('13:00');
+
+				$bb_dt = date('H:i', $bb_tms);
+
+				$ba_tms = strtotime("+50 minutes", strtotime($bb_dt));
+				$ba_dt = date('H:i', $ba_tms);
+			}
+
+			//print foot table
+			echo '
+					</tbody>
+				</table>
+			';
+
+			echo '<hr>';
+		}
+	}
 ?>

@@ -52,7 +52,7 @@
 	//4. Load constraint
 	//- Constraint jam -> makul -> dosen_makul -> dosen -> dosen_jam
 	//- Constraint ruangan -> makul -> dosen_makul -> dosen -> dosen_ruang
-	//$array_jam[jml_makul][cnt_jam] = id_jam	
+	//$array_jam[jml_makul][cnt_jam] = id_jam
 	//$array_ruang[jml_makul][cnt_rng] = id_ruang
 
 	//Constraint Jam
