@@ -48,6 +48,7 @@
 				<br>
 				<h1 class="mt-5 text-center">Data Mata Kuliah</h1><hr>
 				<br>
+				<a href="tambah_makul.php" class="btn btn-primary">Mata Kuliah Baru</a>
 				<table class="w-auto table table-dark  table-hover table-sm table-bordered">
 					<table class="table table-striped table-advance table-hover table-condensed">
 					<thead>
@@ -80,7 +81,7 @@
 				                <td align =\"right\">
 				                  	<a href=\"edit_makul.php?id=$makul[id]\" class=\"btn btn-primary btn-sm\" role=\"button\"><i class=\"fa fa-pencil\" data-toggle=\"modal\" data-target=\"#myModal\"></i></a>
 
-			                		<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"process/hapus_makul.php?id=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+			                		<a onclick =\"return confirm('Yakin Ingin menghapus data mata kuliah?')\" href=\"process/hapus_makul.php?id=$makul[id]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
 				                </td>
 			              	</tr>
 				            ";
@@ -89,7 +90,6 @@
 						</tbody>
 					</table>
 				</table>
-				<a href="tambah_makul.php" class="btn btn-primary">Mata Kuliah Baru</a>
 			</div>
 		</div>
 	</div>

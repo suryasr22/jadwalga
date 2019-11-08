@@ -49,7 +49,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<br>
-				<h1 class="mt-5 text-center">Tambah Mata Kuliah</h1><hr>
+				<h1 class="mt-5 text-center">Edit Mata Kuliah</h1><hr>
 				<br>
 
 				<form class="form-horizontal style-form" method="post" action ="process/edit_makul.php?id=<?php echo $id;?>">

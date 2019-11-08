@@ -22,8 +22,8 @@
           </div>
           <div class="modal-body container rounded-bottom">
             <div class="form-group">
-              <label>Username</label>
-              <input type="text" class="form-control" placeholder="Username" name="username">
+              <label>NIP</label>
+              <input type="text" class="form-control" placeholder="nip" name="username">
             </div>
             <div class="form-group">
               <label>Password</label>
@@ -32,7 +32,7 @@
             <div class="">
             <button type="submit" class="btn btn-primary">Sign in</button>
               <hr><br>
-              Belum punya akun? <a href="signup.php">Sign Up</a>
+              Belum memiliki akun? <a href="signup.php">Sign Up</a>
             </div>
           </div>
         </form>

@@ -87,11 +87,7 @@
 							';
 						}
 					?>					
-					<div class="form-group">
-						<label>Username</label>
-						<input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username"
-						value="<?php echo $data['username'];?>">
-					</div>
+
 					<div class="form-group">
 						<label>Email</label>
 						<input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email" required="true" 

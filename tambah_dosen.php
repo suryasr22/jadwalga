@@ -49,10 +49,6 @@
 						<label>Nama</label>
 						<input type="text" class="form-control" placeholder="Nama" name="nama" required="true">
 					</div>
-					<div class="form-group" data-dismiss="alert" >
-						<label>Username</label>
-						<input type="text" class="form-control" placeholder="Username" name="username" required="true">
-					</div>
 					<div class="form-group">
 						<label>NIP</label>
 						<input type="text" class="form-control" placeholder="NIP" name="nip" required="true" required="true">

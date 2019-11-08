@@ -25,10 +25,6 @@
           <label>Nama</label>
           <input type="text" class="form-control" placeholder="Nama" name="nama" required="true">
         </div>
-        <div class="form-group" data-dismiss="alert" >
-          <label>Username</label>
-          <input type="text" class="form-control" placeholder="Username" name="username" required="true">
-        </div>
         <div class="form-group">
           <label>NIP</label>
           <input type="text" class="form-control" placeholder="NIP" name="nip" required="true"required="true">
@@ -48,7 +44,7 @@
         <p>
         <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
         <br><br>
-        sudah punya punya akun? <a href="index.php">Sign in</a>
+        sudah memiliki akun? <a href="index.php">Sign in</a>
         </p>
         <br>
       </form>

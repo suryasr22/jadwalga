@@ -79,7 +79,7 @@
 				                	$makulDosen[sks]
 				                </td>
 				                <td align =\"right\">
-				                	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"process/hapus_makul_dosen.php?idd=$makulDosen[id_dosen]&idm=$makulDosen[id_makul]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+				                	<a onclick =\"return confirm('Yakin Ingin menghapus mata kuliah yang diampu?')\" href=\"process/hapus_makul_dosen.php?idd=$makulDosen[id_dosen]&idm=$makulDosen[id_makul]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
 				                </td>
 				            </tr>
 				            ";
@@ -117,7 +117,7 @@
 						                	$ruangDosen[nama]
 						                </td>
 						                <td align =\"right\">
-						                	<a onclick =\"return confirm('Yakin Ingin menghapus data?')\" href=\"process/hapus_ruang_dosen.php?idd=$ruangDosen[id_dosen]&idr=$ruangDosen[id_ruang]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
+						                	<a onclick =\"return confirm('Yakin Ingin menghapus data ruangan perkuliahan?')\" href=\"process/hapus_ruang_dosen.php?idd=$ruangDosen[id_dosen]&idr=$ruangDosen[id_ruang]\" class=\"btn btn-danger btn-sm\" role=\"button\"><i class=\"fa fa-trash-o\"></i></a>
 						                </td>
 					                </tr>
 				        			";
