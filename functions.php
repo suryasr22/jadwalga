@@ -491,6 +491,7 @@
 			$array_jam[$i] = 0;
 		}
 
+		$len_jadwal = sizeof($array_jadwal);
 		//print isi table
 		//print jam
 		for($i = 1; $i <= $jam; $i++){
@@ -508,30 +509,32 @@
 		    		<th>
 		    	';
 
-		    	for($k  = 0; $k < $len_makul; $k++){
-		    		//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
-		    		if($id_jam >= $array_jadwal[$k][2] && $id_jam <= $array_jadwal[$k][3]){
+		    	if($len_jadwal > 0){
+		    		for($k  = 0; $k < $len_makul; $k++){
+			    		//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
+			    		if($id_jam >= $array_jadwal[$k][2] && $id_jam <= $array_jadwal[$k][3]){
 
-		    			$nama_makul = $array_makul[$k][1];
+			    			$nama_makul = $array_makul[$k][1];
 
-		    			for($l = 0; $l < $len_ruang; $l++){
-		    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
-		    				if($array_jadwal[$k][1] === $array_ruang[$l][0])
-		    					$nama_ruang = $array_ruang[$l][1];
-		    			}
+			    			for($l = 0; $l < $len_ruang; $l++){
+			    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
+			    				if($array_jadwal[$k][1] === $array_ruang[$l][0])
+			    					$nama_ruang = $array_ruang[$l][1];
+			    			}
 
-		    			$pos = strpos($nama_makul, '-');
-		    			if($pos){
-		    				$len = strlen($nama_makul);
-			    			$nama = substr($nama_makul, 0, $pos);
-			    			$kelas = substr($nama_makul, $pos + 2, $len);
-			    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
-		    			} else {
-		    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
-		    			}
-		    			
-		    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
-		    		}
+			    			$pos = strpos($nama_makul, '-');
+			    			if($pos){
+			    				$len = strlen($nama_makul);
+				    			$nama = substr($nama_makul, 0, $pos);
+				    			$kelas = substr($nama_makul, $pos + 2, $len);
+				    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
+			    			} else {
+			    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+			    			}
+			    			
+			    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
+			    		}
+			    	}
 		    	}
 
 		    	echo '
@@ -638,6 +641,8 @@
 			$array_jam[$i] = 0;
 		}
 
+		$len_jadwal = sizeof($array_jadwal);
+
 		//print isi table
 		//print per ruangan
 		for($i = 0; $i < $len_ruang; $i++){
@@ -694,25 +699,27 @@
 			    		<th>
 			    	';
 
-			    	for($l  = 0; $l < $len_makul; $l++){
-			    		//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
-			    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_jadwal[$l][1] === $array_ruang[$i][0]){
+			    	if($len_jadwal > 0){
+			    		for($l  = 0; $l < $len_makul; $l++){
+				    		//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
+				    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_jadwal[$l][1] === $array_ruang[$i][0]){
 
-			    			$nama_makul = $array_makul[$l][1];
-		    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
+				    			$nama_makul = $array_makul[$l][1];
+			    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
 
-			    			$pos = strpos($nama_makul, '-');
-			    			if($pos){
-			    				$len = strlen($nama_makul);
-				    			$nama = substr($nama_makul, 0, $pos);
-				    			$kelas = substr($nama_makul, $pos + 2, $len);
-				    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
-			    			} else {
-			    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
-			    			}
-			    			
-			    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
-			    		}
+				    			$pos = strpos($nama_makul, '-');
+				    			if($pos){
+				    				$len = strlen($nama_makul);
+					    			$nama = substr($nama_makul, 0, $pos);
+					    			$kelas = substr($nama_makul, $pos + 2, $len);
+					    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
+				    			} else {
+				    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+				    			}
+				    			
+				    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
+				    		}
+				    	}
 			    	}
 
 			    	echo '
@@ -824,6 +831,8 @@
 			$array_jam[$i] = 0;
 		}
 
+		$len_jadwal = sizeof($array_jadwal);
+
 		//print isi table
 		//print per ruangan
 		for($i = 1; $i <= $len_smstr; $i++){
@@ -879,33 +888,35 @@
 			    		<th>
 			    	';
 
-			    	for($l  = 0; $l < $len_makul; $l++){
-			    		$bener = 0;
-						//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
-			    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_makul[$l][3] == $i){
+			    	if($len_jadwal > 0){
+			    		for($l  = 0; $l < $len_makul; $l++){
+				    		$bener = 0;
+							//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
+				    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_makul[$l][3] == $i){
 
-			    			$nama_makul = $array_makul[$l][1];
-		    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
-		    				for($m = 0; $m < $len_ruang; $m++){
+				    			$nama_makul = $array_makul[$l][1];
 			    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
-			    				if($array_jadwal[$l][1] === $array_ruang[$m][0])
-			    					$nama_ruang = $array_ruang[$m][1];
-			    			}
+			    				for($m = 0; $m < $len_ruang; $m++){
+				    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
+				    				if($array_jadwal[$l][1] === $array_ruang[$m][0])
+				    					$nama_ruang = $array_ruang[$m][1];
+				    			}
 
-			    			$pos = strpos($nama_makul, '-');
-			    			if($pos){
-			    				$len = strlen($nama_makul);
-				    			$nama = substr($nama_makul, 0, $pos);
-				    			$kelas = substr($nama_makul, $pos + 2, $len);
-				    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
-			    			} else {
-			    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
-			    			}
-			    			
-			    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
-			    		}
+				    			$pos = strpos($nama_makul, '-');
+				    			if($pos){
+				    				$len = strlen($nama_makul);
+					    			$nama = substr($nama_makul, 0, $pos);
+					    			$kelas = substr($nama_makul, $pos + 2, $len);
+					    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
+				    			} else {
+				    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+				    			}
+				    			
+				    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
+				    		}
+				    	}
 			    	}
-
+			    	
 			    	echo '
 			    		</th>
 			    	';
