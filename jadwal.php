@@ -61,7 +61,7 @@
 					</div>
 				</div>
 				<hr>
-
+				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center>
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
@@ -87,8 +87,6 @@
 						<?php build_jadwal_semester($conn);?>
 					</div>
 				</div>
-				
-				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center>
 			</div>
 		</div>
 	</div>
