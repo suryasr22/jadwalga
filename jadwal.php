@@ -104,7 +104,21 @@
 			//cek isi form
 			//cek kesamaan password lama
 			$('#mail-first').click(function(){
-				$.get("process/mailer.php", function(data, status){
+				$.get("process/mailer.php?act=1", function(data, status){
+	            	alert(data);
+	            	console.log(data);
+	          	});
+			});
+
+			$('#mail-three-day').click(function(){
+				$.get("process/mailer.php?act=2", function(data, status){
+	            	alert(data);
+	            	console.log(data);
+	          	});
+			});
+
+			$('#mail-one-day').click(function(){
+				$.get("process/mailer.php?act=3", function(data, status){
 	            	alert(data);
 	            	console.log(data);
 	          	});
