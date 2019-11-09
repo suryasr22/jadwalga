@@ -47,30 +47,6 @@
 			<div class="col-lg-12 mx-auto">
 				<br>
 				<h1 class="mt-5 text-center">Jadwal</h1><hr>
-
-				<form>
-					<div class="col-12">
-						<div class="form-group">
-							<div class="row">
-								<div class="col-5">
-									<input type="date" class="form-control" name="tanggal1" autocomplete="off" required>
-								</div>
-								<div class="col-2 text-center">
-									s/d
-								</div>
-								<div class="col-5">
-									<input type="date" class="form-control" name="tanggal2" autocomplete="off" required>
-								</div>
-							</div>				
-						</div>
-					</div>
-					
-			        <center>
-			          <button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>
-			        </center>
-				</form>
-				<hr>
-
 				<div class="col-12">
 					<div class="row">
 						<div class="col-4">
