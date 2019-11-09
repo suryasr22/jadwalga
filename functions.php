@@ -47,7 +47,7 @@
 
 		$nav_item_logout = '
 			<li class="nav-item">
-				<a class="nav-link" onclick ="return confirm(\'Yakin Ingin sign out?\') "href="process/signout.php">Logout</a>
+				<a class="nav-link" onclick ="return confirm(\'Yakin Ingin sign out?\')" href="process/signout.php">Logout</a>
 			</li>
 		';
 

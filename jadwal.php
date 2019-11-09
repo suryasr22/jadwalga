@@ -61,7 +61,10 @@
 					</div>
 				</div>
 				<hr>
-				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center>
+				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center><hr>
+				<center><a href="process/reset_jadwal.php" class="btn btn-primary" <?php echo 'return confirm(\'Yakin Ingin sign out?\')';?>>Reset Jadwal</a></center><hr>
+
+				
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
