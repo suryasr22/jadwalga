@@ -45,11 +45,25 @@
 				<h1 class="mt-5 text-center">Tambah Mata Kuliah</h1><hr>
 
 				<form class="form-horizontal style-form" method="post" action ="process/tambah_makul.php">
-			        <!--nama_dosen-->
+					<!--nama_kode makul-->
 			        <div class="form-group">
 			        	<br>
+						<label>Kode Mata Kuliah</label>
+						<input type="text" class="form-control" placeholder="kode mata kuliah" name="kode" required="true">
+					</div>
+			        <!--nama_makul-->
+			        <div class="form-group">
 						<label>Nama</label>
 						<input type="text" class="form-control" placeholder="Nama" name="nama" required="true">
+					</div>
+					<!--nama_kelas-->
+			        <div class="form-group">
+						<label>Kelas</label>
+						<select class="form-control" name="kelas" required="true">
+							<option>A</option>
+							<option>B</option>
+							<option>C</option>
+						</select>
 					</div>
 					<div class="form-group">
 						<label>Semester</label>

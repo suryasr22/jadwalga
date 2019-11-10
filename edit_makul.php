@@ -53,10 +53,55 @@
 				<br>
 
 				<form class="form-horizontal style-form" method="post" action ="process/edit_makul.php?id=<?php echo $id;?>">
+			        <!--kode_makul-->
+			        <div class="form-group">
+						<label>Kode</label>
+						<input type="text" class="form-control" placeholder="kode" name="kode" value="<?php echo $makul['kode'];?>" required="true">
+					</div>
 			        <!--nama_dosen-->
 			        <div class="form-group">
 						<label>Nama</label>
 						<input type="text" class="form-control" placeholder="Nama" name="nama" value="<?php echo $makul['nama'];?>" required="true">
+					</div>
+			        <!--kelas-->
+			        <div class="form-group">
+						<label>Kelas</label>
+						<select class="form-control" name="kelas" required="true">
+							<?php 
+								switch ($makul['kelas']) {
+									case '-':
+										echo '<option selected="true">-</option>';
+										echo '<option>A</option>';
+										echo '<option>B</option>';
+										echo '<option>C</option>';
+										break;
+									case 'A':
+										echo '<option>-</option>';
+										echo '<option selected="true">A</option>';
+										echo '<option>B</option>';
+										echo '<option>C</option>';
+										break;
+									case 'B':
+										echo '<option>-</option>';
+										echo '<option>A</option>';
+										echo '<option selected="true">B</option>';
+										echo '<option>C</option>';
+										break;
+									case 'C':
+										echo '<option>-</option>';
+										echo '<option>A</option>';
+										echo '<option>B</option>';
+										echo '<option selected="true">C</option>';
+										break;
+									default:
+										echo '<option>-</option>';
+										echo '<option>A</option>';
+										echo '<option>B</option>';
+										echo '<option>C</option>';
+										break;
+								}
+							?>
+						</select>
 					</div>
 					<div class="form-group">
 						<label>Semester</label>

@@ -8,12 +8,14 @@
 	include("../functions.php");
 
 	$id = $_GET['id'];
+	$kode = $_POST['kode'];
 	$nama = $_POST['nama'];
+	$kelas = $_POST['kelas'];
 	$semester = $_POST['semester'];
 	$sks = $_POST['sks'];
 
 	//SQL Command
-	$sql = "UPDATE matakuliah SET nama = '$nama', semester = '$semester', sks = '$sks' WHERE id = '$id'";
+	$sql = "UPDATE matakuliah SET kode = '$kode', nama = '$nama', kelas = '$kelas', semester = '$semester', sks = '$sks' WHERE id = '$id'";
 	//echo $sql;
 
 	//Masukkan data

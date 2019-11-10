@@ -53,7 +53,9 @@
 					<table class="table table-striped table-advance table-hover table-condensed">
 					<thead>
 				      <th>id</th>
+				      <th>Kode</th>
 				      <th>Nama Mata Kuliah</th>
+				      <th>Kelas</th>
 				      <th>Semester</th>
 				      <th>SKS</th>
 				      <th></th>
@@ -67,7 +69,13 @@
 				                  $makul[id]
 				                </td>
 				                <td>
+				                  $makul[kode]
+				                </td>
+				                <td>
 				                  $makul[nama]
+				                </td>
+				                <td>
+				                  $makul[kelas]
 				                </td>
 				                <td>
 				                  $makul[semester]

@@ -7,12 +7,14 @@
 	//Fungsi2
 	include("../functions.php");
 
+	$kode = $_POST['kode'];
 	$nama = $_POST['nama'];
+	$kelas = $_POST['kelas'];
 	$semester = $_POST['semester'];
 	$sks = $_POST['sks'];
 
 	//SQL command
-	$sql = "INSERT INTO matakuliah (nama, semester, sks) VALUES ('$nama', '$semester', '$sks')";
+	$sql = "INSERT INTO matakuliah (kode, nama, semester, sks) VALUES ('$kode', '$nama', '$kelas', '$semester', '$sks')";
 
 	//Masukkan data
 	if($conn->query($sql) === TRUE){
