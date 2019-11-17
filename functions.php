@@ -102,12 +102,12 @@
 		$nav_makul_d = array();
 		array_push($nav_makul_d, '
 			<li class="nav-item">
-				<a class="nav-link" href="dasbor_dosen.php">Mata Kuliah</a>
+				<a class="nav-link" href="dasbor_dosen.php">Jadwal</a>
 			</li>
 			');
 		array_push($nav_makul_d, '
 			<li class="nav-item active">
-				<a class="nav-link" href="dasbor_dosen.php">Mata Kuliah
+				<a class="nav-link" href="dasbor_dosen.php">Jadwal
 					<span class="sr-only">(current)</span>
 				</a>
 			</li>
