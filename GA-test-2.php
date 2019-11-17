@@ -7,7 +7,7 @@
 	include("functions.php");
 
 	//Session checker
-	include("session_check.php");
+	//include("session_check.php");
 
 	//Kosongkan table
 	$conn->query("TRUNCATE TABLE jadwal");
@@ -116,6 +116,7 @@
 	while(!hasFoundOptimum($max_fitness, $iter, $len_makul) && !hasReachedMaxIter($iter, $max_generations)){
 
 		$iter++;
+		echo '<strong>Iterasi ke - ' . $iter . '</strong><br><br>';
 
 		//Inisialisasi array keperluan GA
 		//1. $newborn untuk individu baru
@@ -126,15 +127,27 @@
 		//Ambil ukuran dari array $ranked_fitness untuk operasi elitisme
 		$len_fitness = sizeof($ranked_fitness);
 
+		echo 'Perhitungan Fitness<hr>';
+		for($i = 0; $i < $len_pop; $i++){
+			//Hitung fitness masing populasi
+			echo '<strong>Fitness individu ke ' . ($i+1) . ' = ' . $array_fitness[$i][0] . '</strong><br>';
+		}
+		echo '<hr>';
+
 		//Masukkan seluruh n-individu dengan fitness terbaik kedalam mating pool
 		$bound = $len_fitness - $elite_size;
 		for($i = $len_fitness-1; $i >= $bound; $i--){
 			array_push($array_pool, $ranked_fitness[$i]);
+			echo '<strong>Elit terpilih adalah Individu ke ' . ($ranked_fitness[$i][1] + 1) . '
+			dengan nilai fitness ' . $ranked_fitness[$i][0] . '</strong><br>';
 		}
 
 		//Roulette satu individu diluar dari jumlah elit untuk masuk ke mating pool
 		$idx = selection($ranked_fitness, $elite_size);
 		array_push($array_pool, $ranked_fitness[$idx]);
+		echo '<strong>Non elit terpilih hasil seleksi roulette adalah
+		Individu ke ' . ($ranked_fitness[$idx][1] + 1) . '
+		dengan nilai fitness ' . $ranked_fitness[$idx][0] . '</strong><br>';
 
 		//Lakukan undian crossover
 		if(rollCrossover($pc)){
@@ -143,6 +156,7 @@
 			//Ambil ukuran dari array mating pool untuk operasi crossover
 			$len_pool = sizeof($array_pool);
 
+			echo '<hr><strong>Crossover</strong><hr>';
 			//Lakukan crossover setiap 2 individu pada mating pool
 			for($i = 0; $i < $len_pool-1; $i+=2){
 				$idx_a = $array_pool[$i][1];
@@ -183,6 +197,7 @@
 		//Lakukan penyortiran fitness untuk dicek apakah menemui solusi optimum
 		$ranked_fitness = $array_fitness;
 		sort($ranked_fitness);
+		echo '<hr>';
 	}
 
 	//Telah menemukan solusi optimum / mencapai generasi maksimum
@@ -196,8 +211,8 @@
 	$real_jadwal = $array_pop[$idx_max_fitness];
 
 	//Lakukan ekstraksi informasi dari array $real_jadwal dan update data pada database
-	//extractJadwal($real_jadwal, $array_makul, $array_ruang);
-	debugFitness($real_jadwal, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
+	extractJadwal($real_jadwal, $array_makul, $array_ruang);
+	//debugFitness($real_jadwal, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
 
 	//Functions=========================================================================================================
 
@@ -211,35 +226,61 @@
 		//- Lakukan iterasi sesuai jumlah populasi
 		//- Untuk tiap makulnya, randomisasi nilai jam dengan ketentuan
 		//  tidak melebihi atau kurang dari jam setiap harinya
+		echo 'Mulai Pembangkitan Populasi<hr>';
 		for($i = 0; $i < $len_pop; $i++){
 
 			array_push($array_pop, $array_jadwal);
-
+			echo '<strong>Individu ' . ($i+1) . '</strong><br>';
+			$kromosom = '(';
 			for($j = 0; $j < $len_makul; $j++){
-
+				echo 'Mata Kuliah ' . $array_makul[$j][0] . '<br>';
 				//Randomisasi nilai ruangan
 				$idxRuang = rand(0, $len_ruang-1);
+				echo 'Randomisasi ruangan<br>';
+				echo 'Ruangan = rand(X,Y)<br>';
 
 				//Ambil referensi id ruang
 				$id_ruang = $array_ruang[$idxRuang];
+				echo 'Ruangan = ' . $id_ruang . '<br><br>';
 
 				//Randomisasi hari
-				$idxHari = rand(1, 5);
+				$idxHari = rand(1, 2);
+				echo 'Randomisasi hari<br>';
+				echo 'Hari = rand(1,2)<br>';
+				echo 'Ruangan = ' . $idxHari . '<br><br>';
 
 				//Tentukan batas bawah sesuai dengan nilai hari hasil random
-				$limBawahJam = (($idxHari - 1) * 11) + 1;
+				$limBawahJam = (($idxHari - 1) * 4) + 1;
+				echo 'Randomisasi jam<br>';
+				echo 'Batas bawah jam = ((Hari - 1) x 4) + 1<br>';
+				echo 'Batas bawah jam = ((' . $idxHari . ' - 1) x 4) + 1<br>';
+				echo 'Batas bawah jam = ' . $limBawahJam . '<br><br>';
 
 				//Tentukan batas atas dari nilai hari hasil random
 				//Dalam hal ini, batas atas = jam maksimum per hari - sks mata kuliah
-				$limAtasJam = ($idxHari * 11) - $array_makul[$j][1] + 1;
+				$limAtasJam = ($idxHari * 4) - $array_makul[$j][1] + 1;
+				echo 'Batas atas jam = ((Hari x 4) - SKS + 1<br>';
+				echo 'Batas atas jam = ((' . $idxHari . ' x 4) - ' . $array_makul[$j][1] . ' + 1<br>';
+				echo 'Batas atas jam = ' . $limAtasJam . '<br><br>';
 
 				//Randomisasi jam mata kuliah sesuai dengan batas atas dan batas bawah
 				$idxJam = rand($limBawahJam, $limAtasJam);
+				echo 'Jam = rand(Batas bawah jam, Batas atas jam)<br>';
+				echo 'Jam = rand(' . $limBawahJam . ', ' . $limAtasJam . ')<br><br>';
 
 				//Isi nilai jam sesuai dan ruangannya pada jadwal
 				$array_pop[$i][$j][0] = $id_ruang;
 				$array_pop[$i][$j][1] = $idxJam;
+				echo '<strong>Alel = [' . $id_ruang . ', ' . $idxJam . ']</strong><br><br>';
+				$kromosom = $kromosom . '[' . $id_ruang . ', ' . $idxJam . ']';
+
+				if($j < $len_makul - 1){
+					$kromosom = $kromosom . ', ';
+				}
 			}
+			$kromosom = $kromosom . ')</strong><br><br>';
+			echo '<strong>Kromosom = ' . $kromosom;
+			echo '<hr>';
 		}
 
 		return $array_pop;
@@ -252,12 +293,16 @@
 		$len_ruang = sizeof($array_ruang);
 		$array_fitness = array();
 
+		//echo 'Perhitungan Fitness<hr>';
 		for($i = 0; $i < $len_pop; $i++){
 			//Hitung fitness masing populasi
 			$w = countFitnessIdv($array_pop[$i], $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
+			//echo '<strong>Fitness individu ke ' . ($i+1) . ' = ' . $w . '</strong><br>';
 
 			array_push($array_fitness, array($w, $i));
 		}
+
+		//echo '<hr>';
 
 		return $array_fitness;
 	}
@@ -433,8 +478,13 @@
 		$len_makul = sizeof($array_makul);
 		$len_ruang = sizeof($array_ruang);
 
+		echo '<strong>Mulai Crossover</strong><br>';
 		//Tentukan titik potong crossover secara random
 		$cut_point = rand(1, $len_makul-2);
+		echo 'Titik potong crossover = rand(1, jumlah mata kuliah - 2)<br>';
+		echo 'Titik potong crossover = rand(1, ' . $len_makul . ' - 2)<br>';
+		echo 'Titik potong crossover = rand(1, ' . ($len_makul-2) .')<br>';
+		echo 'Titik potong crossover = ' . $cut_point . '<br>';
 
 		//Simpan individu yang ingin di crossover ke variabel
 		$new_1 = $array_pop[$idx1];
@@ -551,7 +601,6 @@
 
 		//return true jika optimum
 		if($optimum){
-			echo '<strong>HASIL OPTIMUM TELAH DITEMUKAN PADA ITERASI KE - ' . ($iter+1) . '</strong><br>';
 			return TRUE;
 		}
 		else
