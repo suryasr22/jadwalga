@@ -56,6 +56,7 @@
 						<thead>
 							<th>No.</th>
 						    <th>Nama Mata Kuliah</th>
+						    <th>Kelas</th>
 						    <th>Semester</th>
 						    <th>SKS</th>
 						    <th></th>
@@ -71,6 +72,9 @@
 			              		</td>
 				                <td>
 				                	$makulDosen[nama]
+				                </td>
+				                <td>
+				                	$makulDosen[kelas]
 				                </td>
 				                <td>
 				                	$makulDosen[semester]

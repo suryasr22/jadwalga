@@ -13,7 +13,7 @@
 	$id = $_SESSION['uid'];
 	$id_dosen = GetData($conn, "SELECT dosen.id FROM dosen, user_dosen, users WHERE users.id = $id AND dosen.id = user_dosen.id_dosen AND users.id = user_dosen.id_user")['id'];
 	
-	$dataMakulDosen = $conn->query("SELECT DISTINCT matakuliah.id, matakuliah.nama, matakuliah.semester, matakuliah.sks FROM dosen_makul, matakuliah WHERE matakuliah.id NOT IN (SELECT id_makul FROM dosen_makul)");
+	$dataMakulDosen = $conn->query("SELECT DISTINCT matakuliah.kode, matakuliah.kelas, matakuliah.id, matakuliah.nama, matakuliah.semester, matakuliah.sks FROM dosen_makul, matakuliah WHERE matakuliah.id NOT IN (SELECT id_makul FROM dosen_makul)");
 
 	$tgt = $_SESSION['tgt'];
 ?>
@@ -39,8 +39,6 @@
 	<!-- Navigation -->
 	<?php build_navbar('dosen', 'makul'); ?>
 
-	<?php echo '<br><br><br><br><br>'?>
-
 	<!-- Page Content -->
 	<div class="container mh-100 col-9">
 		<div class="row">
@@ -53,7 +51,9 @@
 						<?php
 				          if($dataMakulDosen->num_rows > 0){
 				          	echo '<thead>
+								      <th>KODE</th>
 								      <th>Nama Mata Kuliah</th>
+								      <th>Kelas</th>
 								      <th>Semester</th>
 								      <th>SKS</th>
 								      <th></th>
@@ -66,7 +66,13 @@
 					            echo "
 				              	<tr>
 					                <td>
+					                	$makulDosen[kode]
+					                </td>
+					                <td>
 					                	$makulDosen[nama]
+					                </td>
+					                <td>
+					                	$makulDosen[kelas]
 					                </td>
 					                <td>
 					                	$makulDosen[semester]
