@@ -19,15 +19,18 @@
 	//$array_makul[jml_makul][0] = id makul
 	//$array_makul[jml_makul][1] = sks
 	$array_makul = array();
-	$result_makul = $conn->query("SELECT id, sks FROM matakuliah");
+	$result_makul = $conn->query("SELECT matakuliah.id AS id_makul, dosen.id AS id_dosen, sks, kelas, semester FROM matakuliah, dosen, dosen_makul 
+		WHERE matakuliah.id = dosen_makul.id_makul AND dosen.id = dosen_makul.id_dosen");
 	while($makul = $result_makul->fetch_assoc()){
 		$arrMakul = array();
-		array_push($arrMakul, $makul['id']);
+		array_push($arrMakul, $makul['id_makul']);
 		array_push($arrMakul, $makul['sks']);
+		array_push($arrMakul, $makul['id_dosen']);
+		array_push($arrMakul, $makul['kelas']);
+		array_push($arrMakul, $makul['semester']);
 		array_push($array_makul, $arrMakul);
 	}
 	$len_makul = sizeof($array_makul);
-	echo $len_makul . '<br>';
 
 	//2. Ruangan diload kedua, terus disimpen di array dimensi 2,
 	//$array_ruang[0] = id_ruangan
@@ -71,7 +74,6 @@
 	}
 
 	$len_cstr_jam = sizeof($array_cstr_jam);
-	echo $len_cstr_jam . '<br>';
 
 	//Constraint Ruangan
 	$array_cstr_ruang = array();
@@ -86,7 +88,6 @@
 	}
 
 	$len_cstr_ruang = sizeof($array_cstr_ruang);
-	echo $len_cstr_ruang . '<br>';
 
 	//Tutup koneksi
 	$conn->close();
@@ -278,6 +279,8 @@
 		$len_ruang = sizeof($array_ruang);
 
 		$bentrok = 0;
+		$bentrok_dosen = 0;
+		$bentrok_kelas = 0;
 		$salah_ruang = 0;
 		$salah_jam = 0;
 
@@ -302,30 +305,67 @@
 				$ruang_a = $idv[$j][0];
 				$ruang_b = $idv[$k][0];
 
-				if($ruang_a === $ruang_b){
-					$sks_a = $array_makul[$j][1];
-					$bb_a = $idv[$j][1];
-					$ba_a = $bb_a + $sks_a;
+				$kelas_a = $array_makul[$j][3];
+				$kelas_b = $array_makul[$k][3];
 
-					$sks_b = $array_makul[$k][1];
-					$bb_b = $idv[$k][1];
-					$ba_b = $bb_b + $sks_b;
+				$semester_a = $array_makul[$j][4];
+				$semester_b = $array_makul[$k][4];
 
-					//variabel supaya bentrok hanya dihitung per mata kuliah tidak redundan
-					//kita harus menghindari dihitungnya bentrok lebih dari satu kali
-					//karena pengecekan bentrok ada pada setiap jamnya (satu bentrok = satu atau lebih jam)
-					//yang dihitung bentrok itu makulnya bukan jamnya
-					$allowed = TRUE;
-					for($m = $bb_a; $m < $ba_a; $m++){
-						for($n = $bb_b; $n < $ba_b; $n++){
-							//tambah nilai bentrok jika ada nilai batas bawah dan batas atas
-							//jam makul a dan b yang saling bentrok
-							if($m === $n){
+				$dosen_a = $array_makul[$j][2];
+				$dosen_b = $array_makul[$k][2];
+
+				$sks_a = $array_makul[$j][1];
+				$bb_a = $idv[$j][1];
+				$ba_a = $bb_a + $sks_a;
+
+				$sks_b = $array_makul[$k][1];
+				$bb_b = $idv[$k][1];
+				$ba_b = $bb_b + $sks_b;
+
+				$id_ruang = $idv[$j][0];
+
+				$allowed = TRUE;
+				$allowed_dosen = TRUE;
+				$allowed_kelas = TRUE;
+
+				for($m = $bb_a; $m < $ba_a; $m++){
+					for($n = $bb_b; $n < $ba_b; $n++){
+						if($m === $n){
+							//Bentrok JAM
+							//--------------------------------------------------------------------------------
+
+							if($ruang_a == $ruang_b){
 								if($allowed){
 									$bentrok++;
 									$allowed = FALSE;
 								}
 							}
+
+							//--------------------------------------------------------------------------------
+
+							//Bentrok Kelas
+							//--------------------------------------------------------------------------------
+
+							if($kelas_a == $kelas_b && $semester_a == $semester_b){
+								if($allowed_kelas){
+									$bentrok_kelas++;
+									$allowed_kelas = FALSE;
+								}
+							}
+
+							//--------------------------------------------------------------------------------
+
+							//Bentrok Dosen
+							//--------------------------------------------------------------------------------
+
+							if($dosen_a == $dosen_b){
+								if($allowed_dosen){
+									$bentrok_dosen++;
+									$allowed_dosen = FALSE;
+								}
+							}
+
+							//--------------------------------------------------------------------------------
 						}
 					}
 				}
@@ -386,7 +426,7 @@
 		}
 
 		//nilai fitness = (jumlah makul - bentrok) + (jumlah makul - salah ruangan) + (jumlah makul - salah jam)
-		$w = ($len_makul - $bentrok) + ($len_makul - $salah_ruang) + ($len_makul - $salah_jam);
+		$w = ($len_makul - $bentrok) + ($len_makul - $bentrok_dosen) + ($len_makul - $bentrok_kelas) + ($len_makul - $salah_ruang) + ($len_makul - $salah_jam);
 
 		return $w;
 	}
@@ -445,6 +485,7 @@
 
 		//Tentukan titik potong crossover secara random
 		$cut_point = rand(1, $len_makul-2);
+		//$cut_point = $len_makul/2;
 
 		//Simpan individu yang ingin di crossover ke variabel
 		$new_1 = $array_pop[$idx1];
@@ -490,29 +531,162 @@
 		$len_ruang = sizeof($array_ruang);
 		$mutation_point = rand(0, $len_makul-1);
 
-		for($i = 0; $i < $len_makul; $i++){
-			$len_cstr_ruang = sizeof($array_cstr_ruang[$i]);
-			$len_cstr_jam = sizeof($array_cstr_jam[$i]);
-			$bener_ruang = 0;
-			$bener_jam = 0;
-			$idxRuang = rand(0, $len_ruang-1);
-			$id_ruang = $array_ruang[$idxRuang];
+		$bentrok = 0;
+		$bentrok_dosen = 0;
+		$bentrok_kelas = 0;
 
-			while ($bener_ruang == 0) {
-				for($l = 0; $l < $len_cstr_ruang; $l++){
-					$idxCstR = $array_cstr_ruang[$i][$l];
-					if($id_ruang == $idxCstR)
-						$bener_ruang++;
-				}
+		$random_ruang = TRUE;
+		$random_jam = TRUE;
 
-				if($bener_ruang == 0){
+		// //Bentrok
+		// for($k = 0; $k < $len_makul; $k++){
+		// 	if($k != $mutation_point){
+		// 		$ruang_a = $idv[$mutation_point][0];
+		// 		$ruang_b = $idv[$k][0];
+
+		// 		$kelas_a = $array_makul[$mutation_point][3];
+		// 		$kelas_b = $array_makul[$k][3];
+
+		// 		$semester_a = $array_makul[$mutation_point][4];
+		// 		$semester_b = $array_makul[$k][4];
+
+		// 		$dosen_a = $array_makul[$mutation_point][2];
+		// 		$dosen_b = $array_makul[$k][2];
+
+		// 		//Makul yang mau dicek
+		// 		$id_a = $array_makul[$mutation_point][0];
+		// 		$sks_a = $array_makul[$mutation_point][1];
+		// 		$bb_a = $idv[$mutation_point][1];
+		// 		$ba_a = $bb_a + $sks_a;
+
+		// 		//Makul lain
+		// 		$id_b = $array_makul[$k][0];
+		// 		$sks_b = $array_makul[$k][1];
+		// 		$bb_b = $idv[$k][1];
+		// 		$ba_b = $bb_b + $sks_b;
+
+		// 		$id_ruang = $idv[$mutation_point][0];
+
+		// 		$allowed = TRUE;
+		// 		$allowed_dosen = TRUE;
+		// 		$allowed_kelas = TRUE;
+		// 		for($m = $bb_a; $m < $ba_a; $m++){
+		// 			for($n = $bb_b; $n < $ba_b; $n++){
+		// 				if($m === $n){
+		// 					//Bentrok JAM
+		// 					//--------------------------------------------------------------------------------
+
+		// 					if($ruang_a == $ruang_b){
+		// 						//echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu ruangan di ruangan ' . $id_ruang . ' pada jam ' . $m . '<br>';
+		// 						if($allowed){
+		// 							$bentrok++;
+		// 							$allowed = FALSE;
+		// 						}
+		// 					}
+
+		// 					//--------------------------------------------------------------------------------
+
+		// 					//Bentrok Kelas
+		// 					//--------------------------------------------------------------------------------
+
+		// 					if($kelas_a == $kelas_b  && $semester_a == $semester_b){
+		// 						//echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu kelas dengan kelas ' . $kelas_a . ' pada jam ' . $m . '<br>';
+		// 						if($allowed_kelas){
+		// 							$bentrok_kelas++;
+		// 							$allowed_kelas = FALSE;
+		// 						}
+		// 					}
+
+		// 					//--------------------------------------------------------------------------------
+
+		// 					//Bentrok Dosen
+		// 					//--------------------------------------------------------------------------------
+
+		// 					if($dosen_a == $dosen_b){
+		// 						//echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu dosen dengan id dosen ' . $dosen_a . ' pada jam ' . $m . '<br>';
+		// 						if($allowed_dosen){
+		// 							$bentrok_dosen++;
+		// 							$allowed_dosen = FALSE;
+		// 						}
+		// 					}
+
+		// 					//--------------------------------------------------------------------------------
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		// if($bentrok){
+		// 	$random_ruang = TRUE;
+		// 	//$random_jam = TRUE;
+		// }
+
+		// if($bentrok_kelas|| $bentrok_dosen){
+		// 	$random_jam = TRUE;
+		// }
+
+		// //Cek salah
+		// //Ruang
+		// $len_cstr_ruang = sizeof($array_cstr_ruang[$mutation_point]);
+		// $bener_ruang = 0;
+		// $id_ruang = $idv[$mutation_point][0];;
+
+		// for($l = 0; $l < $len_cstr_ruang; $l++){
+		// 	$idxCstR = $array_cstr_ruang[$mutation_point][$l];
+		// 	if($id_ruang == $idxCstR)
+		// 		$bener_ruang++;
+		// }
+
+		// if($bener_ruang == 0){
+		// 	$random_ruang = TRUE;
+		// }
+
+		// //Jam
+		// $benerJam = 0;
+		// $jam_bwh = $idv[$mutation_point][1];
+		// $sks = $array_makul[$mutation_point][1];
+		// $jam_ats = $jam_bwh + $sks - 1;
+		// $len_cstr_jam = sizeof($array_cstr_jam[$mutation_point]);
+
+		// for($m = 0; $m < $len_cstr_jam; $m++){
+		// 	$idxCstJ = $array_cstr_jam[$mutation_point][$m];
+		// 	if($idxCstJ >= $jam_bwh && $idxCstJ <= $jam_ats){
+		// 		$benerJam++;
+		// 	}
+		// }
+
+		// if($benerJam < $sks){
+		// 	$random_jam = TRUE;
+		// }
+
+		if($random_ruang){
+			//Random ruangan
+			// $bener_ruang = 0;
+			// $idxRuang = rand(0, $len_ruang-1);
+
+			// while ($bener_ruang == 0){
+			// 	for($l = 0; $l < $len_cstr_ruang; $l++){
+			// 		$idxCstR = $array_cstr_ruang[$mutation_point][$l];
+			// 		if($id_ruang == $idxCstR)
+			// 			$bener_ruang++;
+			// 	}
+
+			// 	if($bener_ruang == 0){
 					$idxRuang = rand(0, $len_ruang-1);
 					$id_ruang = $array_ruang[$idxRuang];
-				}
-			}
+			// 	}
+			// }
 
-			$sks = $array_makul[$i][1];
-			while ($bener_jam < $sks){
+			$idv[$mutation_point][0] = $id_ruang;
+		}
+
+		if($random_jam){
+			//Random jam
+			// $bener_jam = 0;
+
+			$sks = $array_makul[$mutation_point][1];
+			// while ($bener_jam < $sks){
 				$idxHari = rand(1, 5);
 				$segmen = rand(0, 1);
 				if(!$segmen){
@@ -528,23 +702,38 @@
 					//echo 'Lim ats siang = ' . $limAtasJam . '<br>';
 				}
 				$idxJam = rand($limBawahJam, $limAtasJam);
-				$idxJamAts = $idxJam + $sks - 1;
+			// 	$idxJamAts = $idxJam + $sks - 1;
 
-				for($m = 0; $m < $len_cstr_jam; $m++){
-					$idxCstJ = $array_cstr_jam[$i][$m];
+			// 	for($m = 0; $m < $len_cstr_jam; $m++){
+			// 		$idxCstJ = $array_cstr_jam[$mutation_point][$m];
 
-					//tambah nilai benar jika makul ditempatkan pada jam yang benar
-					if($idxCstJ >= $idxJam && $idxCstJ <= $idxJamAts){
-						$bener_jam++;
-					}
-				}
-			}
+			// 		//tambah nilai benar jika makul ditempatkan pada jam yang benar
+			// 		if($idxCstJ >= $idxJam && $idxCstJ <= $idxJamAts){
+			// 			$bener_jam++;
+			// 		}
+			// 	}
+			// }
 
-			if($i === $mutation_point){
-				$idv[$i][0] = $id_ruang;
-				$idv[$i][1] = $idxJam;
-			}
+			$idv[$mutation_point][1] = $idxJam;
 		}
+		
+
+		// echo 'Makul ' . $array_makul[$mutation_point][0] . '<hr>';
+		// if($bentrok)
+		// 	echo 'BENTROK JAM <br>';
+
+		// if($bentrok_kelas)
+		// 	echo 'BENTROK KELAS <br>';
+
+		// if($bentrok_dosen)
+		// 	echo 'BENTROK DOSEN <br>';
+
+		// echo '<br>';
+
+		//Pemenuhan Constraint
+
+		//
+		//
 
 		return $idv;
 	}
@@ -558,7 +747,7 @@
 		//Fitness = (jumlah makul - 0) + (jumlah makul - 0) + (jumlah makul - 0)
 		//Fitness = jumlah makul + jumlah makul + jumlah makul;
 		//Jadi, jumlah fitness pada solusi optimum = jumlah makul x 3;
-		$optimum_w = $len_makul * 3;
+		$optimum_w = $len_makul * 5;
 		$optimum = $w === $optimum_w;
 
 		//return true jika optimum
@@ -622,6 +811,8 @@
 		$len_ruang = sizeof($array_ruang);
 
 		$bentrok = 0;
+		$bentrok_dosen = 0;
+		$bentrok_kelas = 0;
 		$salah_ruang = 0;
 		$salah_jam = 0;
 
@@ -631,34 +822,75 @@
 				$ruang_a = $idv[$j][0];
 				$ruang_b = $idv[$k][0];
 
-				if($ruang_a === $ruang_b){
-					$id_a = $array_makul[$j][0];
-					$sks_a = $array_makul[$j][1];
-					$bb_a = $idv[$j][1];
-					$ba_a = $bb_a + $sks_a;
+				$kelas_a = $array_makul[$j][3];
+				$kelas_b = $array_makul[$k][3];
 
-					$id_b = $array_makul[$k][0];
-					$sks_b = $array_makul[$k][1];
-					$bb_b = $idv[$k][1];
-					$ba_b = $bb_b + $sks_b;
+				$semester_a = $array_makul[$j][4];
+				$semester_b = $array_makul[$k][4];
 
-					$id_ruang = $idv[$j][0];
-					
-					echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu ruangan di ruangan ' . $id_ruang;
+				$dosen_a = $array_makul[$j][2];
+				$dosen_b = $array_makul[$k][2];
 
-					$allowed = TRUE;
-					for($m = $bb_a; $m < $ba_a; $m++){
-						for($n = $bb_b; $n < $ba_b; $n++){
-							if($m === $n){
-								echo ' (BENTROK pada jam ' . $m . ')';
+				//Makul yang mau dicek
+				$id_a = $array_makul[$j][0];
+				$sks_a = $array_makul[$j][1];
+				$bb_a = $idv[$j][1];
+				$ba_a = $bb_a + $sks_a;
+
+				//Makul lain
+				$id_b = $array_makul[$k][0];
+				$sks_b = $array_makul[$k][1];
+				$bb_b = $idv[$k][1];
+				$ba_b = $bb_b + $sks_b;
+
+				$id_ruang = $idv[$j][0];
+
+				$allowed = TRUE;
+				$allowed_dosen = TRUE;
+				$allowed_kelas = TRUE;
+				for($m = $bb_a; $m < $ba_a; $m++){
+					for($n = $bb_b; $n < $ba_b; $n++){
+						if($m === $n){
+							//Bentrok JAM
+							//--------------------------------------------------------------------------------
+
+							if($ruang_a == $ruang_b){
+								echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu ruangan di ruangan ' . $id_ruang . ' pada jam ' . $m . '<br>';
 								if($allowed){
 									$bentrok++;
 									$allowed = FALSE;
 								}
 							}
+
+							//--------------------------------------------------------------------------------
+
+							//Bentrok Kelas
+							//--------------------------------------------------------------------------------
+
+							if($kelas_a == $kelas_b && $semester_a == $semester_b){
+								echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu kelas dengan kelas ' . $kelas_a . ' pada jam ' . $m . '<br>';
+								if($allowed_kelas){
+									$bentrok_kelas++;
+									$allowed_kelas = FALSE;
+								}
+							}
+
+							//--------------------------------------------------------------------------------
+
+							//Bentrok Dosen
+							//--------------------------------------------------------------------------------
+
+							if($dosen_a == $dosen_b){
+								echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu dosen dengan id dosen ' . $dosen_a . ' pada jam ' . $m . '<br>';
+								if($allowed_dosen){
+									$bentrok_dosen++;
+									$allowed_dosen = FALSE;
+								}
+							}
+
+							//--------------------------------------------------------------------------------
 						}
 					}
-					echo '.<br>';
 				}
 			}
 
@@ -704,9 +936,10 @@
 			echo '<br>';
 		}
 		echo '<hr>';
-		echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<hr>';
+		echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<br>';
+		echo 'Bentrok dosen: ' . $bentrok_dosen . ', bentrok kelas: ' . $bentrok_kelas . '<hr>';
 
-		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$salah_ruang.') + ('.$len_makul .'-'. $salah_jam.') ';
+		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$bentrok_dosen.') + ('.$len_makul.' - '.$bentrok_kelas.') + ('.$len_makul.' - '.$salah_ruang.') + ('.$len_makul .'-'. $salah_jam.') ';
 		$w_makul = $len_makul - $bentrok;
 		$w_ruang = $len_makul - $salah_ruang;
 		$w_jam = $len_makul - $salah_jam;
