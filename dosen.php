@@ -52,7 +52,7 @@
 				<table class="w-auto table table-dark table-hover table-sm table-bordered">
 					<table class="table table-striped table-advance table-hover table-condensed">
 					<thead>
-				      <th>id <?php echo $tgt;?></th>
+				      <th>id</th>
 				      <th>Nama Dosen</th>
 				      <th>NIP</th>
 				      <th></th>
@@ -84,7 +84,7 @@
 					                </td>
 				              	</tr>
 					            ";
-				            }			            
+				            }				            
 				          }
 				          ?>
 						</tbody>

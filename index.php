@@ -22,8 +22,8 @@
           </div>
           <div class="modal-body container rounded-bottom">
             <div class="form-group">
-              <label>NIP/Email</label>
-              <input type="text" class="form-control" placeholder="NIP/Email" name="identity">
+              <label>NIP</label>
+              <input type="text" class="form-control" placeholder="nip" name="username">
             </div>
             <div class="form-group">
               <label>Password</label>

@@ -9,51 +9,24 @@
 
 
 	//Parameter form
-	$identity = $_POST['identity'];
+	$username = $_POST['username'];
 	$password = md5($_POST['password']);
 
-	$data_admin = GetData($conn, 
-		"SELECT admin.id, email, password, role 
-		FROM users, admin, user_admin 
-		WHERE users.id = user_admin.id_user 
-		AND admin.id = user_admin.id_admin 
-		AND email = '$identity' 
-		AND password = '$password'"
-	);
+	//Ambil data
+	$data = GetData($conn, "SELECT * FROM users WHERE username='$username' AND password='$password'");
+	$tgt = SelectTarget($data['role']);
+	$uid = $data['id'];
 
-	$data_dosen = GetData($conn, 
-		"SELECT dosen.id, nip, email, password, role 
-		FROM users, dosen, user_dosen 
-		WHERE users.id = user_dosen.id_user 
-		AND dosen.id = user_dosen.id_dosen 
-		AND (nip = '$identity' OR email = '$identity')
-		AND password = '$password'"
-	);	
-
-	if($data_admin){
-		$tgt = SelectTarget($data_admin['role']);
-		$uid = $data_admin['id'];
-
+	if($data){
 		if(!isset($_SESSION)){
 			session_start();
 			$_SESSION['uid'] = $uid;
-			$_SESSION['tgt'] = $data_admin['role'];
-		}
-		//header ("location:../dasbor_dosen.php");
-		header ("location:../" . $tgt);
-	} else if ($data_dosen){
-		$tgt = SelectTarget($data_dosen['role']);
-		$uid = $data_dosen['id'];
-
-		if(!isset($_SESSION)){
-			session_start();
-			$_SESSION['uid'] = $uid;
-			$_SESSION['tgt'] = $data_admin['role'];
+			$_SESSION['tgt'] = $data['role'];
 		}
 		//header ("location:../dasbor_dosen.php");
 		header ("location:../" . $tgt);
 	} else {
-		echo "<script> alert('NIP/Email atau Password Salah');
+		echo "<script> alert('Username atau Password Salah');
 		location='../index.php';
 		</script>";
 	}
