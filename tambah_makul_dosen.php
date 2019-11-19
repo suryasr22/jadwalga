@@ -15,10 +15,6 @@
 	
 	$dataMakulDosen = $conn->query("SELECT DISTINCT matakuliah.id, matakuliah.nama, matakuliah.semester, matakuliah.sks FROM dosen_makul, matakuliah WHERE matakuliah.id NOT IN (SELECT id_makul FROM dosen_makul)");
 
-	if($dataMakulDosen->num_rows == 0){
-		$dataMakulDosen = $conn->query("SELECT * FROM matakuliah");
-	}
-
 	$tgt = $_SESSION['tgt'];
 ?>
 <!DOCTYPE html>
@@ -43,6 +39,8 @@
 	<!-- Navigation -->
 	<?php build_navbar('dosen', 'makul'); ?>
 
+	<?php echo '<br><br><br><br><br>'?>
+
 	<!-- Page Content -->
 	<div class="container mh-100 col-9">
 		<div class="row">
@@ -52,37 +50,49 @@
 				<br>
 				<form class="form-horizontal style-form" method="post" action ="process/tambah_makul_dosen.php?id=<?php echo $id_dosen;?>">
 					<table class="mx-auto table table-hover table-sm table-bordered table-striped table-advance table-condensed">
-						<thead>
-					      <th>Nama Mata Kuliah</th>
-					      <th>Semester</th>
-					      <th>SKS</th>
-					      <th></th>
-					    </thead>
+						<?php
+				          if($dataMakulDosen->num_rows > 0){
+				          	echo '<thead>
+								      <th>Nama Mata Kuliah</th>
+								      <th>Semester</th>
+								      <th>SKS</th>
+								      <th></th>
+							    	</thead>';
+						}?>
 						<tbody>
 				          <?php
-				          while($makulDosen = $dataMakulDosen->fetch_assoc()){
-				            echo "
-			              	<tr>
-				                <td>
-				                	$makulDosen[nama]
-				                </td>
-				                <td>
-				                	$makulDosen[semester]
-				                </td>
-				                <td>
-				                	$makulDosen[sks]
-				                </td>
-				                <td>
-				                	<input type=\"checkbox\" name=\"cb_" . $makulDosen['id'] . "\">
-				                </td>
-				            </tr>
-				            ";
-				          }
+				          if($dataMakulDosen->num_rows > 0){
+					          while($makulDosen = $dataMakulDosen->fetch_assoc()){
+					            echo "
+				              	<tr>
+					                <td>
+					                	$makulDosen[nama]
+					                </td>
+					                <td>
+					                	$makulDosen[semester]
+					                </td>
+					                <td>
+					                	$makulDosen[sks]
+					                </td>
+					                <td>
+					                	<input type=\"checkbox\" name=\"cb_" . $makulDosen['id'] . "\">
+					                </td>
+					            </tr>
+					            ";
+					          }
+					      } else {
+					      	echo "<tr><td colspan=\"4\">Maaf, seluruh mata kuliah telah dipilih oleh dosen.</td></tr>";
+					      }
 				          ?>
 						</tbody>
 					</table>
 					<center>
-			          <button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>
+						<?php if($dataMakulDosen->num_rows > 0){
+							echo '<button class="btn btn-primary" type="submit" name="submit" id="submit">Submit</button>';
+						} else {
+							echo '<a href="dasbor_dosen.php" class="btn btn-primary">Kembali</a>';
+						}
+						?>
 			        </center>
 				</form>
 			</div>
