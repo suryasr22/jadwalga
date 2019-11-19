@@ -1,4 +1,7 @@
 <?php
+	ini_set('max_execution_time', 1000);
+	ini_set('memory_limit', '1024M');
+
 	//Libraries
 	//Koneksi
 	include("koneksi.php");
@@ -24,6 +27,7 @@
 		array_push($array_makul, $arrMakul);
 	}
 	$len_makul = sizeof($array_makul);
+	echo $len_makul . '<br>';
 
 	//2. Ruangan diload kedua, terus disimpen di array dimensi 2,
 	//$array_ruang[0] = id_ruangan
@@ -66,6 +70,9 @@
 		}
 	}
 
+	$len_cstr_jam = sizeof($array_cstr_jam);
+	echo $len_cstr_jam . '<br>';
+
 	//Constraint Ruangan
 	$array_cstr_ruang = array();
 
@@ -78,6 +85,9 @@
 		}
 	}
 
+	$len_cstr_ruang = sizeof($array_cstr_ruang);
+	echo $len_cstr_ruang . '<br>';
+
 	//Tutup koneksi
 	$conn->close();
 
@@ -85,13 +95,13 @@
 	//jumlah populasi
 	$len_pop = 100;
 	//kapasitas elite_size pemilihan parent
-	$elite_size = 19;
+	$elite_size = 9;
 	//probabilitas crossover (%)
 	$pc = 100;
 	//probabilitas mutasi (%)
 	$pm = 100;
 	//max iteration
-	$max_generations = 500;
+	$max_generations = 1000;
 	
 	//max fitness
 	$max_fitness = 0;
@@ -359,7 +369,7 @@
 			$jam_ats = $jam_bwh + $sks - 1;
 			$benerJam = 0;
 
-			$len_cstr_jam = sizeof($array_cstr_jam);
+			$len_cstr_jam = sizeof($array_cstr_jam[$j]);
 			for($m = 0; $m < $len_cstr_jam; $m++){
 				$idxCstJ = $array_cstr_jam[$j][$m];
 
@@ -451,6 +461,7 @@
 		}
 
 		//Push salah satu individu ke array individu baru
+		array_push($newborn, $new_1);
 		array_push($newborn, $new_2);
 
 		return $newborn;
@@ -530,6 +541,7 @@
 			}
 
 			if($i === $mutation_point){
+				$idv[$i][0] = $id_ruang;
 				$idv[$i][1] = $idxJam;
 			}
 		}
@@ -674,7 +686,7 @@
 			$jam_bwh = $idv[$j][1];
 			$sks = $array_makul[$j][1];
 			$jam_ats = $jam_bwh + $sks - 1;
-			$len_cstr_jam = sizeof($array_cstr_jam);
+			$len_cstr_jam = sizeof($array_cstr_jam[$j]);
 
 			for($m = 0; $m < $len_cstr_jam; $m++){
 				$idxCstJ = $array_cstr_jam[$j][$m];

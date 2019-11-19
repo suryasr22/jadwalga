@@ -22,12 +22,12 @@
           </div>
           <div class="modal-body container rounded-bottom">
             <div class="form-group">
-              <label>NIP</label>
-              <input type="text" class="form-control" placeholder="nip" name="username">
+              <label>username</label>
+              <input type="text" class="form-control" placeholder="username" name="username">
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input type="password" class="form-control" placeholder="Password" name="password">
+              <input type="password" class="form-control" placeholder="password" name="password">
             </div>
             <div class="">
             <button type="submit" class="btn btn-primary">Sign in</button>
