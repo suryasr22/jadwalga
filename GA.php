@@ -95,7 +95,7 @@
 	//jumlah populasi
 	$len_pop = 100;
 	//kapasitas elite_size pemilihan parent
-	$elite_size = 9;
+	$elite_size = 19;
 	//probabilitas crossover (%)
 	$pc = 100;
 	//probabilitas mutasi (%)
