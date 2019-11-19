@@ -11,8 +11,8 @@
 	include("session_check.php");
 
 	$id = $_SESSION['uid'];
-	$id_dosen = GetData($conn, "SELECT dosen.id FROM dosen, user_dosen, users WHERE users.id = $id AND dosen.id = user_dosen.id_dosen AND users.id = user_dosen.id_user")['id'];
-	
+	$id_dosen = $id;
+
 	$dataMakulDosen = $conn->query("SELECT * FROM dosen, matakuliah, dosen_makul WHERE dosen.id = $id_dosen AND dosen.id = dosen_makul.id_dosen AND matakuliah.id = dosen_makul.id_makul");
 
 	$dataRuangDosen = $conn->query("SELECT * FROM dosen, ruangan, dosen_ruang WHERE dosen.id = $id_dosen AND dosen.id = dosen_ruang.id_dosen AND ruangan.id = dosen_ruang.id_ruang");
@@ -40,8 +40,7 @@
 <body class="w-75 p-4 mx-auto shadow-lg">
 	<!--KONTEN-->
 	<!-- Navigation -->
-	<?php build_navbar('dosen', 'makul'); ?>
-
+	<?php build_navbar('dosen', 'makul');?>
 	<!-- Page Content -->
 	<div class="container mh-100 col-9">
 		<div class="row">
