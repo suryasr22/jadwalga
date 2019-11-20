@@ -426,7 +426,7 @@
 		}
 
 		//nilai fitness = (jumlah makul - bentrok) + (jumlah makul - salah ruangan) + (jumlah makul - salah jam)
-		$w = ($len_makul - $bentrok) + ($len_makul - $bentrok_dosen) + ($len_makul - $bentrok_kelas) + ($len_makul - $salah_ruang) + ($len_makul - $salah_jam);
+		$w = ($len_makul - $bentrok) + ($len_makul - $bentrok_dosen) + ($len_makul - $bentrok_kelas);
 
 		return $w;
 	}
@@ -939,7 +939,8 @@
 		echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<br>';
 		echo 'Bentrok dosen: ' . $bentrok_dosen . ', bentrok kelas: ' . $bentrok_kelas . '<hr>';
 
-		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$bentrok_dosen.') + ('.$len_makul.' - '.$bentrok_kelas.') + ('.$len_makul.' - '.$salah_ruang.') + ('.$len_makul .'-'. $salah_jam.') ';
+		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$bentrok_dosen.') + ('.$len_makul.' - '.$bentrok_kelas.')';
+
 		$w_makul = $len_makul - $bentrok;
 		$w_ruang = $len_makul - $salah_ruang;
 		$w_jam = $len_makul - $salah_jam;
