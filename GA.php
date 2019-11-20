@@ -102,7 +102,7 @@
 	//probabilitas mutasi (%)
 	$pm = 100;
 	//max iteration
-	$max_generations = 1000;
+	$max_generations = 2000;
 	
 	//max fitness
 	$max_fitness = 0;
@@ -346,7 +346,7 @@
 							//Bentrok Kelas
 							//--------------------------------------------------------------------------------
 
-							if($kelas_a == $kelas_b && $semester_a == $semester_b){
+							if($kelas_a == $kelas_b && $semester_a == $semester_b && $kelas_a != '-'){
 								if($allowed_kelas){
 									$bentrok_kelas++;
 									$allowed_kelas = FALSE;
@@ -747,7 +747,7 @@
 		//Fitness = (jumlah makul - 0) + (jumlah makul - 0) + (jumlah makul - 0)
 		//Fitness = jumlah makul + jumlah makul + jumlah makul;
 		//Jadi, jumlah fitness pada solusi optimum = jumlah makul x 3;
-		$optimum_w = $len_makul * 5;
+		$optimum_w = $len_makul * 3;
 		$optimum = $w === $optimum_w;
 
 		//return true jika optimum
@@ -867,7 +867,7 @@
 							//Bentrok Kelas
 							//--------------------------------------------------------------------------------
 
-							if($kelas_a == $kelas_b && $semester_a == $semester_b){
+							if($kelas_a == $kelas_b && $semester_a == $semester_b && $kelas_a != '-'){
 								echo 'Makul A>' . $id_a . ': Jam ' . $bb_a . ' ' . $sks_a . ' SKS & Makul B>' . $id_b . ': Jam ' . $bb_b . ' ' . $sks_b . ' SKS satu kelas dengan kelas ' . $kelas_a . ' pada jam ' . $m . '<br>';
 								if($allowed_kelas){
 									$bentrok_kelas++;
