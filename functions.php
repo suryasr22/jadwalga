@@ -421,6 +421,7 @@
 		//$array_makul[total_makul][0] = id_makul
 		//$array_makul[total_makul][1] = nama_makul
 		//$array_makul[total_makul][2] = sks
+		//$array_makul[total_makul][3] = kelas
 
 		$sql = "SELECT * FROM matakuliah";
 		$data_makul = $conn->query($sql);
@@ -431,8 +432,9 @@
 			$id_makul = $makul['id'];
 			$nama_makul = $makul['nama'];
 			$sks = $makul['sks'];
+			$kelas = $makul['kelas'];
 
-			array_push($array_makul, array($id_makul, $nama_makul, $sks));
+			array_push($array_makul, array($id_makul, $nama_makul, $sks, $kelas));
 		}
 
 		$len_makul = sizeof($array_makul);
@@ -522,15 +524,15 @@
 			    					$nama_ruang = $array_ruang[$l][1];
 			    			}
 
-			    			$pos = strpos($nama_makul, '-');
-			    			if($pos){
-			    				$len = strlen($nama_makul);
-				    			$nama = substr($nama_makul, 0, $pos);
-				    			$kelas = substr($nama_makul, $pos + 2, $len);
-				    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
-			    			} else {
-			    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
-			    			}
+			    			// $pos = strpos($nama_makul, '-');
+			    			// if($pos){
+			    			// 	$len = strlen($nama_makul);
+				    		// 	$nama = substr($nama_makul, 0, $pos);
+				    		 	$kelas = $array_makul[$k][3];
+				    			echo $nama_makul . '<br>Kelas ' . $kelas . '<br>' . $nama_ruang . '<hr>';
+			    			// } else {
+			    			// 	echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+			    			// }
 			    			
 			    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
 			    		}
@@ -571,6 +573,7 @@
 		//$array_makul[total_makul][0] = id_makul
 		//$array_makul[total_makul][1] = nama_makul
 		//$array_makul[total_makul][2] = sks
+		//$array_makul[total_makul][3] = kelas
 
 		$sql = "SELECT * FROM matakuliah";
 		$data_makul = $conn->query($sql);
@@ -581,8 +584,9 @@
 			$id_makul = $makul['id'];
 			$nama_makul = $makul['nama'];
 			$sks = $makul['sks'];
+			$kelas = $makul['kelas'];
 
-			array_push($array_makul, array($id_makul, $nama_makul, $sks));
+			array_push($array_makul, array($id_makul, $nama_makul, $sks, $kelas));
 		}
 
 		$len_makul = sizeof($array_makul);
@@ -707,15 +711,15 @@
 				    			$nama_makul = $array_makul[$l][1];
 			    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
 
-				    			$pos = strpos($nama_makul, '-');
-				    			if($pos){
-				    				$len = strlen($nama_makul);
-					    			$nama = substr($nama_makul, 0, $pos);
-					    			$kelas = substr($nama_makul, $pos + 2, $len);
-					    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
-				    			} else {
-				    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
-				    			}
+				    			// $pos = strpos($nama_makul, '-');
+				    			// if($pos){
+				    			// 	$len = strlen($nama_makul);
+					    		// 	$nama = substr($nama_makul, 0, $pos);
+					    			$kelas = $array_makul[$l][3];
+					    			echo $nama_makul . '<br>Kelas ' . $kelas . '<br>' . $nama_ruang . '<hr>';
+				    			// } else {
+				    			// 	echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+				    			// }
 				    			
 				    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
 				    		}
@@ -759,6 +763,7 @@
 		//$array_makul[total_makul][0] = id_makul
 		//$array_makul[total_makul][1] = nama_makul
 		//$array_makul[total_makul][2] = sks
+		//$array_makul[total_makul][3] = kelas
 
 		$sql = "SELECT * FROM matakuliah";
 		$data_makul = $conn->query($sql);
@@ -769,9 +774,10 @@
 			$id_makul = $makul['id'];
 			$nama_makul = $makul['nama'];
 			$sks = $makul['sks'];
+			$kelas = $makul['kelas'];			
 			$semester = $makul['semester'];
 
-			array_push($array_makul, array($id_makul, $nama_makul, $sks, $semester));
+			array_push($array_makul, array($id_makul, $nama_makul, $sks, $kelas, $semester));
 		}
 
 		$len_makul = sizeof($array_makul);
@@ -892,7 +898,7 @@
 			    		for($l  = 0; $l < $len_makul; $l++){
 				    		$bener = 0;
 							//echo $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<br>';
-				    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_makul[$l][3] == $i){
+				    		if($id_jam >= $array_jadwal[$l][2] && $id_jam <= $array_jadwal[$l][3] && $array_makul[$l][4] == $i){
 
 				    			$nama_makul = $array_makul[$l][1];
 			    				//echo $array_jadwal[$k][1] . ' vs ' . $array_ruang[$l][0] . '<br>';
@@ -902,15 +908,15 @@
 				    					$nama_ruang = $array_ruang[$m][1];
 				    			}
 
-				    			$pos = strpos($nama_makul, '-');
-				    			if($pos){
-				    				$len = strlen($nama_makul);
-					    			$nama = substr($nama_makul, 0, $pos);
-					    			$kelas = substr($nama_makul, $pos + 2, $len);
-					    			echo $nama . '<br>' . $kelas . '<br>' . $nama_ruang . '<hr>';
-				    			} else {
-				    				echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
-				    			}
+				    			// $pos = strpos($nama_makul, '-');
+				    			// if($pos){
+				    			// 	$len = strlen($nama_makul);
+					    		// 	$nama = substr($nama_makul, 0, $pos);
+					    			$kelas = $array_makul[$l][3];
+					    			echo $nama_makul . '<br>Kelas ' . $kelas . '<br>' . $nama_ruang . '<hr>';
+				    			// } else {
+				    			// 	echo $nama_makul . '<br>' . $nama_ruang . '<hr>';
+				    			// }
 				    			
 				    			//echo $array_jadwal[$k][0] . ', ' . $array_jadwal[$k][1] . ', ' . $array_jadwal[$k][2] . ', ' . $array_jadwal[$k][3] . '<hr>';
 				    		}

@@ -207,8 +207,8 @@
 	$real_jadwal = $array_pop[$idx_max_fitness];
 
 	//Lakukan ekstraksi informasi dari array $real_jadwal dan update data pada database
-	//extractJadwal($real_jadwal, $array_makul, $array_ruang);
 	debugFitness($real_jadwal, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
+	extractJadwal($real_jadwal, $array_makul, $array_ruang);
 
 	//Functions=========================================================================================================
 
@@ -799,11 +799,11 @@
 
 			//Redirect jika berhasil
 			if($conn->query($sql)===TRUE){
-				echo "<script>
-				location='jadwal.php';
-				</script>";
+				
 			}
 		}
+
+		echo "<a href=\"jadwal.php\">Kembali ke jadwal</a>";
 	}
 
 	function debugFitness($idv, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam){
