@@ -1,5 +1,5 @@
 <?php
-	ini_set('max_execution_time', 1000);
+	ini_set('max_execution_time', 100000);
 	ini_set('memory_limit', '1024M');
 
 	//Libraries
@@ -96,7 +96,7 @@
 	//jumlah populasi
 	$len_pop = 100;
 	//kapasitas elite_size pemilihan parent
-	$elite_size = 19;
+	$elite_size = 11;
 	//probabilitas crossover (%)
 	$pc = 100;
 	//probabilitas mutasi (%)
@@ -238,11 +238,11 @@
 				$idxHari = rand(1, 5);
 
 				//Tentukan batas bawah sesuai dengan nilai hari hasil random
-				$limBawahJam = (($idxHari - 1) * 11) + 1;
+				$limBawahJam = (($idxHari - 1) * 12) + 1;
 
 				//Tentukan batas atas dari nilai hari hasil random
 				//Dalam hal ini, batas atas = jam maksimum per hari - sks mata kuliah
-				$limAtasJam = ($idxHari * 11) - $array_makul[$j][1] + 1;
+				$limAtasJam = ($idxHari * 12) - $array_makul[$j][1] + 1;
 
 				//Randomisasi jam mata kuliah sesuai dengan batas atas dan batas bawah
 				$idxJam = rand($limBawahJam, $limAtasJam);
@@ -283,6 +283,7 @@
 		$bentrok_kelas = 0;
 		$salah_ruang = 0;
 		$salah_jam = 0;
+		$salah_jumat = 0;
 
 		//Hitung fitness, berdasarkan:
 		//1. jumlah matakuliah yang tidak bentrok
@@ -423,10 +424,16 @@
 			if($benerJam < $sks){
 				$salah_jam++;
 			}
+
+			//Hitung constraint jumat
+			if((54 >= $jam_bwh && 54 <= $jam_ats) ||
+				(55 >= $jam_bwh && 55 <= $jam_ats)){
+				$salah_jumat++;
+			}
 		}
 
 		//nilai fitness = (jumlah makul - bentrok) + (jumlah makul - salah ruangan) + (jumlah makul - salah jam)
-		$w = ($len_makul - $bentrok) + ($len_makul - $bentrok_dosen) + ($len_makul - $bentrok_kelas);
+		$w = ($len_makul - $bentrok) + ($len_makul - $bentrok_dosen) + ($len_makul - $bentrok_kelas) + ($len_makul - $salah_ruang) + ($len_makul - $salah_jam) + ($len_makul - $salah_jumat);
 
 		return $w;
 	}
@@ -688,19 +695,22 @@
 			$sks = $array_makul[$mutation_point][1];
 			// while ($bener_jam < $sks){
 				$idxHari = rand(1, 5);
-				$segmen = rand(0, 1);
-				if(!$segmen){
-					$limBawahJam = (($idxHari - 1) * 11) + 1;
-					$limAtasJam = ($idxHari * 11) - $sks - 5;
-					//echo 'Lim bwh pagi = ' . $limBawahJam . '<br>';
-					//echo 'Lim ats pagi = ' . $limAtasJam . '<br>';
-				}
-				else{
-					$limBawahJam = (($idxHari - 1) * 11) + 6;
-					$limAtasJam = ($idxHari * 11) - $sks + 1;
-					//echo 'Lim bwh siang = ' . $limBawahJam . '<br>';
-					//echo 'Lim ats siang = ' . $limAtasJam . '<br>';
-				}
+				// $segmen = rand(0, 1);
+				// if(!$segmen){
+				// 	$limBawahJam = (($idxHari - 1) * 11) + 1;
+				// 	$limAtasJam = ($idxHari * 11) - $sks - 5;
+				// 	//echo 'Lim bwh pagi = ' . $limBawahJam . '<br>';
+				// 	//echo 'Lim ats pagi = ' . $limAtasJam . '<br>';
+				// }
+				// else{
+				// 	$limBawahJam = (($idxHari - 1) * 11) + 6;
+				// 	$limAtasJam = ($idxHari * 11) - $sks + 1;
+				// 	//echo 'Lim bwh siang = ' . $limBawahJam . '<br>';
+				// 	//echo 'Lim ats siang = ' . $limAtasJam . '<br>';
+				// }
+				$limBawahJam = (($idxHari - 1) * 12) + 1;
+				$limAtasJam = ($idxHari * 12) - $sks + 1;
+
 				$idxJam = rand($limBawahJam, $limAtasJam);
 			// 	$idxJamAts = $idxJam + $sks - 1;
 
@@ -747,7 +757,7 @@
 		//Fitness = (jumlah makul - 0) + (jumlah makul - 0) + (jumlah makul - 0)
 		//Fitness = jumlah makul + jumlah makul + jumlah makul;
 		//Jadi, jumlah fitness pada solusi optimum = jumlah makul x 3;
-		$optimum_w = $len_makul * 3;
+		$optimum_w = $len_makul * 6;
 		$optimum = $w === $optimum_w;
 
 		//return true jika optimum
@@ -815,6 +825,7 @@
 		$bentrok_kelas = 0;
 		$salah_ruang = 0;
 		$salah_jam = 0;
+		$salah_jumat = 0;
 
 		for($j = 0; $j < $len_makul; $j++){
 			//Bentrok
@@ -848,6 +859,8 @@
 				$allowed = TRUE;
 				$allowed_dosen = TRUE;
 				$allowed_kelas = TRUE;
+
+				$benerJumat = 0;
 				for($m = $bb_a; $m < $ba_a; $m++){
 					for($n = $bb_b; $n < $ba_b; $n++){
 						if($m === $n){
@@ -934,12 +947,17 @@
 				$salah_jam++;
 			}
 			echo '<br>';
+
+			if((54 >= $jam_bwh && 54 <= $jam_ats) ||
+				(55 >= $jam_bwh && 55 <= $jam_ats)){
+				$salah_jumat++;
+			}
 		}
 		echo '<hr>';
 		echo 'Bentrok: ' . $bentrok . ', Salah Ruangan: ' . $salah_ruang . ', Salah Jam: ' . $salah_jam . '<br>';
 		echo 'Bentrok dosen: ' . $bentrok_dosen . ', bentrok kelas: ' . $bentrok_kelas . '<hr>';
 
-		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$bentrok_dosen.') + ('.$len_makul.' - '.$bentrok_kelas.')';
+		echo 'Fitness = ('.$len_makul.' - '.$bentrok.') + ('.$len_makul.' - '.$bentrok_dosen.') + ('.$len_makul.' - '.$bentrok_kelas.') + ('.$len_makul.' - '.$salah_ruang.') + ('.$len_makul.' - '.$salah_jam.') + ('.$len_makul.' - '.$salah_jumat.')';
 
 		$w_makul = $len_makul - $bentrok;
 		$w_ruang = $len_makul - $salah_ruang;

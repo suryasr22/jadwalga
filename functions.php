@@ -267,7 +267,7 @@
 	function build_konten_jadwal($conn, $id_dosen){
 		//vars
 		$waktu_awal = '08:00';
-		$jam = 11;
+		$jam = 12;
 		$hari = 5;
 
 		//batas bawah (timestamp > date)
@@ -365,8 +365,8 @@
 			$bb_tms = strtotime($ba_dt);
 
 			//Skip jam isoma siang
-			if($i === 5)
-				$bb_tms = strtotime('13:00');
+			//if($i === 5)
+			//	$bb_tms = strtotime('13:00');
 
 			$bb_dt = date('H:i', $bb_tms);
 
@@ -384,7 +384,7 @@
 	function build_jadwal_ga($conn){
 		//vars
 		$waktu_awal = '08:00';
-		$jam = 11;
+		$jam = 12;
 		$hari = 5;
 
 		//batas bawah (timestamp > date)
@@ -552,8 +552,8 @@
 			$bb_tms = strtotime($ba_dt);
 
 			//Skip jam isoma siang
-			if($i === 5)
-				$bb_tms = strtotime('13:00');
+			//if($i === 5)
+			//	$bb_tms = strtotime('13:00');
 
 			$bb_dt = date('H:i', $bb_tms);
 
@@ -641,7 +641,7 @@
 		//array jam
 		$array_jam = array();
 		//inisialisasi array (diisi FALSE dulu semua)
-		for($i = 1; $i <= 65; $i++){
+		for($i = 1; $i <= 60; $i++){
 			$array_jam[$i] = 0;
 		}
 
@@ -652,7 +652,7 @@
 		for($i = 0; $i < $len_ruang; $i++){
 			//vars
 			$waktu_awal = '08:00';
-			$jam = 11;
+			$jam = 12;
 			$hari = 5;
 
 			//batas bawah (timestamp > date)
@@ -833,7 +833,7 @@
 		//array jam
 		$array_jam = array();
 		//inisialisasi array (diisi FALSE dulu semua)
-		for($i = 1; $i <= 65; $i++){
+		for($i = 1; $i <= 60; $i++){
 			$array_jam[$i] = 0;
 		}
 
@@ -844,7 +844,7 @@
 		for($i = 1; $i <= $len_smstr; $i++){
 			//vars
 			$waktu_awal = '08:00';
-			$jam = 11;
+			$jam = 12;
 			$hari = 5;
 
 			//batas bawah (timestamp > date)
@@ -936,8 +936,8 @@
 				$bb_tms = strtotime($ba_dt);
 
 				//Skip jam isoma siang
-				if($j === 5)
-					$bb_tms = strtotime('13:00');
+				//if($j === 5)
+				//	$bb_tms = strtotime('13:00');
 
 				$bb_dt = date('H:i', $bb_tms);
 
