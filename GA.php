@@ -166,7 +166,7 @@
 	$len_pop = 100;
 
 	//Jumlah elit
-	$elite_size = 11;
+	$elite_size = 13;
 
 	//Probabilitas koneksi
 	$pc = 100;
@@ -175,7 +175,7 @@
 	$pm = 100;
 
 	//Generasi maksimum
-	$max_generations = 2000;
+	$max_generations = 1000;
 
 	//Fitness maksimum
 	$max_fitness = 0;
