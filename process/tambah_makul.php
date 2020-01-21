@@ -14,7 +14,7 @@
 	$sks = $_POST['sks'];
 
 	//SQL command
-	$sql = "INSERT INTO matakuliah (kode, nama, semester, sks) VALUES ('$kode', '$nama', '$kelas', '$semester', '$sks')";
+	$sql = "INSERT INTO matakuliah (kode, nama, kelas, semester, sks) VALUES ('$kode', '$nama', '$kelas', '$semester', '$sks')";
 
 	//Masukkan data
 	if($conn->query($sql) === TRUE){
