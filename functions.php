@@ -423,7 +423,7 @@
 		//$array_makul[total_makul][2] = sks
 		//$array_makul[total_makul][3] = kelas
 
-		$sql = "SELECT * FROM matakuliah";
+		$sql = "SELECT * FROM matakuliah, jadwal WHERE matakuliah.id = jadwal.id_makul";
 		$data_makul = $conn->query($sql);
 
 		$array_makul = array();
@@ -575,7 +575,7 @@
 		//$array_makul[total_makul][2] = sks
 		//$array_makul[total_makul][3] = kelas
 
-		$sql = "SELECT * FROM matakuliah";
+		$sql = "SELECT * FROM matakuliah, jadwal WHERE matakuliah.id = jadwal.id_makul";
 		$data_makul = $conn->query($sql);
 
 		$array_makul = array();
@@ -765,7 +765,7 @@
 		//$array_makul[total_makul][2] = sks
 		//$array_makul[total_makul][3] = kelas
 
-		$sql = "SELECT * FROM matakuliah";
+		$sql = "SELECT * FROM matakuliah, jadwal WHERE matakuliah.id = jadwal.id_makul";
 		$data_makul = $conn->query($sql);
 
 		$array_makul = array();

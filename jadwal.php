@@ -61,7 +61,17 @@
 					</div>
 				</div>
 				<hr>
-				<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center><hr>
+				<form method="post" action="GA.php">
+					<center><label>Semester : </label></center>
+					<div class="radio">
+						<center><label><input type="radio" name="semester" value="ganjil" checked> Ganjil</label></center>
+					</div>
+					<div class="radio">
+						<center><label><input type="radio" name="semester" value="genap"> Genap</label></center>
+					</div>
+					<center><input type="submit" class="btn btn-primary" value="Generate Jadwal"></center><hr>
+				</form>
+				<!--<center><a href="GA.php" class="btn btn-primary">Generate Jadwal</a></center><hr>-->
 				<center><a href="process/reset_jadwal.php" class="btn btn-primary" <?php echo 'return confirm(\'Yakin Ingin sign out?\')';?>>Reset Jadwal</a></center><hr>
 
 				

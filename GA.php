@@ -28,6 +28,10 @@
 
 
 
+	$semester = $_POST['semester'];
+
+
+
 	//Inisialisasi array mata kuliah
 	//Ambil id makul, sks, id dosen, kelas, semester dari tiap mata kuliah
 	//Data ini disimpan pada array bernama $array_makul
@@ -41,17 +45,42 @@
 
 		$arrMakul = array();
 
-		array_push($arrMakul, $makul['id_makul']); //==> $array_makul[jml_makul][0] = ID mata kuliah
+		if($semester === 'ganjil')
+		{
+			if($makul['semester'] % 2 == 1){
 
-		array_push($arrMakul, $makul['sks']); //==> $array_makul[jml_makul][1] = SKS mata kuliah
+				array_push($arrMakul, $makul['id_makul']); //==> $array_makul[jml_makul][0] = ID mata kuliah
 
-		array_push($arrMakul, $makul['id_dosen']); //==> $array_makul[jml_makul][2] = ID dosen dari mata kuliah
+				array_push($arrMakul, $makul['sks']); //==> $array_makul[jml_makul][1] = SKS mata kuliah
 
-		array_push($arrMakul, $makul['kelas']); //==> $array_makul[jml_makul][3] = kelas mata kuliah
+				array_push($arrMakul, $makul['id_dosen']); //==> $array_makul[jml_makul][2] = ID dosen dari mata kuliah
 
-		array_push($arrMakul, $makul['semester']); //==> $array_makul[jml_makul][4] = semester mata kuliah
+				array_push($arrMakul, $makul['kelas']); //==> $array_makul[jml_makul][3] = kelas mata kuliah
 
-		array_push($array_makul, $arrMakul);
+				array_push($arrMakul, $makul['semester']); //==> $array_makul[jml_makul][4] = semester mata kuliah
+
+				array_push($array_makul, $arrMakul);
+
+			}
+		} 
+		else 
+		{
+			if($makul['semester'] % 2 == 0){
+
+				array_push($arrMakul, $makul['id_makul']); //==> $array_makul[jml_makul][0] = ID mata kuliah
+
+				array_push($arrMakul, $makul['sks']); //==> $array_makul[jml_makul][1] = SKS mata kuliah
+
+				array_push($arrMakul, $makul['id_dosen']); //==> $array_makul[jml_makul][2] = ID dosen dari mata kuliah
+
+				array_push($arrMakul, $makul['kelas']); //==> $array_makul[jml_makul][3] = kelas mata kuliah
+
+				array_push($arrMakul, $makul['semester']); //==> $array_makul[jml_makul][4] = semester mata kuliah
+
+				array_push($array_makul, $arrMakul);
+				
+			}
+		}
 
 	}
 
