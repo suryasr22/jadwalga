@@ -310,7 +310,7 @@
 		//array buat nyimpen status dosen_jam
 		$array_jam = array();
 		//inisialisasi array (diisi FALSE dulu semua)
-		for($i = 1; $i <= 55; $i++){
+		for($i = 1; $i <= 60; $i++){
 			$array_jam[$i] = 0;
 		}
 
