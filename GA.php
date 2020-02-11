@@ -341,7 +341,7 @@
 
 	$real_jadwal = $array_pop[$idx_max_fitness];
 
-	debugFitness($real_jadwal, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
+	//debugFitness($real_jadwal, $array_makul, $array_ruang, $array_cstr_ruang, $array_cstr_jam);
 
 	extractJadwal($real_jadwal, $array_makul, $array_ruang);
 
@@ -958,6 +958,12 @@
 
 			if($conn->query($sql)===TRUE){
 				
+				echo "<script>
+				
+					location='jadwal.php';
+				
+				</script>";
+
 			}
 		}
 
